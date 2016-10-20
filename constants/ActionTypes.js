@@ -1,8 +1,8 @@
 export const LOAD_TOKEN = 'LOAD_TOKEN';
+export const TRY_LOGIN = 'TRY_LOGIN';
+export const SAVE_TOKEN = 'SAVE_TOKEN';
 
 
-export const DELETE_CPU = 'DELETE_CPU';
-export const REFRESH_CPU_LIST = 'REFRESH_CPU_LIST';
 export const SELECT_CPU = 'SELECT_CPU';
 export const CHANGE_URL = 'CHANGE_URL';
 export const HANDLE_NEW_CPU = 'HANDLE_NEW_CPU';

@@ -1,18 +1,21 @@
 import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import BetBlocksClient from "../containers/BetBlocksClient";
 import ServiceUrl from "../components/ServiceUrl";
 import * as Actions from "../actions";
 
 class App extends Component {
     render() {
-        const {serviceUrl, actions} = this.props;
+        const {serviceUrl, actions, state} = this.props;
         return (
             <div>
                 <ServiceUrl serviceUrl={serviceUrl} onChange={actions.changeServiceURL}/>
                 <hr/>
+                <BetBlocksClient />
+                <hr/>
                 <p>Here is entire app state:</p>
-                <pre>{JSON.stringify(this.props, null, 3)}</pre>
+                <pre>{JSON.stringify(state, null, 3)}</pre>
             </div>
         )
     }
@@ -20,7 +23,8 @@ class App extends Component {
 
 App.propTypes = {
     serviceUrl: PropTypes.string.isRequired,
-    actions: PropTypes.object
+    actions: PropTypes.object.isRequired,
+    state: PropTypes.object.isRequired
 };
 
 function mapDispatchToProps(dispatch) {
@@ -30,7 +34,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    return state;
+    return {
+        serviceUrl: state.auth.url,
+        state: state
+    };
 }
 
 export default connect(

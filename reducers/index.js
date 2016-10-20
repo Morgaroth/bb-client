@@ -10,24 +10,34 @@ if (window.location.href.startsWith("http://localhost")) {
 function merge(b, c) {
     return Object.assign({}, b, c)
 }
-
-function userToken(state = {needsLogin: false}, action) {
-    switch (action.type) {
-        case types.LOAD_TOKEN:
-            if (localStorage.getItem('token') != null) {
-                return merge(state, { token: localStorage.getItem("token") })
-            } else {
-                return merge(state, { needsLogin: true })
-            }
+function getEnv(url) {
+    switch (url) {
+        case 'http://dev-root-betblocks-01.gp-cloud.com':
+            return 'dev';
+        case 'http://prod-root-betblocks-01.gp-cloud.com':
+            return 'prod';
         default:
-            return state
+            return 'local';
     }
 }
 
-function serviceUrl(state = serverUrl, action) {
+
+function auth(state = {needsLogin: false, url: serverUrl, env: getEnv(serverUrl)}, action) {
     switch (action.type) {
         case types.CHANGE_URL:
-            return action.newUrl;
+            var newEnv = getEnv(action.newUrl);
+            var newToken = localStorage.getItem('token-' + newEnv);
+            return {url: action.newUrl, needsLogin: newToken == null, token: newToken, env: newEnv};
+        case types.LOAD_TOKEN:
+            var token = localStorage.getItem('token-' + state.env);
+            if (token != null) {
+                return merge(state, {token: token, needsLogin: false})
+            } else {
+                return merge(state, {needsLogin: true})
+            }
+        case types.SAVE_TOKEN:
+            localStorage.setItem('token-' + state.env, action.data.token);
+            return merge(state, {token: action.data.token, needsLogin: false});
         default:
             return state
     }
@@ -123,109 +133,109 @@ function serviceUrl(state = serverUrl, action) {
 //                     console.log("normal gates are", JSON.stringify(normalGates));
 //                     if (normalGatesCnt < 1) {
 //                         missing target gate for control
-                        // return state
-                    // } else if (normalGatesCnt > 1) {
-                        // console.log("too much target gates");
-                        // return state
-                    // } else if (normalGates[0].qbit == action.qbit) {
-                    //     console.log("overriding is disabled");
-                    //     return state
-                    // } else {
-                    //     var newGates = [];
-                    //     var localGates = gatesAtPosition(thisStateGates, action.position).filter(x => x.gate.type != "Cross");
-                    //     localGates.push({
-                    //         position: action.position,
-                    //         qbit: action.qbit,
-                    //         gate: {
-                    //             type: 'C'
-                    //         }
-                    //     });
-                    //
-                    //     var localGatesQbits = localGates.map(x => x.qbit);
-                    //     const minQ = Math.min.apply(Math, localGatesQbits);
-                    //     const maxQ = Math.max.apply(Math, localGatesQbits);
-                    //     for (var i = minQ + 1; i < maxQ; ++i) {
-                    //         const thisGate = gateAt(action.position, i, localGates);
-                    //         if (thisGate == undefined) {
-                    //             newGates.push({
-                    //                 qbit: i,
-                    //                 position: action.position,
-                    //                 gate: {
-                    //                     type: 'Cross'
-                    //                 }
-                    //             })
-                    //         } else if (thisGate.gate.type == "Cross") {
-                    //             newGates.push(thisGate)
-                    //         } else {
-                    //             newGates.push(betwenizeGate(thisGate))
-                    //         }
-                    //     }
-                    //     var gateToUpp = gateAt(action.position, minQ, localGates);
-                    //     newGates.push(upperizeGate(gateToUpp));
-                    //     var gateToDown = gateAt(action.position, maxQ, localGates);
-                    //     newGates.push(downizeGate(gateToDown));
-                    //     obj[action.cpuId] = [
-                    //         ...newGates,
-                    //         ...((thisStateGates).filter(g =>
-                    //             g.position !== action.position
-                    //         ))
-                    //     ];
-                    //     return Object.assign({}, state, obj);
-                    // }
-                // case 'N':
-                //     if (!checkIfIsControlledStep(thisStateGates, action.position)) {
-                //         obj[action.cpuId] = [
-                //             ...((thisStateGates).filter((g) =>
-                //                 g.position !== action.position || g.qbit != action.qbit
-                //             ))
-                //         ];
-                //         return Object.assign({}, state, obj);
-                //     } else {
-                //         var newGates = [];
-                //         var gatesToFilter = gatesAtPosition(thisStateGates, action.position);
-                //         for (var i = 0; i < gatesToFilter.length; ++i) {
-                //             var g = gatesToFilter[i];
-                //             if (SpecialGates.indexOf(g.gate.type) < 0) {
-                //                 console.log(g.gate.qbit, action.qbit, g.gate.qbit != action.qbit)
-                //                 if (g.qbit != action.qbit) {
-                //                     newGates.push(disableDirection(g))
-                //                 }
-                //             }
-                //         }
-                //         obj[action.cpuId] = [
-                //             ...newGates,
-                //             ...(thisStateGates).filter(r => r.position !== action.position)
-                //         ];
-                //         return Object.assign({}, state, obj);
-                //
-                //     }
-                // default:
-                //     if (!checkIfIsControlledStep(thisStateGates, action.position)) {
-                        // obj[action.cpuId] = [
-                        //     {
-                        //         position: action.position,
-                        //         gate: action.gate,
-                        //         qbit: action.qbit
-                        //     },
-                        //     ...((thisStateGates).filter((g) =>
-                        //         g.position !== action.position || g.qbit != action.qbit
-                        //     ))
-                        // ];
-                        // return Object.assign({}, state, obj);
-                    // } else {
-                    //     console.log("cannot drag normal gate when there is controlled step")
-                    //     return state;
-                    // }
-            // }
-        // case types.REFRESH_CPU_LIST:
-        //     var r = Object.assign({});
-        //     action.data.map((stillExist) => {
-        //         r[stillExist.id] = state[stillExist.id]
-        //     });
-        //     return r;
-        // default:
-        //     return state;
-    // }
+// return state
+// } else if (normalGatesCnt > 1) {
+// console.log("too much target gates");
+// return state
+// } else if (normalGates[0].qbit == action.qbit) {
+//     console.log("overriding is disabled");
+//     return state
+// } else {
+//     var newGates = [];
+//     var localGates = gatesAtPosition(thisStateGates, action.position).filter(x => x.gate.type != "Cross");
+//     localGates.push({
+//         position: action.position,
+//         qbit: action.qbit,
+//         gate: {
+//             type: 'C'
+//         }
+//     });
+//
+//     var localGatesQbits = localGates.map(x => x.qbit);
+//     const minQ = Math.min.apply(Math, localGatesQbits);
+//     const maxQ = Math.max.apply(Math, localGatesQbits);
+//     for (var i = minQ + 1; i < maxQ; ++i) {
+//         const thisGate = gateAt(action.position, i, localGates);
+//         if (thisGate == undefined) {
+//             newGates.push({
+//                 qbit: i,
+//                 position: action.position,
+//                 gate: {
+//                     type: 'Cross'
+//                 }
+//             })
+//         } else if (thisGate.gate.type == "Cross") {
+//             newGates.push(thisGate)
+//         } else {
+//             newGates.push(betwenizeGate(thisGate))
+//         }
+//     }
+//     var gateToUpp = gateAt(action.position, minQ, localGates);
+//     newGates.push(upperizeGate(gateToUpp));
+//     var gateToDown = gateAt(action.position, maxQ, localGates);
+//     newGates.push(downizeGate(gateToDown));
+//     obj[action.cpuId] = [
+//         ...newGates,
+//         ...((thisStateGates).filter(g =>
+//             g.position !== action.position
+//         ))
+//     ];
+//     return Object.assign({}, state, obj);
+// }
+// case 'N':
+//     if (!checkIfIsControlledStep(thisStateGates, action.position)) {
+//         obj[action.cpuId] = [
+//             ...((thisStateGates).filter((g) =>
+//                 g.position !== action.position || g.qbit != action.qbit
+//             ))
+//         ];
+//         return Object.assign({}, state, obj);
+//     } else {
+//         var newGates = [];
+//         var gatesToFilter = gatesAtPosition(thisStateGates, action.position);
+//         for (var i = 0; i < gatesToFilter.length; ++i) {
+//             var g = gatesToFilter[i];
+//             if (SpecialGates.indexOf(g.gate.type) < 0) {
+//                 console.log(g.gate.qbit, action.qbit, g.gate.qbit != action.qbit)
+//                 if (g.qbit != action.qbit) {
+//                     newGates.push(disableDirection(g))
+//                 }
+//             }
+//         }
+//         obj[action.cpuId] = [
+//             ...newGates,
+//             ...(thisStateGates).filter(r => r.position !== action.position)
+//         ];
+//         return Object.assign({}, state, obj);
+//
+//     }
+// default:
+//     if (!checkIfIsControlledStep(thisStateGates, action.position)) {
+// obj[action.cpuId] = [
+//     {
+//         position: action.position,
+//         gate: action.gate,
+//         qbit: action.qbit
+//     },
+//     ...((thisStateGates).filter((g) =>
+//         g.position !== action.position || g.qbit != action.qbit
+//     ))
+// ];
+// return Object.assign({}, state, obj);
+// } else {
+//     console.log("cannot drag normal gate when there is controlled step")
+//     return state;
+// }
+// }
+// case types.REFRESH_CPU_LIST:
+//     var r = Object.assign({});
+//     action.data.map((stillExist) => {
+//         r[stillExist.id] = state[stillExist.id]
+//     });
+//     return r;
+// default:
+//     return state;
+// }
 // }
 //
 // function execution(state = {}, action) {
@@ -266,8 +276,7 @@ function serviceUrl(state = serverUrl, action) {
 // }
 //
 const rootReducer = combineReducers({
-    userToken,
-    serviceUrl
+    auth,
     // algorithms,
     // cpuState,
     // execution

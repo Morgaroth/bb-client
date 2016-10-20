@@ -1,10 +1,10 @@
 import * as types from "../constants/ActionTypes";
 import fetch from "isomorphic-fetch";
 // import {
-    // gatesAtPosition,
-    // findNormalGatesHere,
-    // checkIfIsControlledStep,
-    // findControlledGatesHere
+// gatesAtPosition,
+// findNormalGatesHere,
+// checkIfIsControlledStep,
+// findControlledGatesHere
 // } from "../reducers/index";
 
 export function loadToken() {
@@ -68,18 +68,44 @@ export function changeServiceURL(serviceURL) {
     return {type: types.CHANGE_URL, newUrl: serviceURL}
 }
 
-// export function handleNewCPU(json) {
-//     return {
-//         type: types.HANDLE_NEW_CPU, data: json
-//     }
-// }
-//
-// export function handleCPUData(json) {
-//     return {
-//         type: types.HANDLE_CPU, data: json
-//     }
-// }
-//
+
+export function tryLogin(phone) {
+    return prepareLogin(phone)
+}
+
+export function prepareLogin(phone) {
+    console.log("Preparing login with phone:", phone);
+    return (dispatch, getState) => {
+        return fetch(getState().auth.url + ':8001/users/auth/' + phone)
+            .then(response => response.json())
+            .then(json => dispatch(proceedLogin(phone, json.code)));
+    }
+}
+
+export function proceedLogin(phone, code) {
+    console.log("Logging with phone:", phone, code);
+    return (dispatch, getState) => {
+        return fetch(getState().auth.url + ':8001/users/auth/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors',
+            body: JSON.stringify({phoneNumber: phone, smsCode: code})
+        }).then(response => response.json())
+            .then(json => dispatch(saveUserToken(json)));
+
+    }
+}
+
+
+export function saveUserToken(json) {
+    return {
+        type: types.SAVE_TOKEN, data: json
+    }
+}
+
 // export function refreshCPUList(json) {
 //     return {
 //         type: types.REFRESH_CPU_LIST, data: json
@@ -180,7 +206,7 @@ export function changeServiceURL(serviceURL) {
 //
 // export function reset(cpuId) {
 //     console.log("disabled teporarily");
-    // return {type: 'NOTYPE'}
+// return {type: 'NOTYPE'}
 // }
 //
 // export function addAlgoSize(cpuId) {
