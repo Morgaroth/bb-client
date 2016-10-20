@@ -8,8 +8,9 @@ import fetch from "isomorphic-fetch";
 // } from "../reducers/index";
 
 export function loadToken() {
-    return {
-        type: types.LOAD_TOKEN
+    return (dispatch) => {
+        dispatch({type: types.LOAD_TOKEN});
+        dispatch(fetchRoomsFromServer());
     }
 }
 
@@ -44,10 +45,14 @@ export function loadToken() {
 //     return userId;
 // }
 //
-// var userLogin = {
-//     headers: {'X-User-Id': getUserCookie()},
-//     mode: 'cors'
-// };
+function userHeader(state) {
+    return {
+        // headers: {'X-User-Auth': state.auth.token},
+        headers: new Headers(Object.assign({}, {'X-User-Auth': state.auth.token})),
+        mode: 'cors'
+    }
+}
+
 //
 // export function createCPU(size) {
 //     return {type: types.CREATE_CPU, size}
@@ -57,15 +62,18 @@ export function loadToken() {
 //     return {type: types.DELETE_CPU, id}
 // }
 //
-// export function selectCPU(id) {
-//     return (dispatch) => {
-//         dispatch({type: types.SELECT_CPU, id});
-//         dispatch(fetchSelectedCPU())
-//     }
-// }
-//
+export function selectRoom(id) {
+    return (dispatch) => {
+        dispatch({type: types.SELECT_ROOM, id: id});
+        dispatch(loadSelectedRoom())
+    }
+}
+
 export function changeServiceURL(serviceURL) {
-    return {type: types.CHANGE_URL, newUrl: serviceURL}
+    return (dispatch) => {
+        dispatch({type: types.CHANGE_URL, newUrl: serviceURL});
+        dispatch(loadToken());
+    }
 }
 
 
@@ -106,24 +114,19 @@ export function saveUserToken(json) {
     }
 }
 
-// export function refreshCPUList(json) {
-//     return {
-//         type: types.REFRESH_CPU_LIST, data: json
-//     }
-// }
-//
-// export function fetchSelectedCPU() {
-//     return (dispatch, getState) => {
-//         let state = getState();
-//         if (state.serverState.selected != null) {
-//             return fetch(state.serviceUrl + '/cpu/' + state.serverState.selected, userLogin)
-//                 .then(response => response.json())
-//                 .then(data => dispatch(handleCPUData(data)))
-//         } else {
-//             dispatch(handleCPUData({}))
-//         }
-//     }
-// }
+export function refreshRoomsList(json) {
+    return {
+        type: types.REFRESH_ROOMS_LIST, data: json
+    }
+}
+
+export function loadSelectedRoom() {
+    return (dispatch, getState) => {
+        let state = getState();
+        console.log("Loading room", state.rooms.selected)
+    }
+}
+
 //
 // export function executeCreateCPU(newCpuSize, isFull = undefined) {
 //     return (dispatch, getState) => {
@@ -143,13 +146,18 @@ export function saveUserToken(json) {
 //     }
 // }
 //
-// export function fetchCPUsFromServer() {
-//     return (dispatch, getState) => {
-//         return fetch(getState().serviceUrl + '/cpu', userLogin).then(response => response.json())
-//             .then(json => dispatch(refreshCPUList(json)))
-//             .then(() => dispatch(fetchSelectedCPU()));
-//     }
-// }
+export function fetchRoomsFromServer() {
+    return (dispatch, getState) => {
+        if(!getState().auth.needsLogin) {
+            return fetch(getState().auth.url + ':8001/rooms', userHeader(getState()))
+                .then(response => response.json())
+                .then(json => dispatch(refreshRoomsList(json)))
+                .then(() => dispatch(loadSelectedRoom()));
+        } else {
+            console.log("not fetching, login is disabled")
+        }
+    }
+}
 //
 // export function addGateToAlgo(gate, cpuId, qbit, position) {
 //     return (dispatch) => {
@@ -228,7 +236,7 @@ export function saveUserToken(json) {
 //                 'X-User-Id': getUserCookie()
 //             },
 //             mode: 'cors'
-//         }).then(() => dispatch(selectCPU(null)))
+//         }).then(() => dispatch(selectRoom(null)))
 //             .then(() => dispatch(fetchCPUsFromServer()));
 //
 //     }

@@ -3,7 +3,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../actions";
 import Algorithm from "../components/algorithm/Algorithm";
-import ControlPanel from "./ControlPanel"
+import ControlPanel from "../containers/ControlPanel"
 
 class CPUState extends Component {
 

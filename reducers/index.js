@@ -25,19 +25,35 @@ function getEnv(url) {
 function auth(state = {needsLogin: false, url: serverUrl, env: getEnv(serverUrl)}, action) {
     switch (action.type) {
         case types.CHANGE_URL:
-            var newEnv = getEnv(action.newUrl);
-            var newToken = localStorage.getItem('token-' + newEnv);
-            return {url: action.newUrl, needsLogin: newToken == null, token: newToken, env: newEnv};
+            return {url: action.newUrl, env: getEnv(action.newUrl)};
         case types.LOAD_TOKEN:
             var token = localStorage.getItem('token-' + state.env);
             if (token != null) {
                 return merge(state, {token: token, needsLogin: false})
             } else {
-                return merge(state, {needsLogin: true})
+                return merge(state, {needsLogin: true, token: null})
             }
         case types.SAVE_TOKEN:
             localStorage.setItem('token-' + state.env, action.data.token);
             return merge(state, {token: action.data.token, needsLogin: false});
+        default:
+            return state
+    }
+}
+
+function rooms(state = {available: [], selected: null}, action) {
+    switch (action.type) {
+        case types.REFRESH_ROOMS_LIST:
+            if (action.data.rooms.length !== 'undefined' && action.data.rooms.length > 0) {
+                return {
+                    available: action.data.rooms,
+                    selected: state.selected || action.data.rooms[0].id
+                }
+            } else {
+                return {available: [], selected: null}
+            }
+        case types.SELECT_ROOM:
+            return merge(state, {selected: action.id});
         default:
             return state
     }
@@ -277,9 +293,7 @@ function auth(state = {needsLogin: false, url: serverUrl, env: getEnv(serverUrl)
 //
 const rootReducer = combineReducers({
     auth,
-    // algorithms,
-    // cpuState,
-    // execution
+    rooms,
 });
 
 export default rootReducer
