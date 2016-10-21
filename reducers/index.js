@@ -1,15 +1,13 @@
 import {combineReducers} from "redux";
 import * as types from "../constants/ActionTypes";
 // import {DefaultAlgoSize} from "../constants/defaults";
+import {merge} from "../commons/index"
 
 export var serverUrl = "http://dev-root-betblocks-01.gp-cloud.com";
 if (window.location.href.startsWith("http://localhost")) {
     serverUrl = "http://192.168.33.6"
 }
 
-function merge(b, c) {
-    return Object.assign({}, b, c)
-}
 function getEnv(url) {
     switch (url) {
         case 'http://dev-root-betblocks-01.gp-cloud.com':
@@ -41,14 +39,15 @@ function auth(state = {needsLogin: false, url: serverUrl, env: getEnv(serverUrl)
     }
 }
 
-function rooms(state = {available: [], selected: null}, action) {
+function rooms(state = {available: [], selected: null, history: []}, action) {
     switch (action.type) {
         case types.REFRESH_ROOMS_LIST:
-            if (action.data.rooms.length !== 'undefined' && action.data.rooms.length > 0) {
+            if (action.data.rooms.length != 'undefined' && action.data.rooms.length > 0) {
                 return {
                     available: action.data.rooms,
                     selected: state.selected || action.data.rooms[0].id,
                     selectedRoom: action.data.rooms[0],
+                    history: [],
                 }
             } else {
                 return {available: [], selected: null}
@@ -56,8 +55,20 @@ function rooms(state = {available: [], selected: null}, action) {
         case types.SELECT_ROOM:
             return merge(state, {
                 selected: action.id,
-                selectedRoom: state.available.find(x => x.id == action.id)
+                selectedRoom: state.available.find(x => x.id == action.id),
+                history: []
             });
+        case types.UPDATE_ROOM_HISTORY:
+            if (action.roomId != state.selected) {
+                console.log("History of not selected room!, ignoring");
+                return state;
+            } else {
+                let all = state.history.concat(action.messages);
+                let result = all.sort((x, y) => {
+                    return new Date(y.date) - new Date(x.date)
+                }).slice(0, 30).reverse();
+                return merge(state, {history: result})
+            }
         default:
             return state
     }

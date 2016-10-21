@@ -1,11 +1,6 @@
 import * as types from "../constants/ActionTypes";
 import fetch from "isomorphic-fetch";
-// import {
-// gatesAtPosition,
-// findNormalGatesHere,
-// checkIfIsControlledStep,
-// findControlledGatesHere
-// } from "../reducers/index";
+import {merge} from "../commons/index"
 
 export function disconnected() {
     console.log("SOCKETIO disconnected")
@@ -28,15 +23,17 @@ export function connect(url, token) {
 }
 export function messageReceived(data) {
     return {
-        type: types.SEND_MESSAGE,
-        data: data
+        type: types.UPDATE_ROOM_HISTORY,
+        roomId: data.roomId,
+        messages: [data]
     }
 }
 
 export function loadToken() {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch({type: types.LOAD_TOKEN});
         dispatch(fetchRoomsFromServer());
+        dispatch(connect(getState().auth.url, getState().auth.token))
     }
 }
 
@@ -71,12 +68,11 @@ export function loadToken() {
 //     return userId;
 // }
 //
-function userHeader(state) {
-    return {
-        // headers: {'X-User-Auth': state.auth.token},
-        headers: new Headers(Object.assign({}, {'X-User-Auth': state.auth.token})),
+function bbOpts(state, oth) {
+    return merge({
+        headers: {'X-User-Auth': state.auth.token},
         mode: 'cors'
-    }
+    }, oth || {})
 }
 
 export function selectRoom(id) {
@@ -141,12 +137,20 @@ export function sendMessage(roomId, message) {
         type: types.SEND_MESSAGE, roomId: roomId, msg: message
     }
 }
+export function handleRoomHistory(history) {
+    return {
+        type: types.UPDATE_ROOM_HISTORY, roomId: history.roomId, messages: history.messages
+    }
+}
 
 export function loadSelectedRoom() {
     return (dispatch, getState) => {
-        dispatch(connect(getState().auth.url, getState().auth.token))
+        return fetch(getState().auth.url + ':8001/rooms/' + getState().rooms.selected + "/history?limit=30&olderThan=" + new Date().toISOString(), bbOpts(getState()))
+            .then(response => response.json())
+            .then(json => dispatch(handleRoomHistory(json)));
     }
 }
+
 
 //
 // export function executeCreateCPU(newCpuSize, isFull = undefined) {
@@ -170,7 +174,7 @@ export function loadSelectedRoom() {
 export function fetchRoomsFromServer() {
     return (dispatch, getState) => {
         if (!getState().auth.needsLogin) {
-            return fetch(getState().auth.url + ':8001/rooms', userHeader(getState()))
+            return fetch(getState().auth.url + ':8001/rooms', bbOpts(getState()))
                 .then(response => response.json())
                 .then(json => dispatch(refreshRoomsList(json)))
                 .then(() => dispatch(loadSelectedRoom()));

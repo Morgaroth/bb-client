@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../actions";
+import MessageView from "../components/MessageView";
 
 class RoomView extends Component {
 
@@ -27,12 +28,20 @@ class RoomView extends Component {
     };
 
     render() {
-        const {actions, room} = this.props;
-        var messages = [];
+        const {actions, room, history} = this.props;
+        var messages = <a>NoMessages, wait...</a>;
+        if (history.length > 0) {
+            messages = [];
+            for (let msg of history) {
+                messages.push(<MessageView id="mw-{msg.id}" message={msg}/>)
+            }
+        }
         return (<div>
-            <a>Room <b>{room.details.name}</b></a>
+            <a>Room <b>{room.details.name}</b></a><br/>
             {messages}
-            <input id="room.view.input" type="string" placeholder="Write message" onKeyUp={this.handleEnter.bind(this)}/>
+            <br/>
+            <input id="room.view.input" type="string" placeholder="Write message"
+                   onKeyUp={this.handleEnter.bind(this)}/>
             <button onClick={this.sendMessage.bind(this)}>Send!</button>
         </div>)
     }
@@ -41,7 +50,8 @@ class RoomView extends Component {
 RoomView.propTypes = {
     actions: PropTypes.object.isRequired,
     room: PropTypes.object.isRequired,
-    url: PropTypes.string.isRequired
+    url: PropTypes.string.isRequired,
+    history: PropTypes.array,
 };
 
 
@@ -49,6 +59,7 @@ function mapStateToProps(state) {
     return {
         url: state.auth.url,
         room: state.rooms.selectedRoom,
+        history: state.rooms.history,
     };
 }
 

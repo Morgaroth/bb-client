@@ -6,16 +6,17 @@ import ServiceUrl from "../components/ServiceUrl";
 import * as Actions from "../actions";
 
 class App extends Component {
+
     render() {
         const {serviceUrl, actions, state} = this.props;
+        // var stateTag = (<div><hr/><p>Here is entire app state:</p> <pre>{JSON.stringify(state, null, 3)}</pre></div>);
+        var stateTag = undefined;
         return (
             <div>
                 <ServiceUrl serviceUrl={serviceUrl} onChange={actions.changeServiceURL}/>
                 <hr/>
                 <BetBlocksClient />
-                <hr/>
-                <p>Here is entire app state:</p>
-                <pre>{JSON.stringify(state, null, 3)}</pre>
+                {stateTag}
             </div>
         )
     }
