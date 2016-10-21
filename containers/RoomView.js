@@ -33,11 +33,17 @@ class RoomView extends Component {
         if (history.length > 0) {
             messages = [];
             for (let msg of history) {
-                messages.push(<MessageView id="mw-{msg.id}" message={msg}/>)
+                messages.push(
+                    <MessageView
+                        id="mw-{msg.id}"
+                        message={msg}
+                        loadInfoPage={(a, b) => actions.loadInfoPage(a, b)}/>
+                )
             }
         }
         return (<div className={this.props.cls}>
-            <div>Room <b>{room.details.name}</b></div><br/>
+            <div>Room <b>{room.details.name}</b></div>
+            <br/>
             {messages}
             <br/>
             <input id="room.view.input" type="string" placeholder="Write message"

@@ -76,6 +76,16 @@ function rooms(state = {available: [], selected: null, history: []}, action) {
     }
 }
 
+function infoPage(state = {type: null, data: null}, action) {
+    switch (action.type) {
+        case types.INFO_PAGE:
+            return {type: action.page, data: action.data};
+        default:
+            return state
+    }
+}
+
+
 // function serverState(state = {available: [], selected: null}, action) {
 //     switch (action.type) {
 //         case types.SELECT_CPU:
@@ -308,9 +318,6 @@ function rooms(state = {available: [], selected: null, history: []}, action) {
 //     }
 // }
 //
-const rootReducer = combineReducers({
-    auth,
-    rooms,
-});
+const rootReducer = combineReducers({auth, rooms, infoPage,});
 
 export default rootReducer

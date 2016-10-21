@@ -5,13 +5,13 @@ import RawToken from "./tokens/RawToken"
 
 class MessageView extends React.Component {
     render() {
-        const {message} = this.props;
+        const {message, loadInfoPage} = this.props;
         var tokens = [];
         if (message.elements.length == 0) {
             tokens.push(<RawToken text={message.rawText}/>)
         } else {
             for (let token of message.elements) {
-                tokens.push(msgToToken(token));
+                tokens.push(msgToToken(token, message, loadInfoPage));
                 tokens.push(<a> </a>);
             }
         }
@@ -26,6 +26,7 @@ class MessageView extends React.Component {
 }
 
 MessageView.propTypes = {
-    message: PropTypes.object.isRequired
+    message: PropTypes.object.isRequired,
+    loadInfoPage: PropTypes.func.isRequired,
 };
 export default MessageView;

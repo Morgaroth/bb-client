@@ -37,6 +37,35 @@ export function loadToken() {
     }
 }
 
+export function fetchInfoPage(type, playerName) {
+    console.log('loading', type, 'info page', playerName);
+    return (dispatch, getState) => {
+        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/' + type + '/' + playerName)
+            .then(response => dispatch({type: types.INFO_PAGE, page: type, data: response.json()}));
+    }
+}
+
+export function fetchBetInfoPage(betId) {
+    console.log('loading bet info page', betId);
+    return (dispatch, getState) => {
+        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/bet/?betId=' + betId)
+            .then(response => dispatch({type: types.INFO_PAGE, page: 'bet', data: response.json()}));
+    }
+}
+
+export function loadInfoPage(type, info) {
+    switch (type) {
+        case 'player':
+        case 'team':
+            return fetchInfoPage(type, info);
+        case 'bet':
+            return fetchBetInfoPage(info);
+        default:
+            console.log('unknown info page type', type)
+
+    }
+}
+
 // function getCookie(cname) {
 //     var name = cname + "=";
 //     var ca = document.cookie.split(';');
@@ -81,6 +110,7 @@ export function selectRoom(id) {
         dispatch(loadSelectedRoom())
     }
 }
+
 
 export function changeServiceURL(serviceURL) {
     return (dispatch) => {
@@ -132,11 +162,13 @@ export function refreshRoomsList(json) {
         type: types.REFRESH_ROOMS_LIST, data: json
     }
 }
+
 export function sendMessage(roomId, message) {
     return {
         type: types.SEND_MESSAGE, roomId: roomId, msg: message
     }
 }
+
 export function handleRoomHistory(history) {
     return {
         type: types.UPDATE_ROOM_HISTORY, roomId: history.roomId, messages: history.messages

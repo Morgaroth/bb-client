@@ -12,5 +12,6 @@ class MarketToken extends React.Component {
 MarketToken.propTypes = {
     text: PropTypes.string.isRequired,
     prop: PropTypes.object.isRequired,
+    load: PropTypes.func.isRequired,
 };
 export default MarketToken;

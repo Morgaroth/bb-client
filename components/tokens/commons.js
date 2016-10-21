@@ -6,25 +6,25 @@ import MarketToken from "./MarketToken";
 import DateToken from "./DateToken";
 import ConnectorToken from "./ConnectorToken";
 
-export function msgToToken(msg) {
-    if (msg.qualifiedProps.length == 0) {
-        return <RawToken text={msg.text}/>
+export function msgToToken(token, message, loadAction) {
+    if (token.qualifiedProps.length == 0) {
+        return <RawToken text={token.text}/>
     } else {
-        let qp = msg.qualifiedProps.sort((x, y) => y.ratio - x.ratio)[0];
+        let qp = token.qualifiedProps.sort((x, y) => y.ratio - x.ratio)[0];
         switch (qp.type) {
             case "team":
-                return <TeamToken text={msg.text} prop={qp}/>;
+                return <TeamToken text={token.text} prop={qp} load={loadAction}/>;
             case "player":
-                return <PlayerToken text={msg.text} prop={qp}/>;
+                return <PlayerToken text={token.text} prop={qp} load={loadAction}/>;
             case "result":
-                return <MarketToken text={msg.text} prop={qp}/>;
+                return <MarketToken text={token.text} prop={qp} load={loadAction}/>;
             case "date":
-                return <DateToken text={msg.text} prop={qp}/>;
+                return <DateToken text={token.text} prop={qp} load={loadAction}/>;
             case "and":
-                return <ConnectorToken text={msg.text} prop={qp}/>;
+                return <ConnectorToken text={token.text} prop={qp}/>;
             default:
-                console.log('undefined qualified token', qp, msg.text);
-                return <RawToken text={msg.text}/>
+                console.log('undefined qualified token', qp, token.text);
+                return <RawToken text={token.text}/>
         }
     }
 }
