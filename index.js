@@ -11,6 +11,16 @@ const store = configureStore();
 // place for initialize application
 store.dispatch(actions.loadToken());
 
+String.prototype.htmlEscaped = function() {
+    var tagsToReplace = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+    };
+    return this.replace(/[&<>]/g, function(tag) {
+        return tagsToReplace[tag] || tag;
+    });
+};
 render(
     <Provider store={store}>
         <App />

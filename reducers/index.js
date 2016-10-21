@@ -3,6 +3,8 @@ import * as types from "../constants/ActionTypes";
 // import {DefaultAlgoSize} from "../constants/defaults";
 import {merge} from "../commons/index"
 
+const MESSAGES_COUNT = 20;
+
 export var serverUrl = "http://dev-root-betblocks-01.gp-cloud.com";
 if (window.location.href.startsWith("http://localhost")) {
     serverUrl = "http://192.168.33.6"
@@ -66,7 +68,7 @@ function rooms(state = {available: [], selected: null, history: []}, action) {
                 let all = state.history.concat(action.messages);
                 let result = all.sort((x, y) => {
                     return new Date(y.date) - new Date(x.date)
-                }).slice(0, 30).reverse();
+                }).slice(0, MESSAGES_COUNT).reverse();
                 return merge(state, {history: result})
             }
         default:

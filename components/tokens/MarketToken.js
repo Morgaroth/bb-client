@@ -3,9 +3,8 @@ import React, {Component, PropTypes} from "react";
 class MarketToken extends React.Component {
     render() {
         const {text, prop} = this.props;
-        return (
-           <a style={{color: 'white', backgroundColor: '#111'}} >{text}</a>
-        )
+        let title = "Market: " + prop.name + " (" + prop.ratio + ")";
+        return <div className="label label-primary" title={title}>{text}</div>
     }
 }
 

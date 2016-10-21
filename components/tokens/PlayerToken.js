@@ -3,9 +3,8 @@ import React, {Component, PropTypes} from "react";
 class PlayerToken extends React.Component {
     render() {
         const {text, prop} = this.props;
-        return (
-           <a style={{backgroundColor: '#aaa'}} >{text}</a>
-        )
+        let title = "Player: " + prop.name + " (" + prop.ratio + ")";
+        return <div className="label label-info" title={title}>{text}</div>
     }
 }
 

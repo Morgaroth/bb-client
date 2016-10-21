@@ -3,8 +3,9 @@ import React, {Component, PropTypes} from "react";
 class TeamToken extends React.Component {
     render() {
         const {text, prop} = this.props;
+        let title = "Team: " + prop.name + " (" + prop.ratio + ")";
         return (
-            <a class="label label-primary">{text}</a>
+            <div className="label label-success" title={title}>{text}</div>
         )
     }
 }

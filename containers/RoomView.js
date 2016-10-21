@@ -37,7 +37,7 @@ class RoomView extends Component {
             }
         }
         return (<div className={this.props.cls}>
-            <a>Room <b>{room.details.name}</b></a><br/>
+            <div>Room <b>{room.details.name}</b></div><br/>
             {messages}
             <br/>
             <input id="room.view.input" type="string" placeholder="Write message"
@@ -54,7 +54,6 @@ RoomView.propTypes = {
     history: PropTypes.array,
     cls: PropTypes.string,
 };
-
 
 function mapStateToProps(state) {
     return {

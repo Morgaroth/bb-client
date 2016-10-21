@@ -9,7 +9,7 @@ class App extends Component {
 
     render() {
         const {serviceUrl, actions, state} = this.props;
-        var stateTag = (<div><hr/><p>Here is entire app state:</p> <pre>{JSON.stringify(state, null, 3)}</pre></div>);
+        var stateTag = (<div className="col-md-12"><hr/><p>Here is entire app state:</p> <pre>{JSON.stringify(state, null, 3)}</pre></div>);
         // var stateTag = undefined;
         return (
             <div className='col-md-12'>
