@@ -4,16 +4,21 @@ import {connect} from "react-redux";
 import LoginPanel from "../components/LoginPanel"
 import * as Actions from "../actions";
 import RoomsList from "./RoomsList"
+import RoomView from "./RoomView"
 
 class BetBlocksClient extends Component {
 
     render() {
-        const {actions, needsLogin, serviceUrl} = this.props;
+        const {actions, needsLogin, serviceUrl, roomInfo} = this.props;
         if (needsLogin) {
-            return <LoginPanel serviceUrl={serviceUrl} onChange={(phone) => {actions.tryLogin(phone)}}/>
+            return <LoginPanel serviceUrl={serviceUrl} onChange={(phone) => actions.tryLogin(phone)}/>
+        } else if (roomInfo.selected != null) {
+            return <div>
+                <RoomsList/>
+                <RoomView/>
+            </div>;
         } else {
-            return <RoomsList/>;
-            // return <a>Test</a>
+            return <a>Waiting for rooms list...</a>
         }
     }
 }
@@ -21,14 +26,16 @@ class BetBlocksClient extends Component {
 BetBlocksClient.propTypes = {
     actions: PropTypes.object,
     needsLogin: PropTypes.bool,
-    serviceUrl: PropTypes.string
+    serviceUrl: PropTypes.string,
+    roomInfo: PropTypes.object,
 };
 
 
 function mapStateToProps(state) {
     return {
         serviceUrl: state.auth.url,
-        needsLogin: state.auth.needsLogin
+        needsLogin: state.auth.needsLogin,
+        roomInfo: state.rooms
     };
 }
 

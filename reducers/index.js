@@ -47,13 +47,17 @@ function rooms(state = {available: [], selected: null}, action) {
             if (action.data.rooms.length !== 'undefined' && action.data.rooms.length > 0) {
                 return {
                     available: action.data.rooms,
-                    selected: state.selected || action.data.rooms[0].id
+                    selected: state.selected || action.data.rooms[0].id,
+                    selectedRoom: action.data.rooms[0],
                 }
             } else {
                 return {available: [], selected: null}
             }
         case types.SELECT_ROOM:
-            return merge(state, {selected: action.id});
+            return merge(state, {
+                selected: action.id,
+                selectedRoom: state.available.find(x => x.id == action.id)
+            });
         default:
             return state
     }

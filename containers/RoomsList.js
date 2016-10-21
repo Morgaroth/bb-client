@@ -7,11 +7,9 @@ import List from "react-list-select";
 class RoomsList extends Component {
 
     render() {
-        const {actions, selected, available} = this.props;
-        var header = <h3>Selected Room: {selected}</h3>;
-        var list = (<List items={available.map((x) => {
-            return x.details.name+", "+x.details.type
-        })}
+        const {actions, selectedRoom, selected, available} = this.props;
+        var header = <h3>Selected Room: {selectedRoom.details.name}</h3>;
+        var list = (<List items={available.map((x) => {return x.details.name+", "+x.details.type})}
                           selected={available.map((x) => x.id).indexOf(selected)}
                           multiple={false}
                           onChange={(selected) => {
@@ -23,14 +21,12 @@ class RoomsList extends Component {
         //     btn = <button onClick={() => actions.deleteSelectedCPU()}>Delete selected CPU</button>
         // }
         //
-        // <input id="new.room.name" type="test" defaultValue={this.state.size} onChange={updateCPUSize}/>
-        // <button onClick={() => actions.executeCreateCPU(this.state.size)}>Create new CPU with {this.state.size}qbit
-        // register
-        // </button>
+        // <input id="new.room.name" type="test" defaultValue={this.state.roomName} onChange={updateCPUSize}/>
+        // <button onClick={() => actions.executeCreateCPU(this.state.size)}>Create room</button>
         // <br/>
 
         return (<div>
-            <button onClick={() => actions.fetchRoomsFromServer()}>Refresh</button>
+            <button onClick={()=>actions.fetchRoomsFromServer()}>Refresh</button>
             <br/>
             {header}
             {btn}
@@ -40,17 +36,18 @@ class RoomsList extends Component {
 }
 
 RoomsList.propTypes = {
-    actions: PropTypes.object,
-    available: PropTypes.array,
-    selected: PropTypes.string
+    actions: PropTypes.object.isRequired,
+    available: PropTypes.array.isRequired,
+    selected: PropTypes.string.isRequired,
+    selectedRoom: PropTypes.object.isRequired
 };
 
 
 function mapStateToProps(state) {
     return {
-        state: state,
         available: state.rooms.available,
-        selected: state.rooms.selected
+        selected: state.rooms.selected,
+        selectedRoom: state.rooms.selectedRoom,
     };
 }
 

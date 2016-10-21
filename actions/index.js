@@ -7,6 +7,32 @@ import fetch from "isomorphic-fetch";
 // findControlledGatesHere
 // } from "../reducers/index";
 
+export function disconnected() {
+    console.log("SOCKETIO disconnected")
+}
+
+export function connected() {
+    console.log("SOCKETIO connected")
+}
+
+export function connecting() {
+    console.log("SOCKETIO connecting")
+}
+
+export function connect(url, token) {
+    return {
+        type: types.SOCKET_CONNECT,
+        url: url + ":8000",
+        token: token
+    }
+}
+export function messageReceived(data) {
+    return {
+        type: types.SEND_MESSAGE,
+        data: data
+    }
+}
+
 export function loadToken() {
     return (dispatch) => {
         dispatch({type: types.LOAD_TOKEN});
@@ -53,15 +79,6 @@ function userHeader(state) {
     }
 }
 
-//
-// export function createCPU(size) {
-//     return {type: types.CREATE_CPU, size}
-// }
-//
-// export function deleteCPU(id) {
-//     return {type: types.DELETE_CPU, id}
-// }
-//
 export function selectRoom(id) {
     return (dispatch) => {
         dispatch({type: types.SELECT_ROOM, id: id});
@@ -119,11 +136,15 @@ export function refreshRoomsList(json) {
         type: types.REFRESH_ROOMS_LIST, data: json
     }
 }
+export function sendMessage(roomId, message) {
+    return {
+        type: types.SEND_MESSAGE, roomId: roomId, msg: message
+    }
+}
 
 export function loadSelectedRoom() {
     return (dispatch, getState) => {
-        let state = getState();
-        console.log("Loading room", state.rooms.selected)
+        dispatch(connect(getState().auth.url, getState().auth.token))
     }
 }
 
@@ -148,7 +169,7 @@ export function loadSelectedRoom() {
 //
 export function fetchRoomsFromServer() {
     return (dispatch, getState) => {
-        if(!getState().auth.needsLogin) {
+        if (!getState().auth.needsLogin) {
             return fetch(getState().auth.url + ':8001/rooms', userHeader(getState()))
                 .then(response => response.json())
                 .then(json => dispatch(refreshRoomsList(json)))
@@ -158,15 +179,7 @@ export function fetchRoomsFromServer() {
         }
     }
 }
-//
-// export function addGateToAlgo(gate, cpuId, qbit, position) {
-//     return (dispatch) => {
-//         if (typeof gate == 'string') gate = {type: gate};
-//         dispatch({type: types.ADD_GATE_TO_ALG, gate: gate, cpuId: cpuId, qbit: qbit, position: position});
-//         dispatch(ensureIsMore(cpuId, position))
-//     }
-// }
-//
+
 // function doMove(delta, deltaPos) {
 //     return (cpuId) => {
 //         return (dispatch, getState) => {
@@ -204,30 +217,7 @@ export function fetchRoomsFromServer() {
 //         }
 //     }
 // };
-// export function moveNext(cpuId) {
-//     return doMove(1, 0)(cpuId);
-// }
-//
-// export function movePrev(cpuId) {
-//     return doMove(-1, -1)(cpuId);
-// }
-//
-// export function reset(cpuId) {
-//     console.log("disabled teporarily");
-// return {type: 'NOTYPE'}
-// }
-//
-// export function addAlgoSize(cpuId) {
-//     return {type: types.MODIFY_ALGORITHM_LENGTH, cpuId: cpuId, delta: 1}
-// }
-//
-// export function subAlgoSize(cpuId) {
-//     return {type: types.MODIFY_ALGORITHM_LENGTH, cpuId: cpuId, delta: -1}
-// }
-// export function ensureIsMore(cpuId, than) {
-//     return {type: types.ENSURE_ALGORITHM_LENGTH, cpuId: cpuId, than: than}
-// }
-//
+
 // export function deleteSelectedCPU() {
 //     return (dispatch, getState) => {
 //         return fetch(getState().serviceUrl + '/cpu/' + getState().serverState.selected, {
