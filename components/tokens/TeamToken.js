@@ -4,7 +4,7 @@ class TeamToken extends React.Component {
     render() {
         const {text, prop} = this.props;
         return (
-            <a style={{backgroundColor: '#ccc'}}>{text}</a>
+            <a class="label label-primary">{text}</a>
         )
     }
 }

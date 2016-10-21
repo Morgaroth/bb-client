@@ -36,7 +36,7 @@ class RoomView extends Component {
                 messages.push(<MessageView id="mw-{msg.id}" message={msg}/>)
             }
         }
-        return (<div>
+        return (<div className={this.props.cls}>
             <a>Room <b>{room.details.name}</b></a><br/>
             {messages}
             <br/>
@@ -52,6 +52,7 @@ RoomView.propTypes = {
     room: PropTypes.object.isRequired,
     url: PropTypes.string.isRequired,
     history: PropTypes.array,
+    cls: PropTypes.string,
 };
 
 

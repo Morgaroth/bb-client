@@ -14,8 +14,8 @@ class BetBlocksClient extends Component {
             return <LoginPanel serviceUrl={serviceUrl} onChange={(phone) => actions.tryLogin(phone)}/>
         } else if (roomInfo.selected != null) {
             return <div>
-                <RoomsList/>
-                <RoomView/>
+                <RoomsList cls='col-md-4'/>
+                <RoomView cls='col-md-8'/>
             </div>;
         } else {
             return <a>Waiting for rooms list...</a>

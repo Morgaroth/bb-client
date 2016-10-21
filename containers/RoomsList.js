@@ -25,7 +25,7 @@ class RoomsList extends Component {
         // <button onClick={() => actions.executeCreateCPU(this.state.size)}>Create room</button>
         // <br/>
 
-        return (<div>
+        return (<div className={this.props.cls}>
             <button onClick={()=>actions.fetchRoomsFromServer()}>Refresh</button>
             <br/>
             {header}
@@ -39,7 +39,8 @@ RoomsList.propTypes = {
     actions: PropTypes.object.isRequired,
     available: PropTypes.array.isRequired,
     selected: PropTypes.string.isRequired,
-    selectedRoom: PropTypes.object.isRequired
+    selectedRoom: PropTypes.object.isRequired,
+    cls: PropTypes.string,
 };
 
 

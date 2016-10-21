@@ -15,6 +15,9 @@ app.use('/scripts', express.static(__dirname + '/node_modules/react-widgets/dist
 app.get("/", function (req, res) {
     res.sendFile(__dirname + '/index.html')
 });
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 
 app.listen(port, function (error) {
     if (error) {

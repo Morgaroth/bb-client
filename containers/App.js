@@ -12,7 +12,7 @@ class App extends Component {
         var stateTag = (<div><hr/><p>Here is entire app state:</p> <pre>{JSON.stringify(state, null, 3)}</pre></div>);
         // var stateTag = undefined;
         return (
-            <div>
+            <div className='col-md-12'>
                 <ServiceUrl serviceUrl={serviceUrl} onChange={actions.changeServiceURL}/>
                 <hr/>
                 <BetBlocksClient />
