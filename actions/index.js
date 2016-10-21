@@ -54,6 +54,7 @@ export function fetchBetInfoPage(betId) {
 }
 
 export function loadInfoPage(type, info) {
+    console.log('loadInfoPage', type, info);
     switch (type) {
         case 'player':
         case 'team':
@@ -61,7 +62,8 @@ export function loadInfoPage(type, info) {
         case 'bet':
             return fetchBetInfoPage(info);
         default:
-            console.log('unknown info page type', type)
+            console.log('unknown info page type', type);
+            return {type: 'ignoring'};
 
     }
 }

@@ -4,11 +4,12 @@ class DateToken extends React.Component {
     render() {
         const {text, prop, load} = this.props;
         let title = "Date: " + prop.name;
+        console.log('render',text,prop,load);
         return (
             <button
                 className="label label-danger"
                 title={title}
-                onClick={load('date', prop)}
+                onClick={() => load('date', prop)}
             >{text}</button>
         )
     }

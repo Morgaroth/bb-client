@@ -7,7 +7,7 @@ class PlayerToken extends React.Component {
         return <div
             className="label label-info"
             title={title}
-            onClick={load('player', prop.name)}
+            onClick={() => load('player', prop.name)}
         >{text}</div>
     }
 }

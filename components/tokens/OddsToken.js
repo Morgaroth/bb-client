@@ -7,7 +7,7 @@ class OddsToken extends React.Component {
         return <div
             className="label"
             title={title}
-            onClick={load('bet', prop)}
+            onClick={() => load('bet', prop)}
         >{text}</div>
     }
 }
