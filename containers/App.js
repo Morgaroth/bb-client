@@ -9,8 +9,8 @@ class App extends Component {
 
     render() {
         const {serviceUrl, actions, state} = this.props;
-        // var stateTag = (<div><hr/><p>Here is entire app state:</p> <pre>{JSON.stringify(state, null, 3)}</pre></div>);
-        var stateTag = undefined;
+        var stateTag = (<div><hr/><p>Here is entire app state:</p> <pre>{JSON.stringify(state, null, 3)}</pre></div>);
+        // var stateTag = undefined;
         return (
             <div>
                 <ServiceUrl serviceUrl={serviceUrl} onChange={actions.changeServiceURL}/>
