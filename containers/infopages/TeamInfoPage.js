@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../../actions";
+import TeamToken from "../tokens/TeamToken";
 
 class TeamInfoPage extends Component {
 
@@ -18,14 +19,18 @@ class TeamInfoPage extends Component {
         return elements;
     }
 
-    render() {
+    renderValid() {
         const {actions, name, data} = this.props;
+        if (data.results == undefined) {
+            data.results = {results: []}
+        }
         let results = TeamInfoPage.mapElements("No last results...", data.results.results, r =>
-            <div>{r.team1} {r.result1} -- {r.result2} {r.team2}</div>);
+            <div><TeamToken prop={{name: r.team1}} text={r.team1}/> {r.result1} -- {r.result2} <TeamToken prop={{name: r.team2}} text={r.team2}/></div>);
         let nextEvents = TeamInfoPage.mapElements("No next event...", [data.nextEvent], r =>
             <div>{r.startTime}: {r.name}</div>);
-        let bets = TeamInfoPage.mapElements("No bets for next event...", data.betsForNextEvent, r =>
-            <div>{r.marketName}</div>);
+        let bets = TeamInfoPage.mapElements("No bets for next event...", data.betsForNextEvent,
+            r =><div>{r.marketName} {r.name}: {r.bestOddsFractional}</div>
+        );
         return (<div className={this.props.cls}>
             <h2><b>{name}</b></h2>
             <br/>
@@ -39,6 +44,18 @@ class TeamInfoPage extends Component {
             <h3>Bets for next event:</h3>
             {bets}
         </div>)
+    }
+
+    renderInvalid() {
+        return <h1>Invalid data, probably not found</h1>
+    }
+
+    render() {
+        const {data} = this.props;
+        if (data.results == undefined && data.nextEvent == undefined && data.upcomingEvents.length == 0) {
+            return this.renderInvalid()
+        }
+        return this.renderValid()
     }
 }
 

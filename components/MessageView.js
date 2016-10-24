@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
-import {msgToToken} from "./tokens/commons"
+import {msgToToken} from "../containers/tokens/commons"
 import dateFormat from 'dateformat'
-import RawToken from "./tokens/RawToken"
+import RawToken from "../containers/tokens/RawToken"
 import {uuid} from "../commons"
 
 class MessageView extends React.Component {
