@@ -1,31 +1,10 @@
 import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import * as Actions from "../actions";
-import MessageView from "../components/MessageView";
+import * as Actions from "../../actions";
+import MessageView from "../../components/MessageView";
 
-class RoomView extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {text: ''};
-    }
-
-    handleEnter(e) {
-        if (e.keyCode === 13) {
-            this.sendMessage();
-        }
-    }
-
-    sendMessage() {
-        var inputtag = document.getElementById("room.view.input");
-        var value = inputtag.value;
-        // TODO add more validation
-        if (value.length > 0) {
-            this.props.actions.sendMessage(this.props.room.id, value);
-            inputtag.value = '';
-        }
-    };
+class TeamInfoPage extends Component {
 
     render() {
         const {actions, room, history} = this.props;
@@ -35,7 +14,7 @@ class RoomView extends Component {
             for (let msg of history) {
                 messages.push(
                     <MessageView
-                        key={"mw-"+msg.messageId}
+                        id="mw-{msg.id}"
                         message={msg}
                         loadInfoPage={(a, b) => actions.loadInfoPage(a, b)}/>
                 )
@@ -53,19 +32,19 @@ class RoomView extends Component {
     }
 }
 
-RoomView.propTypes = {
+TeamInfoPage.propTypes = {
     actions: PropTypes.object.isRequired,
-    room: PropTypes.object.isRequired,
-    url: PropTypes.string.isRequired,
-    history: PropTypes.array,
-    cls: PropTypes.string,
+    data: PropTypes.object.isRequired,
+    // url: PropTypes.string.isRequired,
+    // history: PropTypes.array,
+    // cls: PropTypes.string,
 };
 
 function mapStateToProps(state) {
     return {
-        url: state.auth.url,
-        room: state.rooms.selectedRoom,
-        history: state.rooms.history,
+        // url: state.auth.url,
+        // room: state.rooms.selectedRoom,
+        // history: state.rooms.history,
     };
 }
 
@@ -78,4 +57,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(RoomView)
+)(TeamInfoPage)

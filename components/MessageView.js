@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {msgToToken} from "./tokens/commons"
 import dateFormat from 'dateformat'
 import RawToken from "./tokens/RawToken"
+import {uuid} from "../commons"
 
 class MessageView extends React.Component {
     render() {
@@ -12,7 +13,7 @@ class MessageView extends React.Component {
         } else {
             for (let token of message.elements) {
                 tokens.push(msgToToken(token, message, loadInfoPage));
-                tokens.push(<a> </a>);
+                tokens.push(<a key={uuid()}> </a>);
             }
         }
         let dateFormatted = dateFormat(message.date, 'dddd, dS mmm, yyyy, H:MM:ss');

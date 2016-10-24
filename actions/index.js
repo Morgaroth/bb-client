@@ -40,16 +40,18 @@ export function loadToken() {
 export function fetchInfoPage(type, playerName) {
     console.log('loading', type, 'info page', playerName);
     return (dispatch, getState) => {
-        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/' + type + '/' + playerName)
-            .then(response => dispatch({type: types.INFO_PAGE, page: type, data: response.json()}));
+        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/' + type + '/' + playerName, bbOpts(getState()))
+            .then(response => response.json())
+            .then(json => dispatch({type: types.INFO_PAGE, page: type, data: json}));
     }
 }
 
 export function fetchBetInfoPage(betId) {
     console.log('loading bet info page', betId);
     return (dispatch, getState) => {
-        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/bet/?betId=' + betId)
-            .then(response => dispatch({type: types.INFO_PAGE, page: 'bet', data: response.json()}));
+        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/bet/?betId=' + betId, bbOpts(getState()))
+            .then(response => response.json())
+            .then(json => dispatch({type: types.INFO_PAGE, page: 'bet', data: json}));
     }
 }
 
@@ -58,6 +60,8 @@ export function loadInfoPage(type, info) {
     switch (type) {
         case 'player':
         case 'team':
+            return fetchInfoPage(type, info);
+        case 'date':
             return fetchInfoPage(type, info);
         case 'bet':
             return fetchBetInfoPage(info);

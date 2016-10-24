@@ -4,8 +4,8 @@ import {connect} from "react-redux";
 import LoginPanel from "../components/LoginPanel"
 import * as Actions from "../actions";
 import RoomsList from "./RoomsList"
-import RoomView from "./RoomView"
-import AdditionalView from "./AdditionalView"
+import RoomView from "./RoomView";
+import InfoPage from "./infopages/InfoPage";
 
 class BetBlocksClient extends Component {
 
@@ -17,7 +17,7 @@ class BetBlocksClient extends Component {
             return <div>
                 <RoomsList cls='col-md-2'/>
                 <RoomView cls='col-md-5'/>
-                <AdditionalView cls="col-md-4"/>
+                <InfoPage cls="col-md-4"/>
             </div>;
         } else {
             return <a>Waiting for rooms list...</a>
