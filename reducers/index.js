@@ -2,8 +2,7 @@ import {combineReducers} from "redux";
 import * as types from "../constants/ActionTypes";
 // import {DefaultAlgoSize} from "../constants/defaults";
 import {merge} from "../commons/index"
-
-const MESSAGES_COUNT = 20;
+import {MESSAGES_LIST_SIZE} from "../constants"
 
 export var serverUrl = "http://dev-root-betblocks-01.gp-cloud.com";
 if (window.location.href.startsWith("http://localhost")) {
@@ -68,7 +67,7 @@ function rooms(state = {available: [], selected: null, history: []}, action) {
                 let all = state.history.concat(action.messages);
                 let result = all.sort((x, y) => {
                     return new Date(y.date) - new Date(x.date)
-                }).slice(0, MESSAGES_COUNT).reverse();
+                }).slice(0, MESSAGES_LIST_SIZE).reverse();
                 return merge(state, {history: result})
             }
         default:

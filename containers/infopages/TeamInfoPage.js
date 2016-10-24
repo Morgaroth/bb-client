@@ -20,12 +20,13 @@ class TeamInfoPage extends Component {
     }
 
     renderValid() {
-        const {actions, name, data} = this.props;
+        const {name, data} = this.props;
         if (data.results == undefined) {
             data.results = {results: []}
         }
         let results = TeamInfoPage.mapElements("No last results...", data.results.results, r =>
-            <div><TeamToken prop={{name: r.team1}} text={r.team1}/> {r.result1} -- {r.result2} <TeamToken prop={{name: r.team2}} text={r.team2}/></div>);
+            <div><TeamToken prop={{name: r.team1}} text={r.team1}/> {r.result1} -- {r.result2} <TeamToken
+                prop={{name: r.team2}} text={r.team2}/></div>);
         let nextEvents = TeamInfoPage.mapElements("No next event...", [data.nextEvent], r =>
             <div>{r.startTime}: {r.name}</div>);
         let bets = TeamInfoPage.mapElements("No bets for next event...", data.betsForNextEvent,
@@ -38,7 +39,6 @@ class TeamInfoPage extends Component {
             <br/>
             <h3>Results:</h3>
             {results}
-            <br/>
             <h3>Next events:</h3>
             {nextEvents}
             <h3>Bets for next event:</h3>

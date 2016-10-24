@@ -17,8 +17,6 @@ class InfoPage extends Component {
             //     return <PlayerToken text={token.text} prop={qp} load={loadAction}/>;
             // case "result":
             //     return <MarketToken text={token.text} prop={qp} load={loadAction}/>;
-            // case "date":
-            //     return <DateToken text={token.text} prop={qp} load={loadAction}/>;
             case null:
                 return <div style={{fontSize: 40, alignment: 'center'}} className="label label-danger">Blank Info Page</div>;
             default:

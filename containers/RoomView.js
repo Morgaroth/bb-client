@@ -42,7 +42,7 @@ class RoomView extends Component {
             }
         }
         return (<div className={this.props.cls}>
-            <div>Room <b>{room.details.name}</b></div>
+            <h2>Room <b>{room.details.name}</b></h2>
             <br/>
             {messages}
             <br/>
