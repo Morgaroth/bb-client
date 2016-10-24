@@ -21,9 +21,7 @@ class TeamInfoPage extends Component {
 
     renderValid() {
         const {name, data} = this.props;
-        if (data.results == undefined) {
-            data.results = {results: []}
-        }
+        if (data.results == undefined) data.results = {results: []};
         let results = TeamInfoPage.mapElements("No last results...", data.results.results, r =>
             <div><TeamToken prop={{name: r.team1}} text={r.team1}/> {r.result1} -- {r.result2} <TeamToken
                 prop={{name: r.team2}} text={r.team2}/></div>);
