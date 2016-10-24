@@ -37,12 +37,12 @@ export function loadToken() {
     }
 }
 
-export function fetchInfoPage(type, playerName) {
-    console.log('loading', type, 'info page', playerName);
+export function fetchInfoPage(type, qprop) {
+    console.log('loading', type, 'info page', qprop);
     return (dispatch, getState) => {
-        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/' + type + '/' + playerName, bbOpts(getState()))
+        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/' + type + '/' + qprop.name, bbOpts(getState()))
             .then(response => response.json())
-            .then(json => dispatch({type: types.INFO_PAGE, page: type, data: json}));
+            .then(json => dispatch({type: types.INFO_PAGE, page: type, qprop: qprop, data: json}));
     }
 }
 
@@ -51,7 +51,7 @@ export function fetchBetInfoPage(betId) {
     return (dispatch, getState) => {
         return fetch(getState().auth.url + ':8001/oddschecker/info-pages/bet/?betId=' + betId, bbOpts(getState()))
             .then(response => response.json())
-            .then(json => dispatch({type: types.INFO_PAGE, page: 'bet', data: json}));
+            .then(json => dispatch({type: types.INFO_PAGE, page: 'bet', qprop: betId, data: json}));
     }
 }
 

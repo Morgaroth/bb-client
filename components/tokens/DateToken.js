@@ -9,7 +9,7 @@ class DateToken extends React.Component {
             <button
                 className="label label-danger"
                 title={title}
-                onClick={() => load('date', prop.name)}
+                onClick={() => load('date', prop)}
             >{text}</button>
         )
     }

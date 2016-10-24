@@ -2,32 +2,42 @@ import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../../actions";
-import MessageView from "../../components/MessageView";
 
 class TeamInfoPage extends Component {
 
-    render() {
-        const {actions, room, history} = this.props;
-        var messages = <a>NoMessages, wait...</a>;
-        if (history.length > 0) {
-            messages = [];
-            for (let msg of history) {
-                messages.push(
-                    <MessageView
-                        id="mw-{msg.id}"
-                        message={msg}
-                        loadInfoPage={(a, b) => actions.loadInfoPage(a, b)}/>
+    static mapElements(title, data, creator) {
+        var elements = <div>{title}</div>;
+        if (data.length > 0) {
+            elements = [];
+            for (let msg of data) {
+                elements.push(
+                    creator(msg)
                 )
             }
         }
+        return elements;
+    }
+
+    render() {
+        const {actions, name, data} = this.props;
+        let results = TeamInfoPage.mapElements("No last results...", data.results.results, r =>
+            <div>{r.team1} {r.result1} -- {r.result2} {r.team2}</div>);
+        let nextEvents = TeamInfoPage.mapElements("No next event...", [data.nextEvent], r =>
+            <div>{r.startTime}: {r.name}</div>);
+        let bets = TeamInfoPage.mapElements("No bets for next event...", data.betsForNextEvent, r =>
+            <div>{r.marketName}</div>);
         return (<div className={this.props.cls}>
-            <div>Room <b>{room.details.name}</b></div>
+            <h2><b>{name}</b></h2>
             <br/>
-            {messages}
+            <img src={data.photoUrl}/>
             <br/>
-            <input id="room.view.input" type="string" placeholder="Write message"
-                   onKeyUp={this.handleEnter.bind(this)}/>
-            <button onClick={this.sendMessage.bind(this)}>Send!</button>
+            <h3>Results:</h3>
+            {results}
+            <br/>
+            <h3>Next events:</h3>
+            {nextEvents}
+            <h3>Bets for next event:</h3>
+            {bets}
         </div>)
     }
 }
@@ -35,6 +45,7 @@ class TeamInfoPage extends Component {
 TeamInfoPage.propTypes = {
     actions: PropTypes.object.isRequired,
     data: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
     // url: PropTypes.string.isRequired,
     // history: PropTypes.array,
     // cls: PropTypes.string,
@@ -42,7 +53,7 @@ TeamInfoPage.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        // url: state.auth.url,
+        name: state.infoPage.qprop.name,
         // room: state.rooms.selectedRoom,
         // history: state.rooms.history,
     };

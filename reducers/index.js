@@ -76,10 +76,10 @@ function rooms(state = {available: [], selected: null, history: []}, action) {
     }
 }
 
-function infoPage(state = {type: null, data: null}, action) {
+function infoPage(state = {type: null, data: null, qprop: null}, action) {
     switch (action.type) {
         case types.INFO_PAGE:
-            return {type: action.page, data: action.data};
+            return {type: action.page, data: action.data, qprop: action.qprop};
         default:
             return state
     }

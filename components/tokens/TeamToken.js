@@ -8,7 +8,7 @@ class TeamToken extends React.Component {
             <button
                 className="label label-success"
                 title={title}
-                onClick={load('team', prop)}
+                onClick={() => load('team', prop)}
             >{text}</button>
         )
     }
