@@ -5,13 +5,13 @@ import * as Actions from "../../actions";
 
 class OddsToken extends React.Component {
     render() {
-        const {actions, text, prop} = this.props;
+        const {actions, prop, message} = this.props;
         let title = "Odds: " + prop.name + " (" + prop.ratio + ")";
         return <div
-            className="label"
+            className="label label-info"
             title={title}
-            onClick={() => actions.loadInfoPage('bet', prop)}
-        >{text}</div>
+            onClick={() => actions.loadInfoPage('bet', message)}
+        >{prop.name}</div>
     }
 }
 
@@ -19,6 +19,7 @@ class OddsToken extends React.Component {
 OddsToken.propTypes = {
     text: PropTypes.string.isRequired,
     prop: PropTypes.object.isRequired,
+    message: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {

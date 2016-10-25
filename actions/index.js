@@ -53,19 +53,23 @@ export function fetchInfoPage(type, qprop) {
     }
 }
 
-export function fetchBetInfoPage(betId) {
-    console.log('loading bet info page', betId);
+export function fetchBetInfoPage(messageOrBetId) {
+    console.log('loading bet info page', messageOrBetId);
     return (dispatch, getState) => {
-        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/bet/?betId=' + betId, bbOpts(getState()))
+        let q = 'bet-id=' + messageOrBetId;
+        if (typeof(messageOrBetId) == 'object') {
+            q = 'message-id=' + messageOrBetId.messageId;
+        }
+        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/bet?' + q, bbOpts(getState()))
             .then(response => response.json())
-            .then(json => dispatch({type: types.INFO_PAGE, page: 'bet', qprop: betId, data: json}));
+            .then(json => dispatch({type: types.INFO_PAGE, page: 'bet', qprop: messageOrBetId, data: {options: json}}));
     }
 }
 
 export function fetchDateRangeInfoPage(info) {
     console.log('loading date-range info page', info);
     return (dispatch, getState) => {
-        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/date-range?date-start=' + info.dateStart+'&date-end='+info.dateEnd, bbOpts(getState()))
+        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/date-range?date-start=' + info.dateStart + '&date-end=' + info.dateEnd, bbOpts(getState()))
             .then(response => response.json())
             .then(json => dispatch({type: types.INFO_PAGE, page: 'date-range', qprop: info, data: json}));
     }

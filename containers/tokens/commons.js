@@ -6,6 +6,7 @@ import MarketToken from "./MarketToken";
 import DateToken from "./DateToken";
 import ConnectorToken from "./ConnectorToken";
 import DateRangeToken from "./DateRangeToken";
+import OddsToken from "./OddsToken";
 import {uuid} from "../../commons"
 
 
@@ -20,7 +21,14 @@ export function msgToToken(token, message) {
             case "player":
                 return <PlayerToken text={token.text} prop={qp} key={uuid()}/>;
             case "result":
+            case "single-team-action":
+            case "single-player-action":
+            case "multi-teams-action":
+            case "multi-players-action":
                 return <MarketToken text={token.text} prop={qp} key={uuid()}/>;
+            case "odds-decimal":
+            case "odds-fractional":
+                return <OddsToken text={token.text} prop={qp} key={uuid()} message={message}/>;
             case "date":
                 return <DateToken text={token.text} prop={qp} key={uuid()}/>;
             case "date-range":
