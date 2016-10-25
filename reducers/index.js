@@ -4,8 +4,8 @@ import {merge} from "../commons/index";
 import {MESSAGES_LIST_SIZE} from "../constants";
 
 export var serverUrl = "http://dev-root-betblocks-01.gp-cloud.com";
-if (window.location.href.startsWith("http://localhost")) {
-    serverUrl = "http://192.168.33.6"
+if (window.location.href.startsWith("http://localhost") || window.location.href.startsWith("http://192.168.33.6")) {
+    serverUrl = "http://192.168.33.6";
 } else if (window.location.href.startsWith("http://prod-root-betblocks")) {
     serverUrl = "http://prod-root-betblocks-01.gp-cloud.com";
 }
