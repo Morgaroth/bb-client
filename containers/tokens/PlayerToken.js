@@ -1,13 +1,16 @@
 import React, {Component, PropTypes} from "react";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import * as Actions from "../../actions";
 
 class PlayerToken extends React.Component {
     render() {
-        const {text, prop, load} = this.props;
+        const {actions, text, prop} = this.props;
         let title = "Player: " + prop.name + " (" + prop.ratio + ")";
         return <div
             className="label label-info"
             title={title}
-            onClick={() => load('player', prop.name)}
+            onClick={() => actions.loadInfoPage('player', prop.name)}
         >{text}</div>
     }
 }
@@ -16,6 +19,19 @@ class PlayerToken extends React.Component {
 PlayerToken.propTypes = {
     text: PropTypes.string.isRequired,
     prop: PropTypes.object.isRequired,
-    load: PropTypes.func.isRequired,
 };
-export default PlayerToken;
+
+function mapStateToProps(state) {
+    return {};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(Actions, dispatch)
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PlayerToken);

@@ -1,6 +1,13 @@
 import * as types from "../constants/ActionTypes";
 import fetch from "isomorphic-fetch";
-import {merge} from "../commons/index"
+import {merge} from "../commons/index";
+
+function bbOpts(state, oth) {
+    return merge({
+        headers: {'X-User-Auth': state.auth.token},
+        mode: 'cors'
+    }, oth || {})
+}
 
 export function disconnected() {
     console.log("SOCKETIO disconnected")
@@ -55,6 +62,15 @@ export function fetchBetInfoPage(betId) {
     }
 }
 
+export function fetchDateRangeInfoPage(info) {
+    console.log('loading date-range info page', info);
+    return (dispatch, getState) => {
+        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/date-range?date-start=' + info.dateStart+'&date-end='+info.dateEnd, bbOpts(getState()))
+            .then(response => response.json())
+            .then(json => dispatch({type: types.INFO_PAGE, page: 'date-range', qprop: info, data: json}));
+    }
+}
+
 export function loadInfoPage(type, info) {
     console.log('loadInfoPage', type, info);
     switch (type) {
@@ -63,6 +79,8 @@ export function loadInfoPage(type, info) {
             return fetchInfoPage(type, info);
         case 'date':
             return fetchInfoPage(type, info);
+        case 'date-range':
+            return fetchDateRangeInfoPage(info);
         case 'bet':
             return fetchBetInfoPage(info);
         default:
@@ -70,44 +88,6 @@ export function loadInfoPage(type, info) {
             return {type: 'ignoring'};
 
     }
-}
-
-// function getCookie(cname) {
-//     var name = cname + "=";
-//     var ca = document.cookie.split(';');
-//     for (var i = 0; i < ca.length; i++) {
-//         var c = ca[i];
-//         while (c.charAt(0) == ' ') c = c.substring(1);
-//         if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-//     }
-//     return "";
-// }
-//
-// function setCookie(cname, cvalue, exdays) {
-//     var d = new Date();
-//     d.setTime(d.getTime() + ((exdays || 356) * 24 * 60 * 60 * 1000));
-//     var expires = "expires=" + d.toUTCString();
-//     document.cookie = cname + "=" + cvalue + "; " + expires;
-// }
-//
-//
-// function getUserCookie() {
-//     var userId = getCookie("user.id");
-//     if (userId == "") {
-//         userId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-//             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-//             return v.toString(16);
-//         });
-//         setCookie("user.id", userId);
-//     }
-//     return userId;
-// }
-//
-function bbOpts(state, oth) {
-    return merge({
-        headers: {'X-User-Auth': state.auth.token},
-        mode: 'cors'
-    }, oth || {})
 }
 
 export function selectRoom(id) {
@@ -158,8 +138,9 @@ export function proceedLogin(phone, code) {
 
 
 export function saveUserToken(json) {
-    return {
-        type: types.SAVE_TOKEN, data: json
+    return (dispatch) => {
+        dispatch({type: types.SAVE_TOKEN, data: json});
+        dispatch(loadToken());
     }
 }
 
@@ -189,26 +170,6 @@ export function loadSelectedRoom() {
     }
 }
 
-
-//
-// export function executeCreateCPU(newCpuSize, isFull = undefined) {
-//     return (dispatch, getState) => {
-//         return fetch(getState().serviceUrl + '/cpu', {
-//             method: 'POST',
-//             headers: {
-//                 'Accept': 'application/json',
-//                 'Content-Type': 'application/json',
-//                 'X-User-Id': getUserCookie()
-//             },
-//             mode: 'cors',
-//             body: JSON.stringify({size: newCpuSize, full: isFull || false})
-//         }).then(response => response.json())
-//             .then(json => dispatch(handleNewCPU(json)))
-//             .then(() => dispatch(fetchSelectedCPU()));
-//
-//     }
-// }
-//
 export function fetchRoomsFromServer() {
     return (dispatch, getState) => {
         if (!getState().auth.needsLogin) {
@@ -221,55 +182,3 @@ export function fetchRoomsFromServer() {
         }
     }
 }
-
-// function doMove(delta, deltaPos) {
-//     return (cpuId) => {
-//         return (dispatch, getState) => {
-//             var state = getState();
-//             var cpu = state.serverState.selected;
-//             var execPos = state.execution[cpu].position + deltaPos;
-//             var gates = state.algorithms[cpu] || [];
-//             var toExec = gatesAtPosition(gates, execPos);
-//             var req = [];
-//             if (toExec.length == 0) {
-//                 return dispatch({type: types.MOVE, cpuId: cpuId, delta: delta})
-//             } else if (checkIfIsControlledStep(toExec)) {
-//                 var o = findNormalGatesHere(toExec).map(x => {
-//                     return {gate: x.gate.type, index: x.qbit}
-//                 })[0];
-//                 var c = findControlledGatesHere(toExec).map(x => x.qbit);
-//                 req.push({gate: {gate: o.gate, controlBits: c}, index: o.index})
-//             } else {
-//                 toExec.map(g => {
-//                     req.push({gate: g.gate.type, index: g.qbit})
-//                 })
-//             }
-//             return fetch(state.serviceUrl + '/cpu/' + cpu, {
-//                 method: 'POST',
-//                 headers: {
-//                     'Accept': 'application/json',
-//                     'Content-Type': 'application/json',
-//                     'X-User-Id': getUserCookie()
-//                 },
-//                 mode: 'cors',
-//                 body: JSON.stringify(req)
-//             }).then(response => console.log("received response", JSON.stringify()))
-//                 .then(() => dispatch({type: types.MOVE, cpuId: cpuId, delta: delta}))
-//                 .then(() => dispatch(fetchSelectedCPU()))
-//         }
-//     }
-// };
-
-// export function deleteSelectedCPU() {
-//     return (dispatch, getState) => {
-//         return fetch(getState().serviceUrl + '/cpu/' + getState().serverState.selected, {
-//             method: 'DELETE',
-//             headers: {
-//                 'X-User-Id': getUserCookie()
-//             },
-//             mode: 'cors'
-//         }).then(() => dispatch(selectRoom(null)))
-//             .then(() => dispatch(fetchCPUsFromServer()));
-//
-//     }
-// }

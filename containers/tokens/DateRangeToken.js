@@ -3,17 +3,25 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../../actions";
 
-class ConnectorToken extends React.Component {
+class DateRangeToken extends React.Component {
     render() {
-        const {text} = this.props;
+        const {actions, text, prop} = this.props;
+        let title = "Date range: " + prop.name;
+        let dates = prop.name.split('/');
+        prop.dateStart = dates[0];
+        prop.dateEnd = dates[1];
         return (
-            <div className="label label-warning">{text}</div>
+            <button
+                className="label label-danger"
+                title={title}
+                onClick={() => actions.loadInfoPage('date-range', prop)}
+            >{text}</button>
         )
     }
 }
 
 
-ConnectorToken.propTypes = {
+DateRangeToken.propTypes = {
     text: PropTypes.string.isRequired,
     prop: PropTypes.object.isRequired,
 };
@@ -31,4 +39,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(ConnectorToken);
+)(DateRangeToken);

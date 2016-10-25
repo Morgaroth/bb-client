@@ -2,7 +2,8 @@ import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../actions";
-import MessageView from "../components/MessageView";
+import MessageView from "./messages/MessageView";
+import {msgToTag} from "./messages/index";
 
 class RoomView extends Component {
 
@@ -28,17 +29,12 @@ class RoomView extends Component {
     };
 
     render() {
-        const {actions, room, history} = this.props;
+        const {room, history} = this.props;
         var messages = <a>NoMessages, wait...</a>;
         if (history.length > 0) {
             messages = [];
             for (let msg of history) {
-                messages.push(
-                    <MessageView
-                        key={"mw-"+msg.messageId}
-                        message={msg}
-                        loadInfoPage={(a, b) => actions.loadInfoPage(a, b)}/>
-                )
+                messages.push(msgToTag(msg))
             }
         }
         return (<div className={this.props.cls}>

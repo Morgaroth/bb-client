@@ -1,4 +1,7 @@
 import React, {Component, PropTypes} from "react";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import * as Actions from "../../actions";
 
 class MarketToken extends React.Component {
     render() {
@@ -12,6 +15,19 @@ class MarketToken extends React.Component {
 MarketToken.propTypes = {
     text: PropTypes.string.isRequired,
     prop: PropTypes.object.isRequired,
-    load: PropTypes.func.isRequired,
 };
-export default MarketToken;
+
+function mapStateToProps(state) {
+    return {};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(Actions, dispatch)
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(MarketToken);

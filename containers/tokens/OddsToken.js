@@ -1,13 +1,16 @@
 import React, {Component, PropTypes} from "react";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import * as Actions from "../../actions";
 
 class OddsToken extends React.Component {
     render() {
-        const {text, load, prop} = this.props;
+        const {actions, text, prop} = this.props;
         let title = "Odds: " + prop.name + " (" + prop.ratio + ")";
         return <div
             className="label"
             title={title}
-            onClick={() => load('bet', prop)}
+            onClick={() => actions.loadInfoPage('bet', prop)}
         >{text}</div>
     }
 }
@@ -16,6 +19,19 @@ class OddsToken extends React.Component {
 OddsToken.propTypes = {
     text: PropTypes.string.isRequired,
     prop: PropTypes.object.isRequired,
-    load: PropTypes.func.isRequired,
 };
-export default OddsToken;
+
+function mapStateToProps(state) {
+    return {};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(Actions, dispatch)
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(OddsToken);

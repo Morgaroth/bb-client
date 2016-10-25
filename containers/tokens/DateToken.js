@@ -1,15 +1,17 @@
 import React, {Component, PropTypes} from "react";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import * as Actions from "../../actions";
 
 class DateToken extends React.Component {
     render() {
-        const {text, prop, load} = this.props;
+        const {actions, text, prop} = this.props;
         let title = "Date: " + prop.name;
-        console.log('render',text,prop,load);
         return (
             <button
                 className="label label-danger"
                 title={title}
-                onClick={() => load('date', prop)}
+                onClick={() => actions.loadInfoPage('date', prop)}
             >{text}</button>
         )
     }
@@ -18,7 +20,20 @@ class DateToken extends React.Component {
 
 DateToken.propTypes = {
     text: PropTypes.string.isRequired,
-    load: PropTypes.func.isRequired,
     prop: PropTypes.object.isRequired,
 };
-export default DateToken;
+
+function mapStateToProps(state) {
+    return {};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(Actions, dispatch)
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(DateToken);

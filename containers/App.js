@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import BetBlocksClient from "../containers/BetBlocksClient";
-import ServiceUrl from "../components/ServiceUrl";
+import ServiceUrl from "./ServiceUrl";
 import * as Actions from "../actions";
 
 class App extends Component {

@@ -1,18 +1,18 @@
 import React, {Component, PropTypes} from "react";
-import {msgToToken} from "../containers/tokens/commons"
+import {msgToToken} from "../tokens/commons"
 import dateFormat from 'dateformat'
-import RawToken from "../containers/tokens/RawToken"
-import {uuid} from "../commons"
+import RawToken from "../tokens/RawToken"
+import {uuid} from "../../commons"
 
 class MessageView extends React.Component {
     render() {
-        const {message, loadInfoPage} = this.props;
+        const {message} = this.props;
         var tokens = [];
         if (message.elements.length == 0) {
             tokens.push(<RawToken text={message.rawText}/>)
         } else {
             for (let token of message.elements) {
-                tokens.push(msgToToken(token, message, loadInfoPage));
+                tokens.push(msgToToken(token, message));
                 tokens.push(<a key={uuid()}> </a>);
             }
         }
@@ -28,6 +28,6 @@ class MessageView extends React.Component {
 
 MessageView.propTypes = {
     message: PropTypes.object.isRequired,
-    loadInfoPage: PropTypes.func.isRequired,
 };
+
 export default MessageView;

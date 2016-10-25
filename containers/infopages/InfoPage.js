@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import * as Actions from "../../actions";
 import TeamInfoPage from "./TeamInfoPage";
 import DateInfoPage from "./DateInfoPage";
+import DateRangeInfoPage from "./DateRangeInfoPage";
 
 class InfoPage extends Component {
 
@@ -13,10 +14,8 @@ class InfoPage extends Component {
                 return <TeamInfoPage data={data}/>;
             case "date":
                 return <DateInfoPage data={data}/>;
-            // case "player":
-            //     return <PlayerToken text={token.text} prop={qp} load={loadAction}/>;
-            // case "result":
-            //     return <MarketToken text={token.text} prop={qp} load={loadAction}/>;
+            case "date-range":
+                return <DateRangeInfoPage data={data}/>;
             case null:
                 return <div style={{fontSize: 40, alignment: 'center'}} className="label label-danger">Blank Info Page</div>;
             default:
@@ -37,8 +36,8 @@ class InfoPage extends Component {
 InfoPage.propTypes = {
     actions: PropTypes.object.isRequired,
     cls: PropTypes.string,
-    type: PropTypes.string.isRequired,
-    data: PropTypes.object.isRequired,
+    type: PropTypes.string,
+    data: PropTypes.object,
 };
 
 function mapStateToProps(state) {
