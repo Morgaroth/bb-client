@@ -6,17 +6,6 @@ import socketMiddleware from "../middleware/socketIOMiddleware";
 
 
 export default function configureStore(initialState) {
-
-
-    function reducer(state = {}, action){
-        switch(action.type){
-            case 'message':
-                return Object.assign({}, {message:action.data});
-            default:
-                return state;
-        }
-    }
-
     const store = createStore(
         rootReducer,
         initialState,
