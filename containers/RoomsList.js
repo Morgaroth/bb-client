@@ -9,12 +9,22 @@ class RoomsList extends Component {
     render() {
         const {actions, selectedRoom, selected, available} = this.props;
         var header = <h3>Selected Room: {selectedRoom.details.name}</h3>;
-        var list = (<List items={available.map((x) => {return x.details.name+", "+x.details.type})}
-                          selected={available.map((x) => x.id).indexOf(selected)}
-                          multiple={false}
-                          onChange={(selected) => {
-                              actions.selectRoom(available[selected].id)
-                          }}/>);
+        let publicRooms = available.filter(x => x.details.type == 'public');
+        var publicList = (<List items={publicRooms.map(x => x.details.name)}
+                                selected={publicRooms.map(x => x.id).indexOf(selected)}
+                                multiple={false}
+                                onChange={(selected) => actions.selectRoom(publicRooms[selected].id)}/>);
+        let privateRooms = available.filter(x => x.details.type == 'private');
+        var privateList = (<List items={privateRooms.map(x => x.details.name)}
+                                 selected={privateRooms.map(x => x.id).indexOf(selected)}
+                                 multiple={false}
+                                 onChange={(selected) => actions.selectRoom(privateRooms[selected].id)}/>);
+        let directRooms = available.filter(x => x.details.type == 'direct');
+        var directList = (<List items={directRooms.map(x => x.details.name)}
+                                selected={directRooms.map(x => x.id).indexOf(selected)}
+                                multiple={false}
+                                onChange={(selected) => actions.selectRoom(directRooms[selected].id)}/>);
+        var myStream = available.filter(x => x.details.type == 'my_stream')[0];
 
         var btn = undefined;
         // if (!(selected == undefined || selected == null)) {
@@ -30,7 +40,13 @@ class RoomsList extends Component {
             <br/>
             {header}
             {btn}
-            {list}
+            <div>Public rooms:</div>
+            {publicList}
+            <div>Private rooms:</div>
+            {privateList}
+            <div>Direct rooms:</div>
+            {directList}
+            <h4 onClick={() => actions.selectRoom(myStream.id)}>Your stream!</h4>
         </div>)
     }
 }
