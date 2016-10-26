@@ -4,12 +4,15 @@ import {connect} from "react-redux";
 import * as Actions from "../../actions";
 import TeamInfoPage from "./TeamInfoPage";
 import DateInfoPage from "./DateInfoPage";
+import BetInfoPage from "./BetInfoPage";
 import DateRangeInfoPage from "./DateRangeInfoPage";
 
 class InfoPage extends Component {
 
     static getInfoPage(type, data) {
         switch (type) {
+            case "bet":
+                return <BetInfoPage data={data}/>;
             case "team":
                 return <TeamInfoPage data={data}/>;
             case "date":
