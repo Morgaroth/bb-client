@@ -5,6 +5,7 @@ import LoginPanel from "./LoginPanel"
 import * as Actions from "../actions";
 import RoomsList from "./RoomsList"
 import RoomView from "./RoomView";
+import AppActions from "./AppActions";
 import InfoPage from "./infopages/InfoPage";
 
 class BetBlocksClient extends Component {
@@ -15,6 +16,7 @@ class BetBlocksClient extends Component {
             return <LoginPanel serviceUrl={serviceUrl} onChange={(phone) => actions.tryLogin(phone)}/>
         } else if (roomInfo.selected != null) {
             return <div>
+                <AppActions cls="col-md-12"/>
                 <RoomsList cls='col-md-2'/>
                 <RoomView cls='col-md-5'/>
                 <InfoPage cls="col-md-4"/>

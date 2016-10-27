@@ -1,23 +1,13 @@
 import * as actions from "../actions";
 import * as types from "../constants/ActionTypes";
-import io from 'socket.io-client'
+import io from "socket.io-client";
 
 const socketMiddleware = (function () {
 
     var socket = null;
 
-    const onMessage = (ws, store) => evt => {
-        //Parse the JSON message received on the websocket
-        console.log('received event', evt);
-        // switch (msg.type) {
-        //     case "CHAT_MESSAGE":
-                //Dispatch an action that adds the received message to our state
-        store.dispatch(actions.messageReceived(evt));
-                // break;
-            // default:
-            //     console.log("Received unknown message type: '" + msg.type + "'");
-            //     break;
-        // }
+    const onMessage = (ws, store, fun) => evt => {
+        store.dispatch(fun(evt));
     };
 
     return store => next => action => {
@@ -32,7 +22,7 @@ const socketMiddleware = (function () {
                 //Send an action that shows a "connecting..." status for now
                 // store.dispatch(actions.connecting());
 
-                if(action.token != null && action.token != undefined && action.token.length>0) {
+                if (action.token != null && action.token != undefined && action.token.length > 0) {
                     socket = io.connect(action.url + '/chats', {query: {'X-User-Auth': action.token}});
 
                     socket.on('connect', function () {
@@ -44,7 +34,9 @@ const socketMiddleware = (function () {
                     socket.on('disconnect', function () {
                         console.log('SocketIO disconnected')
                     });
-                    socket.on('Message', onMessage(socket, store));
+                    socket.on('Message', onMessage(socket, store, actions.messageReceived));
+
+                    socket.on('Suggestions', onMessage(socket, store, actions.updateSuggestions));
                 } else {
                     console.log('SocketIO: No token, no connect')
                 }
@@ -64,6 +56,10 @@ const socketMiddleware = (function () {
 
             case types.SEND_MESSAGE:
                 socket.emit("Message", {roomId: action.roomId, rawText: action.msg, messageType: 'chat-message'});
+                break;
+
+            case types.FIND_SUGESTIONS:
+                socket.emit("Suggest", {message: action.message});
                 break;
 
             //This action is irrelevant to us, pass it on to the next middleware

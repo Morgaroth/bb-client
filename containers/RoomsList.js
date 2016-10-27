@@ -53,9 +53,9 @@ class RoomsList extends Component {
 
 RoomsList.propTypes = {
     actions: PropTypes.object.isRequired,
-    available: PropTypes.array.isRequired,
-    selected: PropTypes.string.isRequired,
-    selectedRoom: PropTypes.object.isRequired,
+    available: PropTypes.array,
+    selected: PropTypes.string,
+    selectedRoom: PropTypes.object,
     cls: PropTypes.string,
 };
 

@@ -5,6 +5,7 @@ import * as Actions from "../../actions";
 import TeamInfoPage from "./TeamInfoPage";
 import DateInfoPage from "./DateInfoPage";
 import BetInfoPage from "./BetInfoPage";
+import LivePromptPage from "./LivePromptPage";
 import DateRangeInfoPage from "./DateRangeInfoPage";
 
 class InfoPage extends Component {
@@ -19,6 +20,8 @@ class InfoPage extends Component {
                 return <DateInfoPage data={data}/>;
             case "date-range":
                 return <DateRangeInfoPage data={data}/>;
+            case "live-prompt":
+                return <LivePromptPage/>;
             case null:
                 return <div style={{fontSize: 40, alignment: 'center'}} className="label label-danger">Blank Info Page</div>;
             default:

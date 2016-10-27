@@ -51,8 +51,8 @@ class RoomView extends Component {
 
 RoomView.propTypes = {
     actions: PropTypes.object.isRequired,
-    room: PropTypes.object.isRequired,
-    url: PropTypes.string.isRequired,
+    room: PropTypes.object,
+    url: PropTypes.string,
     history: PropTypes.array,
     cls: PropTypes.string,
 };

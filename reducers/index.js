@@ -80,6 +80,12 @@ function infoPage(state = {type: null, data: null, qprop: null}, action) {
     switch (action.type) {
         case types.INFO_PAGE:
             return {type: action.page, data: action.data, qprop: action.qprop};
+        case types.LOAD_LIVE_PROMPT_WINDOW:
+            return {type: 'live-prompt', data: null, qprop: null};
+        case types.LOADING_PROP_SUGGESTIONS:
+            return merge(state, {type: 'live-prompt', status: 'loading'});
+        case types.LOADED_PROP_SUGGESTIONS:
+            return merge(state, {type: 'live-prompt', status: 'OK', suggestions: action.data.suggestions, text: action.data.rawText, data: action.data});
         default:
             return state
     }

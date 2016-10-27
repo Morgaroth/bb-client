@@ -1,10 +1,15 @@
 import * as types from "../constants/ActionTypes";
 import fetch from "isomorphic-fetch";
 import {merge} from "../commons/index";
+import {SUGGESTIONS_TUNNEL} from "../constants/index";
 
 function bbOpts(state, oth) {
     return merge({
-        headers: {'X-User-Auth': state.auth.token},
+        headers: {
+            'X-User-Auth': state.auth.token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
         mode: 'cors'
     }, oth || {})
 }
@@ -91,6 +96,31 @@ export function loadInfoPage(type, info) {
             console.log('unknown info page type', type);
             return {type: 'ignoring'};
 
+    }
+}
+
+export function loadTextLivePrompt() {
+    return {type: types.LOAD_LIVE_PROMPT_WINDOW}
+}
+
+export function updateSuggestions(data) {
+    return {type: types.LOADED_PROP_SUGGESTIONS, data: data}
+}
+
+export function sendMsgForProgress(text) {
+    return (dispatch, getState) => {
+        dispatch({type: types.LOADING_PROP_SUGGESTIONS});
+        if (SUGGESTIONS_TUNNEL == 'http') {
+            return fetch(getState().auth.url + ':8001/prompt/', bbOpts(getState(), {
+                method: 'POST',
+                body: JSON.stringify({message: text})
+            })).then(response => response.json())
+                .then(json => dispatch(updateSuggestions(json)));
+        } else if (SUGGESTIONS_TUNNEL == 'socketio') {
+            dispatch({type: types.FIND_SUGESTIONS, message: text});
+        } else {
+            console.log('unknown suggestions tunnel', SUGGESTIONS_TUNNEL)
+        }
     }
 }
 
