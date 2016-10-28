@@ -10,6 +10,7 @@ class AppActions extends Component {
         const {actions, cls}= this.props;
         return (<div className={cls}>
             <button onClick={()=>actions.loadTextLivePrompt()}>Load live prompt</button>
+            <button onClick={()=>actions.loadServerHealth()}>Server Health</button>
         </div>)
     }
 }

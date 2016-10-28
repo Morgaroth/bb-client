@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../../actions";
-import {msgToToken} from "../tokens/commons"
 import {uuid} from "../../commons/"
 
 class LivePromptPage extends Component {
@@ -18,7 +17,7 @@ class LivePromptPage extends Component {
 
     sendMsgForProgress() {
         var value = document.getElementById("live.prompt.view.input").value;
-        if(value != this.state.text) {
+        if (value != this.state.text) {
             if (value.length > 0) {
                 this.props.actions.sendMsgForProgress(value);
             }
@@ -26,25 +25,41 @@ class LivePromptPage extends Component {
         }
     };
 
-    render() {
-        const {room, status, suggestions, suggText, data} = this.props;
-        var elements = <div>No Suggestions, wait... ({status}) for text {suggText}</div>;
+    getSuggestions() {
+        const {data} = this.props;
+        let elements = [];
         if (data.textElements.length > 0) {
-            elements = [];
-            for (let msg of data.textElements) {
-                let qp = msg.qualifiedProps.sort((x, y) => y.ratio - x.ratio)[0] || {name: 'unknown'};
-                elements.push(<div key={uuid()}>{qp.name}: {msgToToken(msg)}</div>)
+            let last = data.textElements[data.textElements.length - 1];
+            let qp = last.qualifiedProps.sort((x, y) => y.ratio - x.ratio) || [];
+            let propositions = qp.map(x => {
+                return {n: x.name, p: '[' + x.type + '] (probability ' + x.ratio + ')'}
+            });
+            for (let prop of propositions) {
+                elements.push(<div key={uuid()}><b>{prop.n}</b> {prop.p}<br/></div>)
             }
         }
+        return elements;
+    }
+
+    render() {
+        const {status, suggText, data} = this.props;
+
+        var elements = <div>no suggestions, wait... ({status}) for text {suggText}</div>;
+        let possible = this.getSuggestions();
+        if (possible.length > 0) {
+            elements = possible;
+        }
+
         return (<div className={this.props.cls}>
-            <h4>Suggestions:</h4>
-            <br/>
-            {elements}
-            <br/>
-            <h6>status: {status}</h6>
+            <h3>Welcome in live completion tester</h3>
+            <div>start typing here:</div>
             <input id="live.prompt.view.input" type="string" placeholder="Write message"
                    onKeyUp={this.handleKey.bind(this)}/>
             <button onClick={this.sendMsgForProgress.bind(this)}>Check!</button>
+            <br/>
+            <h6>status: {status}</h6>
+            <h4>Suggestions:</h4>
+            {elements}
         </div>)
     }
 }

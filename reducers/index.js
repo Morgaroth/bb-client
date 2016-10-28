@@ -86,6 +86,10 @@ function infoPage(state = {type: null, data: null, qprop: null}, action) {
             return merge(state, {type: 'live-prompt', status: 'loading'});
         case types.LOADED_PROP_SUGGESTIONS:
             return merge(state, {type: 'live-prompt', status: 'OK', suggestions: action.data.suggestions, text: action.data.rawText, data: action.data});
+        case types.LOADING_SERVER_HEALTH:
+            return merge(state, {type: 'server-health', data: {health: []}, status: 'fetching'});
+        case types.LOADED_SERVER_HEALTH:
+            return merge(state, {type: 'server-health', data: action.data, status: 'OK'});
         default:
             return state
     }

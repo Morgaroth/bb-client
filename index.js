@@ -11,6 +11,10 @@ const store = configureStore();
 // place for initialize application
 store.dispatch(actions.loadToken());
 
+Array.prototype.flatMap = function(lambda) {
+    return Array.prototype.concat.apply([], this.map(lambda));
+};
+
 String.prototype.htmlEscaped = function() {
     var tagsToReplace = {
         '&': '&amp;',

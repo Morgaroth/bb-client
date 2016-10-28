@@ -195,7 +195,6 @@ export function handleRoomHistory(history) {
         type: types.UPDATE_ROOM_HISTORY, roomId: history.roomId, messages: history.messages
     }
 }
-
 export function loadSelectedRoom() {
     return (dispatch, getState) => {
         return fetch(getState().auth.url + ':8001/rooms/' + getState().rooms.selected + "/history?limit=30&olderThan=" + new Date().toISOString(), bbOpts(getState()))
@@ -214,5 +213,23 @@ export function fetchRoomsFromServer() {
         } else {
             console.log("not fetching, login is disabled")
         }
+    }
+}
+
+export function loadingServerHealth() {
+    return {type: types.LOADING_SERVER_HEALTH}
+}
+
+
+export function handleServerHealth(data) {
+    return {type: types.LOADED_SERVER_HEALTH, data: {health: data}}
+}
+
+export function loadServerHealth() {
+    return (dispatch, getState) => {
+        dispatch(loadingServerHealth());
+        return fetch(getState().auth.url + ':8001/_health/', bbOpts(getState()))
+            .then(response => response.json())
+            .then(json => dispatch(handleServerHealth(json)));
     }
 }
