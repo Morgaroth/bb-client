@@ -8,7 +8,12 @@ if [ -z ${PROJECTS_DIRECTORY+x} ]; then
 fi
 VERSION=$(jq -r ".version" package.json)
 ./buildDocker.sh
+NAME_1=dev-root-betblocks-01.gp-cloud.com:9001/bb-client:latest
+NAME_2=dev-root-betblocks-01.gp-cloud.com:9001/bb-client:v${VERSION}
+docker build -t ${NAME_1} -t ${NAME_2} .
+docker push ${NAME_1}
+docker push ${NAME_2}
 cd ${PROJECTS_DIRECTORY}/ansible-repositories/betblocks
 git pull
-./ansible-vagrant deploy_webclient_service.yml -e version=latest
+./ansible-dev deploy_webclient_service.yml
 cd ${PROJECTS_DIRECTORY}/bb-client/

@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../actions";
-import List from "react-list-select";
 
 class AppActions extends Component {
 
