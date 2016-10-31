@@ -78,14 +78,16 @@ function rooms(state = {available: [], selected: null, history: []}, action) {
 
 function infoPage(state = {type: null, data: null, qprop: null}, action) {
     switch (action.type) {
+        case types.LOADING_INFO_PAGE:
+            return merge(state, {type: action.page, state: 'fetching'});
         case types.INFO_PAGE:
-            return {type: action.page, data: action.data, qprop: action.qprop};
+            return {type: action.page, status: 'OK', data: action.data, qprop: action.qprop};
         case types.LOAD_LIVE_PROMPT_WINDOW:
             return {type: 'live-prompt', data: null, qprop: null};
         case types.LOADING_PROP_SUGGESTIONS:
             return merge(state, {type: 'live-prompt', status: 'loading'});
         case types.LOADED_PROP_SUGGESTIONS:
-            return merge(state, {type: 'live-prompt', status: 'OK', suggestions: action.data.suggestions, text: action.data.rawText, data: action.data});
+            return merge(state, {type: 'live-prompt', suggestions: action.data.suggestions, text: action.data.rawText, data: action.data, status: 'OK'});
         case types.LOADING_SERVER_HEALTH:
             return merge(state, {type: 'server-health', data: {health: []}, status: 'fetching'});
         case types.LOADED_SERVER_HEALTH:

@@ -26,19 +26,24 @@ class InfoPage extends Component {
             case "server-health":
                 return <ServerHealth/>;
             case null:
-                return <div style={{fontSize: 40, alignment: 'center'}} className="label label-danger">Blank Info Page</div>;
+                return <div style={{fontSize: 40, alignment: 'center'}} className="label label-danger">Blank Info
+                    Page</div>;
             default:
                 console.log('undefined info page type', type);
-                return <div style={{fontSize: 40, alignment: 'center'}} className="label label-danger">UNDEFINED Info Page {type}</div>;
+                return <div style={{fontSize: 40, alignment: 'center'}} className="label label-danger">UNDEFINED Info
+                    Page {type}</div>;
         }
     }
 
     render() {
-        const {type, data} = this.props;
-
-        return (<div className={this.props.cls}>
-            {InfoPage.getInfoPage(type, data)}
-        </div>)
+        const {type, data, status} = this.props;
+        if (status != 'OK' && type !== 'live-prompt') {
+            return <div className={this.props.cls}>Loading info about {type}, {status}...</div>;
+        } else {
+            return (<div className={this.props.cls}>
+                {InfoPage.getInfoPage(type, data)}
+            </div>)
+        }
     }
 }
 
@@ -46,6 +51,7 @@ InfoPage.propTypes = {
     actions: PropTypes.object.isRequired,
     cls: PropTypes.string,
     type: PropTypes.string,
+    status: PropTypes.string,
     data: PropTypes.object,
 };
 
@@ -53,6 +59,7 @@ function mapStateToProps(state) {
     return {
         type: state.infoPage.type,
         data: state.infoPage.data,
+        status: state.infoPage.status || null,
     };
 }
 

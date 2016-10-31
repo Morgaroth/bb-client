@@ -52,6 +52,7 @@ export function loadToken() {
 export function fetchInfoPage(type, qprop) {
     console.log('loading', type, 'info page', qprop);
     return (dispatch, getState) => {
+        dispatch({type: types.LOADING_INFO_PAGE, page: type});
         return fetch(getState().auth.url + ':8001/oddschecker/info-pages/' + type + '/' + qprop.name, bbOpts(getState()))
             .then(response => response.json())
             .then(json => dispatch({type: types.INFO_PAGE, page: type, qprop: qprop, data: json}));

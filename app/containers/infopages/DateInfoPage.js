@@ -2,22 +2,28 @@ import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../../actions";
-import MessageView from "../messages/MessageView";
+import {uuid} from "../../commons";
+import dateFormat from 'dateformat'
 
 class DateInfoPage extends Component {
 
+
     render() {
-        const {actions, data} = this.props;
+        const {actions, data,qp} = this.props;
+        let formatter = (x) => dateFormat(x, 'dddd, dS mmm, H:MM');
         var events = <a>NoEvents...</a>;
         if (data.nextEvents.length > 0) {
             events = [];
             for (let ev of data.nextEvents) {
-                events.push(
-                    <div>{ev}</div>
-                )
+                let subs = [];
+                for (let s of ev.subEvents) {
+                    subs.push(<div key={'ese-'+uuid()}>{formatter(s.startTime)}: <b>{s.name}</b></div>)
+                }
+                events.push(<div key={'se-'+uuid()}><h4>{ev.eventName}:</h4>{subs}</div>)
             }
         }
         return (<div className={this.props.cls}>
+            <h3>Date info {dateFormat(qp.name, 'dddd, dS mmm')}:</h3>
             {events}
             <br/>
         </div>)
@@ -27,6 +33,7 @@ class DateInfoPage extends Component {
 DateInfoPage.propTypes = {
     actions: PropTypes.object.isRequired,
     data: PropTypes.object.isRequired,
+    qp: PropTypes.object.isRequired,
     // url: PropTypes.string.isRequired,
     // history: PropTypes.array,
     // cls: PropTypes.string,
@@ -34,7 +41,7 @@ DateInfoPage.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        // url: state.auth.url,
+        qp: state.infoPage.qprop,
         // room: state.rooms.selectedRoom,
         // history: state.rooms.history,
     };
