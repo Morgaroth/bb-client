@@ -25,6 +25,9 @@ export function msgToToken(token, message) {
             case "single-player-action":
             case "multi-teams-action":
             case "multi-players-action":
+            case "match-action":
+            case "score":
+            case "over-under":
                 return <MarketToken text={token.text} prop={qp} key={uuid()}/>;
             case "odds-decimal":
             case "odds-fractional":
