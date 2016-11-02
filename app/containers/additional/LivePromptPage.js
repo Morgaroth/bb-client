@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import {Typeahead} from "react-typeahead";
 import * as Actions from "../../actions";
 import {uuid} from "../../commons/"
 
@@ -40,6 +41,23 @@ class LivePromptPage extends Component {
         }
         return elements;
     }
+    rawSuggestions() {
+        const {data} = this.props;
+        let elements = [];
+        if (data.textElements.length > 0) {
+            let last = data.textElements[data.textElements.length - 1];
+            let qp = last.qualifiedProps.sort((x, y) => y.ratio - x.ratio) || [];
+            let propositions = qp.map(x => {
+                return {n: x.name, p: '[' + x.type + '] (probability ' + x.ratio + ')'}
+            });
+            for (let prop of propositions) {
+                elements.push(prop.n +' '+prop.p)
+            }
+        }
+        return elements;
+    }
+
+    // https://github.com/fmoo/react-typeahead
 
     render() {
         const {status, suggText, data} = this.props;
@@ -54,8 +72,9 @@ class LivePromptPage extends Component {
             <h3>Welcome in live completion tester</h3>
             <div>start typing here:</div>
             <input id="live.prompt.view.input" type="string" placeholder="Write message"
-                   onKeyUp={this.handleKey.bind(this)}/>
+                    onKeyUp={this.handleKey.bind(this)}/>
             <button onClick={this.sendMsgForProgress.bind(this)}>Check!</button>
+            {/*<Typeahead options={this.rawSuggestions()} onKeyUp={this.handleKey.bind(this)}/>*/}
             <br/>
             <h6>status: {status}</h6>
             <h4>Suggestions:</h4>

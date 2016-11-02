@@ -5,8 +5,8 @@ import * as Actions from "../../actions";
 import TeamInfoPage from "./TeamInfoPage";
 import DateInfoPage from "./DateInfoPage";
 import BetInfoPage from "./BetInfoPage";
-import LivePromptPage from "../additionalPages/LivePromptPage";
-import ServerHealth from "../additionalPages/ServerHealth";
+import LivePromptPage from "../additional/LivePromptPage";
+import ServerHealth from "../additional/ServerHealth";
 import DateRangeInfoPage from "./DateRangeInfoPage";
 
 class InfoPage extends Component {

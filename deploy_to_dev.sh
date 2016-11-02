@@ -7,7 +7,6 @@ if [ -z ${PROJECTS_DIRECTORY+x} ]; then
     exit 1
 fi
 VERSION=$(jq -r ".version" package.json)
-./buildDocker.sh
 NAME_1=dev-root-betblocks-01.gp-cloud.com:9001/bb-client:latest
 NAME_2=dev-root-betblocks-01.gp-cloud.com:9001/bb-client:v${VERSION}
 docker build -t ${NAME_1} -t ${NAME_2} .

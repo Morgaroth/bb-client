@@ -33,7 +33,7 @@ class DateInfoPage extends Component {
 DateInfoPage.propTypes = {
     actions: PropTypes.object.isRequired,
     data: PropTypes.object.isRequired,
-    qp: PropTypes.object.isRequired,
+    qp: PropTypes.object,
     // url: PropTypes.string.isRequired,
     // history: PropTypes.array,
     // cls: PropTypes.string,
