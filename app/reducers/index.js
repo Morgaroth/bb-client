@@ -16,8 +16,10 @@ function getEnv(url) {
             return 'dev';
         case 'http://prod-root-betblocks-01.gp-cloud.com':
             return 'prod';
-        default:
+        case 'http://localhost':
             return 'local';
+        default:
+            return 'vagrant';
     }
 }
 
