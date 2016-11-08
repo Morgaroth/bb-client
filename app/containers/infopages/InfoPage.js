@@ -5,6 +5,7 @@ import * as Actions from "../../actions";
 import TeamInfoPage from "./TeamInfoPage";
 import DateInfoPage from "./DateInfoPage";
 import BetInfoPage from "./BetInfoPage";
+import DataBaseMethods from "../additional/DataBaseMethods";
 import LivePromptPage from "../additional/LivePromptPage";
 import ServerHealth from "../additional/ServerHealth";
 import DateRangeInfoPage from "./DateRangeInfoPage";
@@ -25,6 +26,8 @@ class InfoPage extends Component {
                 return <LivePromptPage/>;
             case "server-health":
                 return <ServerHealth/>;
+            case "database-actions":
+                return <DataBaseMethods/>;
             case null:
                 return <div style={{fontSize: 40, alignment: 'center'}} className="label label-danger">Blank Info
                     Page</div>;

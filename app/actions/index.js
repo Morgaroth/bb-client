@@ -217,10 +217,17 @@ export function fetchRoomsFromServer() {
     }
 }
 
-export function loadingServerHealth() {
-    return {type: types.LOADING_SERVER_HEALTH}
+function loading(type, more) {
+    return merge({type: type}, more || {})
 }
 
+function loaded(type, more) {
+    return merge({type: type}, more || {})
+}
+
+export function loadingServerHealth() {
+    return loading(types.LOADING_SERVER_HEALTH)
+}
 
 export function handleServerHealth(data) {
     return {type: types.LOADED_SERVER_HEALTH, data: {health: data}}
@@ -232,5 +239,18 @@ export function loadServerHealth() {
         return fetch(getState().auth.url + ':8001/_health/', bbOpts(getState()))
             .then(response => response.json())
             .then(json => dispatch(handleServerHealth(json)));
+    }
+}
+
+export function loadDatabaseActions() {
+    return loading(types.SHOW_INFO_DATA_PANEL)
+}
+
+export function DataApi_update(part) {
+    return (dispatch, getState) => {
+        dispatch(loading(types.LOADING_INFO_DATA_ACTION, {name: part}));
+        return fetch(getState().auth.url + ':8001/oddschecker/db-manager/update/' + part, bbOpts(getState(), {method: 'PUT'}))
+            .then(response => response.text())
+            .then(resp => dispatch(loaded(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
     }
 }
