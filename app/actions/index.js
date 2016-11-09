@@ -77,7 +77,12 @@ export function fetchDateRangeInfoPage(info) {
     return (dispatch, getState) => {
         return fetch(getState().auth.url + ':8001/oddschecker/info-pages/date-range?date-start=' + info.dateStart + '&date-end=' + info.dateEnd, bbOpts(getState()))
             .then(response => response.json())
-            .then(json => dispatch({type: types.INFO_PAGE, page: 'date-range', qprop: info, data: json}));
+            .then(json => dispatch({
+                type: types.INFO_PAGE,
+                page: 'date-range',
+                qprop: info,
+                data: merge({dateStart: info.dateStart, dateEnd: info.dateEnd}, json)
+            }));
     }
 }
 
