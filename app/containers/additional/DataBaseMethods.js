@@ -13,13 +13,27 @@ class DataBaseMethods extends Component {
             <h3>Database functions</h3>
             <div>
                 <h4>Data api</h4>
-                <button onClick={() => actions.DataApi_update('events')}>Update Events</button><br/>
-                <button onClick={() => actions.DataApi_update('subevents')}>Update SubEvents</button><br/>
-                <button onClick={() => actions.DataApi_update('markets')}>Update Markets</button><br/>
-                <button onClick={() => actions.DataApi_update('bets')}>Update Bets</button><br/>
+                <button onClick={() => actions.DataApi_update('events')}>Update Events</button>
                 <br/>
-                <div>Status ({status}): {data}</div>
+                <button onClick={() => actions.DataApi_update('subevents')}>Update SubEvents</button>
+                <br/>
+                <button onClick={() => actions.DataApi_update('markets')}>Update Markets</button>
+                <br/>
+                <button onClick={() => actions.DataApi_update('bets')}>Update Bets</button>
+                <br/>
             </div>
+            <div>
+                <h4>Keywords</h4>
+                <button onClick={() => actions.Keywords_update('')}>Update All keywords</button>
+                <br/>
+                <button onClick={() => actions.Keywords_update('teams')}>Update Teams Keywords</button>
+                <br/>
+                <button onClick={() => actions.Keywords_update('players')}>Update Players Keywords</button>
+                <br/>
+                <button onClick={() => actions.Keywords_update('leagues')}>Update Leagues Keywords</button>
+                <br/>
+            </div>
+            <div>Status ({status}): {data}</div>
         </div>)
     }
 }

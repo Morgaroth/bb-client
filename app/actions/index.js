@@ -259,3 +259,12 @@ export function DataApi_update(part) {
             .then(resp => dispatch(loaded(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
     }
 }
+
+export function Keywords_update(part) {
+    return (dispatch, getState) => {
+        dispatch(loading(types.LOADING_INFO_DATA_ACTION, {name: part}));
+        return fetch(getState().auth.url + ':8001/oddschecker/data/keywords/' + part, bbOpts(getState(), {method: 'PUT'}))
+            .then(response => response.text())
+            .then(resp => dispatch(loaded(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
+    }
+}
