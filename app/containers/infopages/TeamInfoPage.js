@@ -51,7 +51,7 @@ class TeamInfoPage extends Component {
 
     render() {
         const {data} = this.props;
-        if (data.results == undefined && data.nextEvent == undefined && data.upcomingEvents.length == 0) {
+        if (data.results == undefined && data.nextEvent == undefined && (data.upcomingEvents == undefined || data.upcomingEvents.length == 0)) {
             return this.renderInvalid()
         }
         return this.renderValid()
