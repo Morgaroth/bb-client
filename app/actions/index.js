@@ -222,16 +222,16 @@ export function fetchRoomsFromServer() {
     }
 }
 
-function loading(type, more) {
-    return merge({type: type}, more || {})
-}
-
-function loaded(type, more) {
+function load(type, more) {
     return merge({type: type}, more || {})
 }
 
 export function loadingServerHealth() {
-    return loading(types.LOADING_SERVER_HEALTH)
+    return load(types.LOADING_SERVER_HEALTH)
+}
+
+export function loadBetBrowser() {
+    return load(types.LOADED_BET_BROWSER)
 }
 
 export function handleServerHealth(data) {
@@ -248,23 +248,23 @@ export function loadServerHealth() {
 }
 
 export function loadDatabaseActions() {
-    return loading(types.SHOW_INFO_DATA_PANEL)
+    return load(types.SHOW_INFO_DATA_PANEL)
 }
 
 export function DataApi_update(part) {
     return (dispatch, getState) => {
-        dispatch(loading(types.LOADING_INFO_DATA_ACTION, {name: part}));
+        dispatch(load(types.LOADING_INFO_DATA_ACTION, {name: part}));
         return fetch(getState().auth.url + ':8001/oddschecker/db-manager/update/' + part, bbOpts(getState(), {method: 'PUT'}))
             .then(response => response.text())
-            .then(resp => dispatch(loaded(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
+            .then(resp => dispatch(load(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
     }
 }
 
 export function Keywords_update(part) {
     return (dispatch, getState) => {
-        dispatch(loading(types.LOADING_INFO_DATA_ACTION, {name: part}));
+        dispatch(load(types.LOADING_INFO_DATA_ACTION, {name: part}));
         return fetch(getState().auth.url + ':8001/oddschecker/data/keywords/' + part, bbOpts(getState(), {method: 'PUT'}))
             .then(response => response.text())
-            .then(resp => dispatch(loaded(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
+            .then(resp => dispatch(load(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
     }
 }

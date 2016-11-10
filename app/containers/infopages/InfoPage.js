@@ -6,6 +6,7 @@ import TeamInfoPage from "./TeamInfoPage";
 import DateInfoPage from "./DateInfoPage";
 import BetInfoPage from "./BetInfoPage";
 import DataBaseMethods from "../additional/DataBaseMethods";
+import BetBrowser from "../additional/BetBrowser";
 import LivePromptPage from "../additional/LivePromptPage";
 import ServerHealth from "../additional/ServerHealth";
 import DateRangeInfoPage from "./DateRangeInfoPage";
@@ -24,6 +25,8 @@ class InfoPage extends Component {
                 return <DateRangeInfoPage data={data}/>;
             case "live-prompt":
                 return <LivePromptPage/>;
+            case "bet-browser":
+                return <BetBrowser/>;
             case "server-health":
                 return <ServerHealth/>;
             case "database-actions":
