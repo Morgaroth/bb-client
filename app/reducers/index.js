@@ -12,6 +12,12 @@ if (window.location.href.startsWith("http://localhost") || window.location.href.
     serverUrl = "http://dev-root-betblocks-01.gp-cloud.com";
 } else {
     serverUrl = window.location.href;
+    if (serverUrl.endsWith('/') || serverUrl.endsWith('/') || serverUrl.endsWith('/')) {
+        serverUrl = serverUrl.slice(0, -1)
+    }
+    if (serverUrl.endsWith(':8008') || serverUrl.endsWith(':8080') || serverUrl.endsWith(':5000')) {
+        serverUrl = serverUrl.slice(0, -5)
+    }
 }
 
 function getEnv(url) {
