@@ -6,11 +6,28 @@ import {uuid} from "../../commons/"
 import dateFormat from 'dateformat'
 
 class BetBrowser extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {text: ''};
+    }
+
+    updateTextInState() {
+        var value = document.getElementById("bet.browser.view.input").value;
+        if (value != this.state.text) {
+            this.state.text = value;
+            this.props.actions.acquireBetBrowser(this.props.data.blocks, this.state.text);
+        }
+    };
+
     render() {
         const {actions, data, status} = this.props;
 
         return (<div>
             <h3>Bet browser</h3>
+            <div>Status: {status}</div>
+            <input id="bet.browser.view.input" type="string" placeholder="Write message"/>
+            <button onClick={this.updateTextInState.bind(this)}>Check!</button>
+
         </div>)
     }
 }

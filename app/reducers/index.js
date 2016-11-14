@@ -92,8 +92,12 @@ function infoPage(state = {type: null, data: null, qprop: null}, action) {
             return merge(state, {type: 'live-prompt', suggestions: action.data.suggestions, text: action.data.rawText, data: action.data, status: 'OK'});
         case types.LOADING_SERVER_HEALTH:
             return merge(state, {type: 'server-health', data: {health: []}, status: 'fetching'});
+        case types.LOAD_BET_BROWSER_WINDOW:
+            return merge(state, {type: 'bet-browser', data: {}, status: 'Ready'});
+        case types.LOADING_BET_BROWSER:
+            return merge(state, {type: 'bet-browser', status: 'fetching'});
         case types.LOADED_BET_BROWSER:
-            return merge(state, {type: 'bet-browser', data: {}, status: 'OK'});
+            return merge(state, {type: 'bet-browser', data: action.data, status: 'OK'});
         case types.LOADED_SERVER_HEALTH:
             return merge(state, {type: 'server-health', data: action.data, status: 'OK'});
         case types.SHOW_INFO_DATA_PANEL:

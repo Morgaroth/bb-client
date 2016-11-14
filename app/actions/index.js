@@ -3,6 +3,11 @@ import fetch from "isomorphic-fetch";
 import {merge} from "../commons/index";
 import {SUGGESTIONS_TUNNEL} from "../constants/index";
 
+
+function load(type, more) {
+    return merge({type: type}, more || {})
+}
+
 function bbOpts(state, oth) {
     return merge({
         headers: {
@@ -12,6 +17,14 @@ function bbOpts(state, oth) {
         },
         mode: 'cors'
     }, oth || {})
+}
+
+function BBPost(state, url, data) {
+    var moreOpts = {method: 'POST'};
+    if (data != undefined && data != null) {
+        moreOpts.body = JSON.stringify(data);
+    }
+    return fetch(state.auth.url + ':8001' + url, bbOpts(state, moreOpts))
 }
 
 export function disconnected() {
@@ -117,10 +130,8 @@ export function sendMsgForProgress(text) {
     return (dispatch, getState) => {
         dispatch({type: types.LOADING_PROP_SUGGESTIONS});
         if (SUGGESTIONS_TUNNEL == 'http') {
-            return fetch(getState().auth.url + ':8001/prompt/', bbOpts(getState(), {
-                method: 'POST',
-                body: JSON.stringify({message: text})
-            })).then(response => response.json())
+            return BBPost(getState(), '/prompt/', {message: text})
+                .then(response => response.json())
                 .then(json => dispatch(updateSuggestions(json)));
         } else if (SUGGESTIONS_TUNNEL == 'socketio') {
             dispatch({type: types.FIND_SUGESTIONS, message: text});
@@ -222,16 +233,22 @@ export function fetchRoomsFromServer() {
     }
 }
 
-function load(type, more) {
-    return merge({type: type}, more || {})
+
+export function loadBetBrowser() {
+    return load(types.LOAD_BET_BROWSER_WINDOW)
+}
+
+export function acquireBetBrowser(blocks, text) {
+    return (dispatch, getState) => {
+        dispatch(load(types.LOADING_BET_BROWSER));
+        return BBPost(getState(), '/oddschecker/bet-browser', {query: text, blocks: blocks})
+            .then(response => response.json())
+            .then(resp => dispatch(load(types.LOADED_BET_BROWSER, {data: resp})));
+    }
 }
 
 export function loadingServerHealth() {
     return load(types.LOADING_SERVER_HEALTH)
-}
-
-export function loadBetBrowser() {
-    return load(types.LOADED_BET_BROWSER)
 }
 
 export function handleServerHealth(data) {

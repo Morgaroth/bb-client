@@ -20,7 +20,7 @@ class LivePromptPage extends Component {
         var value = document.getElementById("live.prompt.view.input").value;
         if (value != this.state.text) {
             if (value.length > 0) {
-                this.props.actions.sendMsgForProgress(value);
+                this.props.actions.updateTextInState(value);
             }
             this.state.text = value;
         }
