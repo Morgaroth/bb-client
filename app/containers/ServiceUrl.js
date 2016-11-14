@@ -40,7 +40,7 @@ class ServiceUrl extends Component {
                 <button onClick={() => onChange("http://prod-root-betblocks-01.gp-cloud.com")}>Set to PROD</button>
                 <button onClick={this.setUrl.bind(this)}>Set to:</button>
                 <input id="serviceurl.input" type="url" defaultValue={serviceUrl}
-                       onkeyup={this.handleEnter.bind(this)}/>
+                       onKeyUp={this.handleEnter.bind(this)}/>
             </div>
         )
     }

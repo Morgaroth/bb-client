@@ -25,17 +25,17 @@ function getEnv(url) {
         case 'http://192.168.33.6':
             return 'vagrant';
         default:
-            if (url.startsWith('http://')) {
-                if (url.endsWith(':8008') || url.endsWith(':8080') || url.endsWith(':5000')) {
-                    return url.slice(8, -5)
-                }
-                return url.slice(8)
-            } else {
-                if (url.endsWith(':8008') || url.endsWith(':8080') || url.endsWith(':5000')) {
-                    return url.slice(0, -5)
-                }
-                return url
+            let result = url;
+            if (result.startsWith('http://')) {
+                result = result.slice(8)
             }
+            if (result.endsWith('/') || result.endsWith('/') || result.endsWith('/')) {
+                result = result.slice(0, -1)
+            }
+            if (result.endsWith(':8008') || result.endsWith(':8080') || result.endsWith(':5000')) {
+                result = result.slice(0, -5)
+            }
+            return result
     }
 }
 
