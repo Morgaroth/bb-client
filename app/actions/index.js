@@ -4,7 +4,7 @@ import {merge} from "../commons/index";
 import {SUGGESTIONS_TUNNEL} from "../constants/index";
 
 
-function load(type, more) {
+function action(type, more) {
     return merge({type: type}, more || {})
 }
 
@@ -37,6 +37,10 @@ export function connected() {
 
 export function connecting() {
     console.log("SOCKETIO connecting")
+}
+
+export function toggleShowingState() {
+    return action(types.TOGGLE_APP_STATE);
 }
 
 export function connect(url, token) {
@@ -237,22 +241,22 @@ export function fetchRoomsFromServer() {
 
 export function loadBetBrowser() {
     return (dispatch) => {
-        dispatch(load(types.LOAD_BET_BROWSER_WINDOW));
+        dispatch(action(types.LOAD_BET_BROWSER_WINDOW));
         dispatch(acquireBetBrowser([], ''));
     }
 }
 
 export function acquireBetBrowser(blocks, text) {
     return (dispatch, getState) => {
-        dispatch(load(types.LOADING_BET_BROWSER));
+        dispatch(action(types.LOADING_BET_BROWSER));
         return BBPost(getState(), '/oddschecker/bet-browser', {query: text, blocks: blocks})
             .then(response => response.json())
-            .then(resp => dispatch(load(types.LOADED_BET_BROWSER, {data: resp})));
+            .then(resp => dispatch(action(types.LOADED_BET_BROWSER, {data: resp})));
     }
 }
 
 export function loadingServerHealth() {
-    return load(types.LOADING_SERVER_HEALTH)
+    return action(types.LOADING_SERVER_HEALTH)
 }
 
 export function handleServerHealth(data) {
@@ -269,23 +273,23 @@ export function loadServerHealth() {
 }
 
 export function loadDatabaseActions() {
-    return load(types.SHOW_INFO_DATA_PANEL)
+    return action(types.SHOW_INFO_DATA_PANEL)
 }
 
 export function DataApi_update(part) {
     return (dispatch, getState) => {
-        dispatch(load(types.LOADING_INFO_DATA_ACTION, {name: part}));
+        dispatch(action(types.LOADING_INFO_DATA_ACTION, {name: part}));
         return fetch(getState().auth.url + ':8001/oddschecker/db-manager/update/' + part, bbOpts(getState(), {method: 'PUT'}))
             .then(response => response.text())
-            .then(resp => dispatch(load(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
+            .then(resp => dispatch(action(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
     }
 }
 
 export function Keywords_update(part) {
     return (dispatch, getState) => {
-        dispatch(load(types.LOADING_INFO_DATA_ACTION, {name: part}));
+        dispatch(action(types.LOADING_INFO_DATA_ACTION, {name: part}));
         return fetch(getState().auth.url + ':8001/oddschecker/data/keywords/' + part, bbOpts(getState(), {method: 'PUT'}))
             .then(response => response.text())
-            .then(resp => dispatch(load(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
+            .then(resp => dispatch(action(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
     }
 }

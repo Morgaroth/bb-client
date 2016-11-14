@@ -139,6 +139,16 @@ function infoPage(state = {type: null, data: null, qprop: null}, action) {
     }
 }
 
-const rootReducer = combineReducers({auth, rooms, infoPage,});
+function appState(state = {enabled: false}, action) {
+    switch (action.type) {
+        case types.TOGGLE_APP_STATE:
+            return {enabled: !state.enabled};
+        default:
+            return state
+    }
+}
+
+
+const rootReducer = combineReducers({auth, rooms, infoPage, appState,});
 
 export default rootReducer
