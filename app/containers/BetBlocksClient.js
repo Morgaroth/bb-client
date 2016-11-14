@@ -24,7 +24,7 @@ class BetBlocksClient extends Component {
         } else if (!needsLogin) {
             return <div>
                 <AppActions cls="col-md-12"/>
-                <InfoPage cls="col-md-4"/>
+                <InfoPage cls="col-md-8"/>
             </div>;
         } else {
             return <a>Waiting for rooms list...</a>

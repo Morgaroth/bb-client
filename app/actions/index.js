@@ -46,6 +46,7 @@ export function connect(url, token) {
         token: token
     }
 }
+
 export function messageReceived(data) {
     return {
         type: types.UPDATE_ROOM_HISTORY,
@@ -235,7 +236,10 @@ export function fetchRoomsFromServer() {
 
 
 export function loadBetBrowser() {
-    return load(types.LOAD_BET_BROWSER_WINDOW)
+    return (dispatch) => {
+        dispatch(load(types.LOAD_BET_BROWSER_WINDOW));
+        dispatch(acquireBetBrowser([], ''));
+    }
 }
 
 export function acquireBetBrowser(blocks, text) {

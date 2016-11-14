@@ -19,15 +19,61 @@ class BetBrowser extends Component {
         }
     };
 
+    handleBlockClick(e) {
+        var blockData = JSON.parse(e.target.getAttributeNode('alt').value);
+        let newBlocks = JSON.parse(JSON.stringify(this.props.data.blocks));
+        newBlocks.push(blockData);
+        this.props.actions.acquireBetBrowser(newBlocks, '')
+    }
+
     render() {
-        const {actions, data, status} = this.props;
+        const {data, status} = this.props;
+
+        var leftSide = <a>No data, waiting...</a>;
+        var rightSide = <a>No data, waiting...</a>;
+        if (data.leftSide != undefined) {
+            leftSide = [];
+            for (let row of data.leftSide.reverse()) {
+                leftSide.push(<div key={'bb-' + uuid()} kind={row.kind}>{row.text}</div>)
+            }
+        }
+        if (data.rightSide != undefined) {
+            rightSide = [];
+            for (let group of data.rightSide.reverse()) {
+                let rows = [];
+                for (let row of group.elements) {
+                    let blocks = [];
+                    for (let block of row.blocks) {
+                        blocks.push(<div style={{display: 'inline'}} key={'bbrowblock' + uuid()}
+                                         kind={block.kind}
+                                         alt={JSON.stringify(block)}
+                                         onClick={this.handleBlockClick.bind(this)}
+                        >{block.text}</div>)
+                    }
+                    rows.push(<div key={'bbgrrow' + uuid()}>{blocks}</div>)
+                }
+                rightSide.push(<div key={'bbgr-' + uuid()} className="well well-sm" style={{padding: 3, margin: 0}}>
+                    {rows}
+                    <div style={{fontSize: 10}}>{group.title}</div>
+                </div>)
+            }
+        }
 
         return (<div>
             <h3>Bet browser</h3>
             <div>Status: {status}</div>
             <input id="bet.browser.view.input" type="string" placeholder="Write message"/>
             <button onClick={this.updateTextInState.bind(this)}>Check!</button>
-
+            <div>
+                <div className="col-md-3">
+                    <h5>Left Panel</h5>
+                    {leftSide}
+                </div>
+                <div className="col-md-5">
+                    <h5>Right Panel</h5>
+                    {rightSide}
+                </div>
+            </div>
         </div>)
     }
 }
@@ -35,13 +81,14 @@ class BetBrowser extends Component {
 BetBrowser.propTypes = {
     actions: PropTypes.object.isRequired,
     result: PropTypes.string,
+    data: PropTypes.object,
     status: PropTypes.string,
     // cls: PropTypes.string,
 };
 
 function mapStateToProps(state) {
     return {
-        data: state.infoPage.data || "",
+        data: state.infoPage.data || {},
         status: state.infoPage.status || "",
         // history: state.rooms.history,
     };
