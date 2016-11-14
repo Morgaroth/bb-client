@@ -19,10 +19,17 @@ class BetBrowser extends Component {
         }
     };
 
-    handleBlockClick(e) {
+    handleRightPanelClick(e) {
         var blockData = JSON.parse(e.target.getAttributeNode('alt').value);
         let newBlocks = JSON.parse(JSON.stringify(this.props.data.blocks));
-        newBlocks.push(blockData);
+        newBlocks.unshift(blockData);
+        this.props.actions.acquireBetBrowser(newBlocks, '')
+    }
+
+    handleLeftPanelClick(e) {
+        var blockData = JSON.parse(e.target.getAttributeNode('alt').value);
+        let newBlocks = JSON.parse(JSON.stringify(this.props.data.blocks));
+        newBlocks[0] = blockData;
         this.props.actions.acquireBetBrowser(newBlocks, '')
     }
 
@@ -34,7 +41,12 @@ class BetBrowser extends Component {
         if (data.leftSide != undefined) {
             leftSide = [];
             for (let row of data.leftSide.reverse()) {
-                leftSide.push(<div key={'bb-' + uuid()} kind={row.kind}>{row.text}</div>)
+                leftSide.push(
+                    <div key={'bb-' + uuid()}
+                         alt={JSON.stringify(row)}
+                         onClick={this.handleLeftPanelClick.bind(this)}
+                    >{row.text}</div>
+                )
             }
         }
         if (data.rightSide != undefined) {
@@ -44,13 +56,14 @@ class BetBrowser extends Component {
                 for (let row of group.elements) {
                     let blocks = [];
                     for (let block of row.blocks) {
-                        blocks.push(<div style={{display: 'inline'}} key={'bbrowblock' + uuid()}
-                                         kind={block.kind}
-                                         alt={JSON.stringify(block)}
-                                         onClick={this.handleBlockClick.bind(this)}
-                        >{block.text}</div>)
+                        blocks.push(
+                            <div style={{display: 'inline'}} key={'bbrowblock' + uuid()}
+                                 alt={JSON.stringify(block)}
+                                 onClick={this.handleRightPanelClick.bind(this)}
+                            >{block.text}</div>
+                        )
                     }
-                    rows.push(<div key={'bbgrrow' + uuid()}>{blocks}</div>)
+                    rows.push(<div key={'bbgrrow-' + uuid()}>{blocks}</div>)
                 }
                 rightSide.push(<div key={'bbgr-' + uuid()} className="well well-sm" style={{padding: 3, margin: 0}}>
                     {rows}
