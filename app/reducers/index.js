@@ -8,6 +8,10 @@ if (window.location.href.startsWith("http://localhost") || window.location.href.
     serverUrl = "http://192.168.33.6";
 } else if (window.location.href.startsWith("http://prod-root-betblocks")) {
     serverUrl = "http://prod-root-betblocks-01.gp-cloud.com";
+} else if (window.location.href.startsWith("http://dev-root-betblocks")) {
+    serverUrl = "http://dev-root-betblocks-01.gp-cloud.com";
+} else {
+    serverUrl = window.location.href;
 }
 
 function getEnv(url) {
@@ -18,8 +22,20 @@ function getEnv(url) {
             return 'prod';
         case 'http://localhost':
             return 'local';
-        default:
+        case 'http://192.168.33.6':
             return 'vagrant';
+        default:
+            if (url.startsWith('http://')) {
+                if (url.endsWith(':8008') || url.endsWith(':8080') || url.endsWith(':5000')) {
+                    return url.slice(8, -5)
+                }
+                return url.slice(8)
+            } else {
+                if (url.endsWith(':8008') || url.endsWith(':8080') || url.endsWith(':5000')) {
+                    return url.slice(0, -5)
+                }
+                return url
+            }
     }
 }
 
@@ -89,7 +105,13 @@ function infoPage(state = {type: null, data: null, qprop: null}, action) {
         case types.LOADING_PROP_SUGGESTIONS:
             return merge(state, {type: 'live-prompt', status: 'loading'});
         case types.LOADED_PROP_SUGGESTIONS:
-            return merge(state, {type: 'live-prompt', suggestions: action.data.suggestions, text: action.data.rawText, data: action.data, status: 'OK'});
+            return merge(state, {
+                type: 'live-prompt',
+                suggestions: action.data.suggestions,
+                text: action.data.rawText,
+                data: action.data,
+                status: 'OK'
+            });
         case types.LOADING_SERVER_HEALTH:
             return merge(state, {type: 'server-health', data: {health: []}, status: 'fetching'});
         case types.LOAD_BET_BROWSER_WINDOW:

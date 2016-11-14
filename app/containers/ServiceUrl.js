@@ -11,9 +11,19 @@ class ServiceUrl extends Component {
     }
 
     setUrl() {
-        const a = document.getElementById("serviceurl.input");
-        const value = a.value;
+        let a = document.getElementById("serviceurl.input");
+        let value = a.value;
         if (value.length > 0 && value !== this.props.serviceUrl) {
+            if (!value.startsWith("http://")) {
+                value = "http://" + value
+            }
+            if (value.endsWith("/")) {
+                value = value.slice(0, -1)
+            }
+            if (value.endsWith(":8001") || value.endsWith(":8000")) {
+                value = value.slice(0, -5)
+            }
+
             this.props.onChange(value)
         }
     };

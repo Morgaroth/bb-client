@@ -11,10 +11,14 @@ class LoginPanel extends Component {
     }
 
     setUrl() {
-        const a = document.getElementById("login.input");
-        const value = a.value;
+        let a = document.getElementById("login.input");
+        let value = a.value;
         // TODO add more validation
         if (value.length == 12) {
+            this.props.onChange(value)
+        }
+        if (value.length == 9) {
+            value = "+48" + value;
             this.props.onChange(value)
         }
     };
