@@ -71,7 +71,7 @@ export function fetchInfoPage(type, qprop) {
     console.log('loading', type, 'info page', qprop);
     return (dispatch, getState) => {
         dispatch({type: types.LOADING_INFO_PAGE, page: type});
-        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/' + type + '/' + qprop.name, bbOpts(getState()))
+        return fetch(getState().auth.url + ':8001/betting/info-pages/' + type + '/' + qprop.name, bbOpts(getState()))
             .then(response => response.json())
             .then(json => dispatch({type: types.INFO_PAGE, page: type, qprop: qprop, data: json}));
     }
@@ -84,7 +84,7 @@ export function fetchBetInfoPage(messageOrBetId) {
         if (typeof(messageOrBetId) == 'object') {
             q = 'message-id=' + messageOrBetId.messageId;
         }
-        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/bet?' + q, bbOpts(getState()))
+        return fetch(getState().auth.url + ':8001/betting/info-pages/bet?' + q, bbOpts(getState()))
             .then(response => response.json())
             .then(json => dispatch({type: types.INFO_PAGE, page: 'bet', qprop: messageOrBetId, data: {options: json}}));
     }
@@ -93,7 +93,7 @@ export function fetchBetInfoPage(messageOrBetId) {
 export function fetchDateRangeInfoPage(info) {
     console.log('loading date-range info page', info);
     return (dispatch, getState) => {
-        return fetch(getState().auth.url + ':8001/oddschecker/info-pages/date-range?date-start=' + info.dateStart + '&date-end=' + info.dateEnd, bbOpts(getState()))
+        return fetch(getState().auth.url + ':8001/betting/info-pages/date-range?date-start=' + info.dateStart + '&date-end=' + info.dateEnd, bbOpts(getState()))
             .then(response => response.json())
             .then(json => dispatch({
                 type: types.INFO_PAGE,
@@ -249,7 +249,7 @@ export function loadBetBrowser() {
 export function acquireBetBrowser(blocks, text) {
     return (dispatch, getState) => {
         dispatch(action(types.LOADING_BET_BROWSER));
-        return BBPost(getState(), '/oddschecker/bet-browser', {query: text, blocks: blocks})
+        return BBPost(getState(), '/betting/bet-browser', {query: text, blocks: blocks})
             .then(response => response.json())
             .then(resp => dispatch(action(types.LOADED_BET_BROWSER, {data: resp})));
     }
@@ -279,7 +279,7 @@ export function loadDatabaseActions() {
 export function DataApi_update(part) {
     return (dispatch, getState) => {
         dispatch(action(types.LOADING_INFO_DATA_ACTION, {name: part}));
-        return fetch(getState().auth.url + ':8001/oddschecker/db-manager/update/' + part, bbOpts(getState(), {method: 'PUT'}))
+        return fetch(getState().auth.url + ':8001/betting/db-manager/update/' + part, bbOpts(getState(), {method: 'PUT'}))
             .then(response => response.text())
             .then(resp => dispatch(action(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
     }
@@ -288,7 +288,7 @@ export function DataApi_update(part) {
 export function Keywords_update(part) {
     return (dispatch, getState) => {
         dispatch(action(types.LOADING_INFO_DATA_ACTION, {name: part}));
-        return fetch(getState().auth.url + ':8001/oddschecker/data/keywords/' + part, bbOpts(getState(), {method: 'PUT'}))
+        return fetch(getState().auth.url + ':8001/betting/data/keywords/' + part, bbOpts(getState(), {method: 'PUT'}))
             .then(response => response.text())
             .then(resp => dispatch(action(types.LOADED_INFO_DATA_ACTION, {data: part + ' ' + resp})));
     }
