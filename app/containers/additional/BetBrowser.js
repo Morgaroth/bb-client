@@ -38,9 +38,9 @@ class BetBrowser extends Component {
 
         var leftSide = <a>No data, waiting...</a>;
         var rightSide = <a>No data, waiting...</a>;
-        if (data.leftSide != undefined) {
+        if (data.section != undefined) {
             leftSide = [];
-            for (let row of data.leftSide) {
+            for (let row of data.section) {
                 leftSide.push(
                     <div key={'bb-' + uuid()}
                          alt={JSON.stringify(row)}
@@ -49,9 +49,9 @@ class BetBrowser extends Component {
                 )
             }
         }
-        if (data.rightSide != undefined) {
+        if (data.subSection != undefined) {
             rightSide = [];
-            for (let group of data.rightSide) {
+            for (let group of data.subSection) {
                 let rows = [];
                 for (let row of group.elements) {
                     let blocks = [];
