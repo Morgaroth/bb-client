@@ -18,8 +18,8 @@ class BetBlocksClient extends Component {
             return <div>
                 <AppActions cls="col-md-12"/>
                 <RoomsList cls='col-md-2'/>
-                <RoomView cls='col-md-5'/>
-                <InfoPage cls="col-md-4"/>
+                <RoomView cls='col-md-4'/>
+                <InfoPage cls="col-md-6"/>
             </div>;
         } else if (!needsLogin) {
             return <div>
