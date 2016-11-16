@@ -34,7 +34,7 @@ App.propTypes = {
     serviceUrl: PropTypes.string.isRequired,
     actions: PropTypes.object.isRequired,
     state: PropTypes.object.isRequired,
-    appStateEnabled: PropTypes.boolean,
+    appStateEnabled: PropTypes.bool,
 };
 
 function mapDispatchToProps(dispatch) {

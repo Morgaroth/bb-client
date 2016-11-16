@@ -11,6 +11,12 @@ class BetBrowser extends Component {
         this.state = {text: ''};
     }
 
+    handleEnter(e) {
+        if (e.keyCode === 13) {
+            this.updateTextInState();
+        }
+    }
+
     updateTextInState() {
         var value = document.getElementById("bet.browser.view.input").value;
         if (value != this.state.text) {
@@ -19,63 +25,52 @@ class BetBrowser extends Component {
         }
     };
 
-    handleRightPanelClick(e) {
+    handleElementSelected(e) {
         var blockData = JSON.parse(e.target.getAttributeNode('alt').value);
         let newBlocks = JSON.parse(JSON.stringify(this.props.data.blocks));
         newBlocks.unshift(blockData);
         this.props.actions.acquireBetBrowser(newBlocks, '')
     }
 
-    handleLeftPanelClick(e) {
-        var blockData = JSON.parse(e.target.getAttributeNode('alt').value);
-        let newBlocks = JSON.parse(JSON.stringify(this.props.data.blocks));
-        newBlocks[0] = blockData;
-        this.props.actions.acquireBetBrowser(newBlocks, '')
-    }
-
-    render() {
-        const {data, status} = this.props;
-
-        var leftSide = <a>No data, waiting...</a>;
-        var rightSide = <a>No data, waiting...</a>;
-        if (data.section != undefined) {
-            leftSide = [];
-            for (let row of data.section) {
-                leftSide.push(
-                    <div key={'bb-' + uuid()}
-                         alt={JSON.stringify(row)}
-                         onClick={this.handleLeftPanelClick.bind(this)}
-                    >{row.text}</div>
-                )
-            }
-        }
-        if (data.subSection != undefined) {
-            rightSide = [];
-            for (let group of data.subSection) {
+    renderPane(data, alt) {
+        if (data != undefined) {
+            let groups = [];
+            for (let group of data) {
                 let rows = [];
                 for (let row of group.elements) {
                     let blocks = [];
                     for (let block of row.blocks) {
                         blocks.push(
-                            <div style={{display: 'inline'}} key={'bbrowblock' + uuid()}
+                            <div style={{display: 'inline', marginRight: 10}} key={'bbrowblock' + uuid()}
                                  alt={JSON.stringify(block)}
-                                 onClick={this.handleRightPanelClick.bind(this)}
+                                 onClick={this.handleElementSelected.bind(this)}
                             >{block.text}</div>
                         )
                     }
                     rows.push(<div key={'bbgrrow-' + uuid()}>{blocks}</div>)
                 }
-                rightSide.push(<div key={'bbgr-' + uuid()} className="well well-sm" style={{padding: 3, margin: 0}}>
+                groups.push(<div key={'bbgr-' + uuid()} className="well well-sm" style={{padding: 3, margin: 0}}>
                     {rows}
                     <div style={{fontSize: 10}}>{group.title}</div>
                 </div>)
             }
+            return groups
+        } else {
+            return alt
         }
+    }
+
+    render() {
+        const {data, status} = this.props;
+
+        var leftSide = this.renderPane(data.section, <a>No data, waiting...</a>);
+        var rightSide = this.renderPane(data.subSection, <a>No data, waiting...</a>);
 
         return (<div>
             <h3>Bet browser</h3>
             <div>Status: {status}</div>
-            <input id="bet.browser.view.input" type="string" placeholder="Write message"/>
+            <input id="bet.browser.view.input" type="string" placeholder="Write message"
+                   onKeyUp={this.handleEnter.bind(this)}/>
             <button onClick={this.updateTextInState.bind(this)}>Check!</button>
             <div>
                 <div className="col-md-3">
