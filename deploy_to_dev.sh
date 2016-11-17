@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export DOCKER_HOST=tcp://192.168.33.6:2375
+export DOCKER_HOST=tcp://dev-root-betblocks-01.gp-cloud.com:2375
 set -e
 if [ -z ${PROJECTS_DIRECTORY+x} ]; then
     echo "PROJECTS_DIRECTORY env is unset"
