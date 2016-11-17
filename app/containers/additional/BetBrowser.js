@@ -2,8 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../../actions";
-import {uuid} from "../../commons/"
-import dateFormat from 'dateformat'
+import {uuid} from "../../commons/";
 
 class BetBrowser extends Component {
     handleEnter(e) {
@@ -25,7 +24,7 @@ class BetBrowser extends Component {
     }
 
     renderPane(data, alt, shouldHighlight = false) {
-        if (data != undefined) {
+        if (data != undefined && data.length > 0) {
             let groups = [];
             data[data.length - 1].highlight = true;
             for (let group of data) {
@@ -64,6 +63,27 @@ class BetBrowser extends Component {
         }
     }
 
+    scrollDownRight() {
+        this.scrollRight.scrollTop = this.scrollRight.scrollHeight;
+    }
+
+    scrollDownLeft() {
+        this.scrollLeft.scrollTop = this.scrollLeft.scrollHeight;
+    }
+
+    scrollDownShit() {
+        this.scrollDownLeft();
+        this.scrollDownRight()
+    }
+
+    componentDidMount() {
+        this.scrollDownShit();
+    }
+
+    componentDidUpdate() {
+        this.scrollDownShit()
+    }
+
     render() {
         const {data, status} = this.props;
 
@@ -78,12 +98,16 @@ class BetBrowser extends Component {
             <button onClick={this.fireSearch.bind(this)}>Check!</button>
             <div>
                 <div className="col-md-3">
-                    <h5>Left Panel</h5>
-                    {leftSide}
+                    <h5 onClick={() => this.scrollDownLeft()}>Left Panel</h5>
+                    <div ref={(ref) => this.scrollLeft = ref}
+                         style={{overflow: 'auto', maxHeight: '200px'}}
+                    >{leftSide}</div>
                 </div>
                 <div className="col-md-5">
-                    <h5>Right Panel</h5>
-                    {rightSide}
+                    <h5 onClick={() => this.scrollDownRight()}>Right Panel</h5>
+                    <div ref={(ref) => this.scrollRight = ref}
+                         style={{overflow: 'auto', maxHeight: '200px'}}
+                    >{rightSide}</div>
                 </div>
             </div>
         </div>)
