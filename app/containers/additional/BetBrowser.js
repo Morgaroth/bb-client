@@ -19,7 +19,9 @@ class BetBrowser extends Component {
     handleElementSelected(e) {
         let blockData = JSON.parse(e.target.getAttributeNode('alt').value);
         let newBlocks = JSON.parse(JSON.stringify(this.props.data.blocks));
-        newBlocks.unshift(blockData);
+        for (let b of blockData) {
+            newBlocks.unshift(b);
+        }
         this.props.actions.acquireBetBrowser(newBlocks, '')
     }
 
@@ -37,14 +39,14 @@ class BetBrowser extends Component {
                     }
                     let blocks = [];
                     for (let block of row.blocks) {
-                        if (["odds", "place-bet", "coupon"].indexOf(block.kind) >= 0) {
+                        if (["bet", "place-bet", "coupon"].indexOf(block.kind) >= 0) {
                             cssClasses = "label label-success"
                         }
                         blocks.push(
                             <div className={cssClasses}
                                  style={{display: 'inline', padding: 3, margin: 0, marginRight: 5}}
                                  key={'bbrowblock' + uuid()}
-                                 alt={JSON.stringify(block)}
+                                 alt={JSON.stringify(row.blocks)}
                                  title={block.kind + ' ' + (block.info || 'no-info') + ' ' + (block.externalId || 'no-ex-id')}
                                  onClick={this.handleElementSelected.bind(this)}
                             >{block.text}</div>
@@ -60,6 +62,29 @@ class BetBrowser extends Component {
             return groups
         } else {
             return alt
+        }
+    }
+
+    renderBlocksList(blocksData) {
+        if (blocksData != undefined) {
+            let blocks = [];
+            let data = JSON.parse(JSON.stringify(blocksData)).reverse();
+            for (let block of data) {
+                let cssClasses = "label label-default";
+                if (["bet", "place-bet", "coupon"].indexOf(block.kind) >= 0) {
+                    cssClasses = "label label-success"
+                }
+                blocks.push(
+                    <div className={cssClasses}
+                         style={{display: 'inline', padding: 3, margin: 0, marginRight: 5}}
+                         key={'bbelem-' + uuid()}
+                         title={block.kind + ' ' + (block.info || 'no-info') + ' ' + (block.externalId || 'no-ex-id')}
+                    >{block.text}</div>
+                )
+            }
+            return blocks;
+        } else {
+            return undefined;
         }
     }
 
@@ -85,10 +110,11 @@ class BetBrowser extends Component {
     }
 
     render() {
-        const {data, status} = this.props;
+        const {actions, data, status} = this.props;
 
         let leftSide = this.renderPane(data.section, <a>No data, waiting...</a>, true);
         let rightSide = this.renderPane(data.subSection, <a>No data, waiting...</a>);
+        let blocks = this.renderBlocksList(data.normalized);
 
         return (<div>
             <h3>Bet browser</h3>
@@ -96,6 +122,11 @@ class BetBrowser extends Component {
             <input id="bet.browser.view.input" type="string" placeholder="Write message"
                    onKeyUp={this.handleEnter.bind(this)}/>
             <button onClick={this.fireSearch.bind(this)}>Check!</button>
+            <br/>
+            <button className="btn btn-danger" style={{margin: 3}}
+                    onClick={() => actions.acquireBetBrowser(this.props.data.blocks.slice(1), '')}>Back browser
+            </button>
+            <div>{blocks}</div>
             <div>
                 <div className="col-md-3">
                     <h5 onClick={() => this.scrollDownLeft()}>Left Panel</h5>

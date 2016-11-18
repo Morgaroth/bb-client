@@ -20,7 +20,7 @@ function bbOpts(state, oth) {
 }
 
 function BBPost(state, url, data) {
-    var moreOpts = {method: 'POST'};
+    let moreOpts = {method: 'POST'};
     if (data != undefined && data != null) {
         moreOpts.body = JSON.stringify(data);
     }
@@ -238,7 +238,6 @@ export function fetchRoomsFromServer() {
     }
 }
 
-
 export function loadBetBrowser() {
     return (dispatch) => {
         dispatch(action(types.LOAD_BET_BROWSER_WINDOW));
@@ -248,6 +247,7 @@ export function loadBetBrowser() {
 
 export function acquireBetBrowser(blocks, text) {
     return (dispatch, getState) => {
+        console.log('acquiring', blocks);
         dispatch(action(types.LOADING_BET_BROWSER));
         return BBPost(getState(), '/betting/bet-browser', {query: text, blocks: blocks})
             .then(response => response.json())
