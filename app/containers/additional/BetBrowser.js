@@ -114,7 +114,8 @@ class BetBrowser extends Component {
 
         let leftSide = this.renderPane(data.section, <a>No data, waiting...</a>, true);
         let rightSide = this.renderPane(data.subSection, <a>No data, waiting...</a>);
-        let blocks = this.renderBlocksList(data.normalized);
+        let normalized = this.renderBlocksList(data.normalized);
+        let blocks = this.renderBlocksList(data.blocks);
 
         return (<div>
             <h3>Bet browser</h3>
@@ -126,7 +127,10 @@ class BetBrowser extends Component {
             <button className="btn btn-danger" style={{margin: 3}}
                     onClick={() => actions.acquireBetBrowser(this.props.data.blocks.slice(1), '')}>Back browser
             </button>
+            <div>{normalized}</div>
+            <br/>
             <div>{blocks}</div>
+            <br/>
             <div>
                 <div className="col-md-3">
                     <h5 onClick={() => this.scrollDownLeft()}>Left Panel</h5>
