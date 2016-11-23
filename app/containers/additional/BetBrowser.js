@@ -16,7 +16,7 @@ class BetBrowser extends Component {
         this.props.actions.acquireBetBrowser(this.props.data.blocks, value);
     };
 
-    handleElementSelected(e) {
+    handleElementUnshiftSelected(e) {
         let blockData = JSON.parse(e.target.getAttributeNode('alt').value);
         let newBlocks = JSON.parse(JSON.stringify(this.props.data.blocks));
         for (let b of blockData) {
@@ -25,13 +25,33 @@ class BetBrowser extends Component {
         this.props.actions.acquireBetBrowser(newBlocks, '')
     }
 
-    renderPane(data, alt, shouldHighlight = false) {
+    handleElementReplaceSelected(e) {
+        let blockData = JSON.parse(e.target.getAttributeNode('alt').value);
+        let newBlocks = JSON.parse(JSON.stringify(this.props.data.blocks));
+        if (newBlocks[0].kind == 'odds' && newBlocks[1].kind == 'bet') {
+            newBlocks = newBlocks.slice(2)
+        } else {
+            newBlocks = newBlocks.slice(1)
+        }
+        for (let b of blockData) {
+            newBlocks.unshift(b);
+        }
+        this.props.actions.acquireBetBrowser(newBlocks, '')
+    }
+
+    renderPane(data, alt, shouldHighlight = false, unshift = true) {
+        let selector = this.handleElementReplaceSelected;
+        if (unshift) {
+            selector = this.handleElementUnshiftSelected;
+        }
         if (data != undefined && data.length > 0) {
             let groups = [];
             data[data.length - 1].highlight = true;
             for (let group of data) {
                 let rows = [];
-                group.elements[group.elements.length - 1].highlight = true;
+                if (group.elements.length > 0) {
+                    group.elements[group.elements.length - 1].highlight = true;
+                }
                 for (let row of group.elements) {
                     let cssClasses = "label label-default";
                     if (shouldHighlight && row.highlight && group.highlight) {
@@ -48,7 +68,7 @@ class BetBrowser extends Component {
                                  key={'bbrowblock' + uuid()}
                                  alt={JSON.stringify(row.blocks)}
                                  title={block.kind + ' ' + (block.info || 'no-info') + ' ' + (block.externalId || 'no-ex-id')}
-                                 onClick={this.handleElementSelected.bind(this)}
+                                 onClick={selector.bind(this)}
                             >{block.text}</div>
                         )
                     }
@@ -112,8 +132,8 @@ class BetBrowser extends Component {
     render() {
         const {actions, data, status} = this.props;
 
-        let leftSide = this.renderPane(data.section, <a>No data, waiting...</a>, true);
-        let rightSide = this.renderPane(data.subSection, <a>No data, waiting...</a>);
+        let leftSide = this.renderPane(data.section, <a>No data, waiting...</a>, true, false);
+        let rightSide = this.renderPane(data.subSection, <a>No data, waiting...</a>, false, true);
         let normalized = this.renderBlocksList(data.normalized);
         let blocks = this.renderBlocksList(data.blocks);
 

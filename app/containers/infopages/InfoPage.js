@@ -43,7 +43,7 @@ class InfoPage extends Component {
 
     render() {
         const {type, data, status} = this.props;
-        if (status != 'OK' && type !== 'live-prompt' && type !== 'database-actions' && type !== 'bet-browser') {
+        if (status != 'OK' && type != null && type !== 'live-prompt' && type !== 'database-actions' && type !== 'bet-browser') {
             return <div className={this.props.cls}>Loading info about {type}, {status}...</div>;
         } else {
             return (<div className={this.props.cls}>
