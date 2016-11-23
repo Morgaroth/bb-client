@@ -128,9 +128,7 @@ class BetBrowser extends Component {
                     onClick={() => actions.acquireBetBrowser(this.props.data.blocks.slice(1), '')}>Back browser
             </button>
             <div>{normalized}</div>
-            <br/>
             <div>{blocks}</div>
-            <br/>
             <div>
                 <div className="col-md-3">
                     <h5 onClick={() => this.scrollDownLeft()}>Left Panel</h5>
