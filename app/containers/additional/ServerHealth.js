@@ -14,7 +14,7 @@ class ServerHealth extends Component {
             <div key={uuid()}>
                 <div>Name: <b>{service.name}</b></div>
                 <div>Version: <b>{service.buildInfo.version}</b></div>
-                <div>Build: <b>{formatter(service.buildInfo.buildTime)}</b></div>
+                <div>Built: <b>{formatter(service.buildInfo.buildTime)}</b></div>
                 <div>BB-Commons: <b>{service.buildInfo.bbCommonsVersion}</b></div>
                 <br/>
             </div>
