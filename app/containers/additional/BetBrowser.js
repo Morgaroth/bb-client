@@ -44,6 +44,12 @@ class BetBrowser extends Component {
         if (unshift) {
             selector = this.handleElementUnshiftSelected;
         }
+        let getOnClick = (b) => {
+            if (['not-implemented', 'no-elements'].indexOf(b.kind) >= 0) {
+                return (e) => {}
+            }
+            return selector
+        };
         if (data != undefined && data.length > 0) {
             let groups = [];
             data[data.length - 1].highlight = true;
@@ -68,7 +74,7 @@ class BetBrowser extends Component {
                                  key={'bbrowblock' + uuid()}
                                  alt={JSON.stringify(row.blocks)}
                                  title={block.kind + ' ' + (block.id || 'no-id') + ' ' + (block.info || 'no-info')}
-                                 onClick={selector.bind(this)}
+                                 onClick={getOnClick(block).bind(this)}
                             >{block.text}</div>
                         )
                     }
