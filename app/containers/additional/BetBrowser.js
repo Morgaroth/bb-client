@@ -59,7 +59,7 @@ class BetBrowser extends Component {
                     }
                     let blocks = [];
                     for (let block of row.blocks) {
-                        if (["bet", "place-bet", "coupon"].indexOf(block.kind) >= 0) {
+                        if (["odds", "place-bet", "coupon"].indexOf(block.kind) >= 0) {
                             cssClasses = "label label-success"
                         }
                         blocks.push(
@@ -67,7 +67,7 @@ class BetBrowser extends Component {
                                  style={{display: 'inline', padding: 3, margin: 0, marginRight: 5}}
                                  key={'bbrowblock' + uuid()}
                                  alt={JSON.stringify(row.blocks)}
-                                 title={block.kind + ' ' + (block.info || 'no-info') + ' ' + (block.externalId || 'no-ex-id')}
+                                 title={block.kind + ' ' + (block.id || 'no-id') + ' ' + (block.info || 'no-info')}
                                  onClick={selector.bind(this)}
                             >{block.text}</div>
                         )
@@ -91,14 +91,14 @@ class BetBrowser extends Component {
             let data = JSON.parse(JSON.stringify(blocksData)).reverse();
             for (let block of data) {
                 let cssClasses = "label label-default";
-                if (["bet", "place-bet", "coupon"].indexOf(block.kind) >= 0) {
+                if (["odds", "place-bet", "coupon"].indexOf(block.kind) >= 0) {
                     cssClasses = "label label-success"
                 }
                 blocks.push(
                     <div className={cssClasses}
                          style={{display: 'inline', padding: 3, margin: 0, marginRight: 5}}
                          key={'bbelem-' + uuid()}
-                         title={block.kind + ' ' + (block.info || 'no-info') + ' ' + (block.externalId || 'no-ex-id')}
+                         title={block.kind + ' ' + (block.id || 'no-id') + ' ' + (block.info || 'no-info')}
                     >{block.text}</div>
                 )
             }

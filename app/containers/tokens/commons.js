@@ -4,8 +4,10 @@ import TeamToken from "./TeamToken";
 import PlayerToken from "./PlayerToken";
 import MarketToken from "./MarketToken";
 import DateToken from "./DateToken";
+import OCEventToken from "./OCEventToken";
 import ConnectorToken from "./ConnectorToken";
 import DateRangeToken from "./DateRangeToken";
+import OCBetToken from "./OCBetToken";
 import OddsToken from "./OddsToken";
 import {uuid} from "../../commons"
 
@@ -18,6 +20,10 @@ export function msgToToken(token, message) {
         switch (qp.type) {
             case "team":
                 return <TeamToken text={token.text} prop={qp} key={uuid()}/>;
+            case "oc-event":
+                return <OCEventToken text={token.text} prop={qp} key={uuid()}/>;
+            case "oc-bet":
+                return <OCBetToken text={token.text} prop={qp} key={uuid()}/>;
             case "player":
                 return <PlayerToken text={token.text} prop={qp} key={uuid()}/>;
             case "result":
@@ -28,6 +34,7 @@ export function msgToToken(token, message) {
             case "match-action":
             case "score":
             case "over-under":
+            case "oc-market":
                 return <MarketToken text={token.text} prop={qp} key={uuid()}/>;
             case "odds-decimal":
             case "odds-fractional":
