@@ -28,7 +28,7 @@ class BetBrowser extends Component {
     handleElementReplaceSelected(e) {
         let blockData = JSON.parse(e.target.getAttributeNode('alt').value);
         let newBlocks = JSON.parse(JSON.stringify(this.props.data.blocks));
-        if (newBlocks[0].kind == 'odds' && newBlocks[1].kind == 'bet') {
+        if (newBlocks.length > 0 && newBlocks[0].kind == 'odds' && newBlocks[1].kind == 'bet') {
             newBlocks = newBlocks.slice(2)
         } else {
             newBlocks = newBlocks.slice(1)
