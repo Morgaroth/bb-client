@@ -164,13 +164,13 @@ class BetBrowser extends Component {
                 <div className="col-md-3">
                     <h5 onClick={() => this.scrollDownLeft()}>Left Panel</h5>
                     <div ref={(ref) => this.scrollLeft = ref}
-                         style={{overflow: 'auto', maxHeight: '200px'}}
+                         style={{overflow: 'auto', maxHeight: '300px'}}
                     >{leftSide}</div>
                 </div>
                 <div className="col-md-5">
                     <h5 onClick={() => this.scrollDownRight()}>Right Panel</h5>
                     <div ref={(ref) => this.scrollRight = ref}
-                         style={{overflow: 'auto', maxHeight: '200px'}}
+                         style={{overflow: 'auto', maxHeight: '300px'}}
                     >{rightSide}</div>
                 </div>
             </div>
