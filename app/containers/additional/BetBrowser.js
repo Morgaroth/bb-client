@@ -13,7 +13,7 @@ class BetBrowser extends Component {
 
     dropHeadOfBlocksList(blocks) {
         if (blocks != undefined) {
-            if (blocks.length > 0 && blocks[0].kind == 'odds' && blocks[1].kind == 'bet') {
+            if (blocks.length > 1 && blocks[0].kind == 'odds' && blocks[1].kind == 'bet') {
                 return blocks.slice(2)
             } else {
                 return blocks.slice(1)
