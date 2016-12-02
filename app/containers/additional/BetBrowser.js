@@ -11,6 +11,14 @@ class BetBrowser extends Component {
         }
     }
 
+    dropHeadOfBlocksList(blocks){
+        if (blocks.length > 0 && blocks[0].kind == 'odds' && blocks[1].kind == 'bet') {
+            return blocks.slice(2)
+        } else {
+            return blocks.slice(1)
+        }
+    }
+
     fireSearch() {
         let value = document.getElementById("bet.browser.view.input").value;
         this.props.actions.acquireBetBrowser(this.props.data.blocks, value);
@@ -28,11 +36,7 @@ class BetBrowser extends Component {
     handleElementReplaceSelected(e) {
         let blockData = JSON.parse(e.target.getAttributeNode('alt').value);
         let newBlocks = JSON.parse(JSON.stringify(this.props.data.blocks));
-        if (newBlocks.length > 0 && newBlocks[0].kind == 'odds' && newBlocks[1].kind == 'bet') {
-            newBlocks = newBlocks.slice(2)
-        } else {
-            newBlocks = newBlocks.slice(1)
-        }
+        newBlocks =this.dropHeadOfBlocksList(newBlocks);
         for (let b of blockData) {
             newBlocks.unshift(b);
         }
@@ -142,6 +146,7 @@ class BetBrowser extends Component {
         let rightSide = this.renderPane(data.subSection, <a>No data, waiting...</a>, false, true);
         let normalized = this.renderBlocksList(data.normalized);
         let blocks = this.renderBlocksList(data.blocks);
+        let prevBlocks = this.dropHeadOfBlocksList(data.blocks);
 
         return (<div>
             <h3>Bet browser</h3>
@@ -151,7 +156,7 @@ class BetBrowser extends Component {
             <button onClick={this.fireSearch.bind(this)}>Check!</button>
             <br/>
             <button className="btn btn-danger" style={{margin: 3}}
-                    onClick={() => actions.acquireBetBrowser(this.props.data.blocks.slice(1), '')}>Back browser
+                    onClick={() => actions.acquireBetBrowser(prevBlocks, '')}>Back browser
             </button>
             <div>{normalized}</div>
             <div>{blocks}</div>
