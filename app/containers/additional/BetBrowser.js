@@ -11,12 +11,15 @@ class BetBrowser extends Component {
         }
     }
 
-    dropHeadOfBlocksList(blocks){
-        if (blocks.length > 0 && blocks[0].kind == 'odds' && blocks[1].kind == 'bet') {
-            return blocks.slice(2)
-        } else {
-            return blocks.slice(1)
+    dropHeadOfBlocksList(blocks) {
+        if (blocks != undefined) {
+            if (blocks.length > 0 && blocks[0].kind == 'odds' && blocks[1].kind == 'bet') {
+                return blocks.slice(2)
+            } else {
+                return blocks.slice(1)
+            }
         }
+        return blocks;
     }
 
     fireSearch() {
@@ -36,7 +39,7 @@ class BetBrowser extends Component {
     handleElementReplaceSelected(e) {
         let blockData = JSON.parse(e.target.getAttributeNode('alt').value);
         let newBlocks = JSON.parse(JSON.stringify(this.props.data.blocks));
-        newBlocks =this.dropHeadOfBlocksList(newBlocks);
+        newBlocks = this.dropHeadOfBlocksList(newBlocks);
         for (let b of blockData) {
             newBlocks.unshift(b);
         }
@@ -50,7 +53,8 @@ class BetBrowser extends Component {
         }
         let getOnClick = (b) => {
             if (['not-implemented', 'no-elements'].indexOf(b.kind) >= 0) {
-                return (e) => {}
+                return (e) => {
+                }
             }
             return selector
         };
