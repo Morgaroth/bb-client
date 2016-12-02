@@ -46,17 +46,27 @@ class BetBrowser extends Component {
         this.props.actions.acquireBetBrowser(newBlocks, '')
     }
 
+    openCouponView(e) {
+        let block = JSON.parse(e.target.getAttributeNode('alt').value)[0];
+        this.props.actions.fetchCouponView(block)
+    }
+
     renderPane(data, alt, shouldHighlight = false, unshift = true) {
         let selector = this.handleElementReplaceSelected;
         if (unshift) {
             selector = this.handleElementUnshiftSelected;
         }
         let getOnClick = (b) => {
-            if (['not-implemented', 'no-elements'].indexOf(b.kind) >= 0) {
-                return (e) => {
-                }
+            switch (b.kind) {
+                case "not-implemented":
+                case "no-elements":
+                    return (e) => {};
+                case 'coupon':
+                    return this.openCouponView;
+                default:
+                    return selector
             }
-            return selector
+
         };
         if (data != undefined && data.length > 0) {
             let groups = [];

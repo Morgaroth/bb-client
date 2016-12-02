@@ -103,7 +103,7 @@ function rooms(state = {available: [], selected: null, history: []}, action) {
 function infoPage(state = {type: null, data: null, qprop: null}, action) {
     switch (action.type) {
         case types.LOADING_INFO_PAGE:
-            return merge(state, {type: action.page, state: 'fetching'});
+            return merge(state, {type: action.page, state: 'fetching', qprop: action.qprop || state.qprop});
         case types.INFO_PAGE:
             return {type: action.page, status: 'OK', data: action.data, qprop: action.qprop};
         case types.LOAD_LIVE_PROMPT_WINDOW:
