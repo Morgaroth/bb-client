@@ -3,8 +3,17 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../../actions";
 import {uuid} from "../../commons/";
+import dateFormat from "dateformat";
 
 class BetBrowser extends Component {
+    formatter(x) {
+        try {
+            return dateFormat(x, 'dddd, dS mmm');
+        } catch (err) {
+            return x
+        }
+    }
+
     handleEnter(e) {
         if (e.keyCode === 13) {
             this.fireSearch();
@@ -48,6 +57,13 @@ class BetBrowser extends Component {
 
     openCouponView(e) {
         let block = JSON.parse(e.target.getAttributeNode('alt').value)[0];
+        let dates = block.info.split('/');
+        let start = this.formatter(dates[0]);
+        let end = "";
+        if (dates.length == 2) {
+            end = " - " + this.formatter(dates[1])
+        }
+        block.text = start + end;
         this.props.actions.fetchCouponView(block)
     }
 
@@ -60,7 +76,8 @@ class BetBrowser extends Component {
             switch (b.kind) {
                 case "not-implemented":
                 case "no-elements":
-                    return (e) => {};
+                    return (e) => {
+                    };
                 case 'coupon':
                     return this.openCouponView;
                 default:

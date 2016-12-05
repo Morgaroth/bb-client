@@ -10,11 +10,10 @@ class DateInfoPage extends Component {
 
     render() {
         const {actions, data, qp} = this.props;
-        let formatter = (x) => {
+        let formatter = (x, format) => {
             try {
-                return dateFormat(x, 'dddd, dS mmm, H:MM');
+                return dateFormat(x, format);
             } catch (err) {
-                console.log(err);
                 return x
             }
         };
@@ -26,13 +25,13 @@ class DateInfoPage extends Component {
                 let subs = [];
                 for (let s of ev.subEvents) {
                     console.log('subsevent', s);
-                    subs.push(<div key={'ese-' + uuid()}>{formatter(s.startTime)}: <b>{s.name}</b></div>)
+                    subs.push(<div key={'ese-' + uuid()}>{formatter(s.startTime,'dddd, dS mmm, H:MM')}: <b>{s.name}</b></div>)
                 }
                 events.push(<div key={'se-' + uuid()}><h4>{ev.eventName}:</h4>{subs}</div>)
             }
         }
         return (<div className={this.props.cls}>
-            <h3>Date info {dateFormat(qp.name, 'dddd, dS mmm')}:</h3>
+            <h3>Date info {formatter(qp.name, 'dddd, dS mmm')}:</h3>
             {events}
             <br/>
         </div>)

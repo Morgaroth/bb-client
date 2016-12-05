@@ -136,7 +136,6 @@ export function loadInfoPage(type, info) {
         default:
             console.log('unknown info page type', type);
             return {type: 'ignoring'};
-
     }
 }
 
