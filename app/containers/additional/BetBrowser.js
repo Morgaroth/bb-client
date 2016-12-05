@@ -14,6 +14,10 @@ class BetBrowser extends Component {
         }
     }
 
+    blockInfo(block) {
+        return block.kind + ' ' + (block.id || 'no-id') + ' ' + (block.info || 'no-info') + ' ' + (block.ids || 'no-ids')
+    }
+
     handleEnter(e) {
         if (e.keyCode === 13) {
             this.fireSearch();
@@ -108,7 +112,7 @@ class BetBrowser extends Component {
                                  style={{display: 'inline', padding: 3, margin: 0, marginRight: 5}}
                                  key={'bbrowblock' + uuid()}
                                  alt={JSON.stringify(row.blocks)}
-                                 title={block.kind + ' ' + (block.id || 'no-id') + ' ' + (block.info || 'no-info')}
+                                 title={this.blockInfo(block)}
                                  onClick={getOnClick(block).bind(this)}
                             >{block.text}</div>
                         )
@@ -139,7 +143,7 @@ class BetBrowser extends Component {
                     <div className={cssClasses}
                          style={{display: 'inline', padding: 3, margin: 0, marginRight: 5}}
                          key={'bbelem-' + uuid()}
-                         title={block.kind + ' ' + (block.id || 'no-id') + ' ' + (block.info || 'no-info')}
+                         title={this.blockInfo(block)}
                     >{block.text}</div>
                 )
             }
