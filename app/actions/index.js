@@ -84,7 +84,7 @@ export function fetchBetInfoPage(messageOrBetId) {
         if (typeof(messageOrBetId) == 'object') {
             q = 'message-id=' + messageOrBetId.messageId;
         }
-        dispatch({type: types.LOADING_INFO_PAGE, page: type});
+        dispatch({type: types.LOADING_INFO_PAGE, page: 'bet'});
         return fetch(getState().auth.url + ':8001/betting/info-pages/bet?' + q, bbOpts(getState()))
             .then(response => response.json())
             .then(json => dispatch({type: types.INFO_PAGE, page: 'bet', qprop: messageOrBetId, data: {options: json}}));
@@ -94,7 +94,7 @@ export function fetchBetInfoPage(messageOrBetId) {
 export function fetchDateRangeInfoPage(info) {
     console.log('loading date-range info page', info);
     return (dispatch, getState) => {
-        dispatch({type: types.LOADING_INFO_PAGE, page: type});
+        dispatch({type: types.LOADING_INFO_PAGE, page: 'date-range'});
         return fetch(getState().auth.url + ':8001/betting/info-pages/date-range?date-start=' + info.dateStart + '&date-end=' + info.dateEnd, bbOpts(getState()))
             .then(response => response.json())
             .then(json => dispatch({
@@ -109,12 +109,12 @@ export function fetchDateRangeInfoPage(info) {
 export function fetchCouponView(block) {
     console.log('loading data info page by browser-block', block);
     return (dispatch, getState) => {
-        dispatch({type: types.LOADING_INFO_PAGE, page: 'date', qprop: {name: block.text.toLowerCase}});
-        BBPost(getState(), '/betting/info-pages/date', block)
+        dispatch({type: types.LOADING_INFO_PAGE, page: 'coupon', qprop: {name: block.text.toLowerCase}});
+        BBPost(getState(), '/betting/info-pages/date/coupon', block)
             .then(response => response.json())
             .then(json => dispatch({
                 type: types.INFO_PAGE,
-                page: 'date',
+                page: 'coupon',
                 qprop: {name: block.text},
                 data: json
             }));
@@ -122,7 +122,7 @@ export function fetchCouponView(block) {
 }
 
 export function loadInfoPage(type, info) {
-    console.log('loadInfoPage', type, info);
+    console.log('loadInfoPage', '\'' + type + '\'', info);
     switch (type) {
         case 'player':
         case 'team':

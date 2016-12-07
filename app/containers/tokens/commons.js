@@ -9,7 +9,7 @@ import ConnectorToken from "./ConnectorToken";
 import DateRangeToken from "./DateRangeToken";
 import OCBetToken from "./OCBetToken";
 import OddsToken from "./OddsToken";
-import {uuid} from "../../commons"
+import {uuid} from "../../commons";
 
 
 export function msgToToken(token, message) {
@@ -37,7 +37,6 @@ export function msgToToken(token, message) {
             case "oc-market":
                 return <MarketToken text={token.text} prop={qp} key={uuid()}/>;
             case "odds-decimal":
-            case "odds-fractional":
                 return <OddsToken text={token.text} prop={qp} key={uuid()} message={message}/>;
             case "date":
                 return <DateToken text={token.text} prop={qp} key={uuid()}/>;

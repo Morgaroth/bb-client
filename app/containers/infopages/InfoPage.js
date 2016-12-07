@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import * as Actions from "../../actions";
 import TeamInfoPage from "./TeamInfoPage";
 import DateInfoPage from "./DateInfoPage";
+import CouponInfoPage from "./CouponInfoPage";
 import BetInfoPage from "./BetInfoPage";
 import DataBaseMethods from "../additional/DataBaseMethods";
 import BetBrowser from "../additional/BetBrowser";
@@ -23,6 +24,8 @@ class InfoPage extends Component {
                 return <DateInfoPage data={data}/>;
             case "date-range":
                 return <DateRangeInfoPage data={data}/>;
+            case "coupon":
+                return <CouponInfoPage data={data}/>;
             case "live-prompt":
                 return <LivePromptPage/>;
             case "bet-browser":
