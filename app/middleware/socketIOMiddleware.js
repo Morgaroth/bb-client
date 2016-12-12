@@ -55,7 +55,13 @@ const socketMiddleware = (function () {
                 break;
 
             case types.SEND_MESSAGE:
-                socket.emit("Message", {roomId: action.roomId, rawText: action.msg, messageType: 'chat-message'});
+                let msg = {roomId: action.roomId, messageType: 'chat-message', rawText: action.msg};
+                if (action.blocks != undefined) {
+                    let b = action.blocks.reverse().filter(x => ["odds", "sport"].indexOf(x.kind) < 0);
+                    msg.rawText = b.map(x => x.text).join(' ');
+                    msg.betBrowserBlocks = [b]
+                }
+                socket.emit("Message", msg);
                 break;
 
             case types.FIND_SUGESTIONS:

@@ -71,6 +71,11 @@ class BetBrowser extends Component {
         this.props.actions.fetchCouponView(block)
     }
 
+    sendBet(e) {
+        let {data, actions, currentRoom} = this.props;
+        actions.sendMessage(currentRoom, undefined, data.blocks)
+    }
+
     renderPane(data, alt, shouldHighlight = false, unshift = true) {
         let selector = this.handleElementReplaceSelected;
         if (unshift) {
@@ -84,6 +89,8 @@ class BetBrowser extends Component {
                     };
                 case 'coupon':
                     return this.openCouponView;
+                case 'continue-single':
+                    return this.sendBet;
                 default:
                     return selector
             }
@@ -225,6 +232,7 @@ function mapStateToProps(state) {
     return {
         data: state.infoPage.data || {},
         status: state.infoPage.status || "",
+        currentRoom: state.rooms.selected,
         // history: state.rooms.history,
     };
 }

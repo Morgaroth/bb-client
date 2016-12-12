@@ -18,8 +18,8 @@ class RoomView extends Component {
     }
 
     sendMessage() {
-        var inputtag = document.getElementById("room.view.input");
-        var value = inputtag.value;
+        let inputtag = document.getElementById("room.view.input");
+        let value = inputtag.value;
         // TODO add more validation
         if (value.length > 0) {
             this.props.actions.sendMessage(this.props.room.id, value);
@@ -29,7 +29,7 @@ class RoomView extends Component {
 
     render() {
         const {room, history} = this.props;
-        var messages = <a>NoMessages, wait...</a>;
+        let messages = <a>NoMessages, wait...</a>;
         if (history.length > 0) {
             messages = [];
             for (let msg of history) {

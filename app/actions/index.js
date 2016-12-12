@@ -222,9 +222,9 @@ export function refreshRoomsList(json) {
     }
 }
 
-export function sendMessage(roomId, message) {
+export function sendMessage(roomId, message, blocks) {
     return {
-        type: types.SEND_MESSAGE, roomId: roomId, msg: message
+        type: types.SEND_MESSAGE, roomId: roomId, msg: message, blocks: blocks
     }
 }
 
