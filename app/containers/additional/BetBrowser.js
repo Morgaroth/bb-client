@@ -73,7 +73,21 @@ class BetBrowser extends Component {
 
     sendBet(e) {
         let {data, actions, currentRoom} = this.props;
-        actions.sendMessage(currentRoom, undefined, data.blocks)
+        let result = [[]];
+        data.blocks.filter(x => ["odds", "multi-odds", "sport"].indexOf(x.kind) < 0).forEach(element => {
+            if (element.kind == "continue-multi") {
+                result.push([]);
+            } else {
+                result[result.length - 1].push(element)
+            }
+        });
+        result = result.filter(x => x.length > 0);
+        actions.sendMessage(currentRoom, undefined, result)
+    }
+
+    placeBet(e) {
+        this.sendBet(e);
+        this.props.actions.loadBetBrowser()
     }
 
     renderPane(data, alt, shouldHighlight = false, unshift = true) {
@@ -89,6 +103,8 @@ class BetBrowser extends Component {
                     };
                 case 'coupon':
                     return this.openCouponView;
+                case 'place-bet':
+                    return this.placeBet;
                 case 'continue-single':
                     return this.sendBet;
                 default:
@@ -111,14 +127,14 @@ class BetBrowser extends Component {
                     }
                     let blocks = [];
                     for (let block of row.blocks) {
-                        if (["odds", "place-bet", "coupon"].indexOf(block.kind) >= 0) {
+                        if (["odds", "multi-odds", "place-bet", "coupon"].indexOf(block.kind) >= 0) {
                             cssClasses = "label label-success"
                         }
                         blocks.push(
                             <div className={cssClasses}
                                  style={{display: 'inline', padding: 3, margin: 0, marginRight: 5}}
                                  key={'bbrowblock' + uuid()}
-                                 alt={JSON.stringify(row.blocks)}
+                                 alt={JSON.stringify(row.blocks.filter(x => x.kind != "multi-odds"))}
                                  title={this.blockInfo(block)}
                                  onClick={getOnClick(block).bind(this)}
                             >{block.text}</div>
@@ -143,7 +159,7 @@ class BetBrowser extends Component {
             let data = JSON.parse(JSON.stringify(blocksData)).reverse();
             for (let block of data) {
                 let cssClasses = "label label-default";
-                if (["odds", "place-bet", "coupon"].indexOf(block.kind) >= 0) {
+                if (["odds", "multi-odds", "place-bet", "coupon"].indexOf(block.kind) >= 0) {
                     cssClasses = "label label-success"
                 }
                 blocks.push(
