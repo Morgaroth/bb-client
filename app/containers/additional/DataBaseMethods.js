@@ -12,6 +12,11 @@ class DataBaseMethods extends Component {
         return (<div>
             <h3>Database functions</h3>
             <div>
+                <h4>Managing</h4>
+                <button onClick={() => actions.DataApi_update('events')}>Update Events</button>
+                <br/>
+            </div>
+            <div>
                 <h4>Data api</h4>
                 <button onClick={() => actions.DataApi_update('events')}>Update Events</button>
                 <br/>
