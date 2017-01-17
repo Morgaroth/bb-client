@@ -2,43 +2,93 @@ import React, {Component, PropTypes} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../../actions";
-import MessageView from "../messages/MessageView";
+import CheckBoxList from "react-checkbox-list";
+import {uuid} from "../../commons/index";
 
 class BetInfoPage extends Component {
 
-    render() {
-        const {actions, data} = this.props;
-        return (<div className={this.props.cls}>
-            In development...
-            <br/>
-            <pre>{JSON.stringify(data, null, 3)}</pre>
-        </div>)
+  constructor() {
+    super();
+    this.state = {rooms: []}
+  }
+
+  roomsSelected(newList) {
+    this.setState({rooms: newList});
+  }
+
+  render() {
+    let {actions, data, rooms} = this.props;
+    if (data == undefined) {
+      return <div><b>No data in bet info page, maybe old?</b></div>
     }
+    data = data[0];
+
+    let bets = [];
+    for (let b of data.bets) {
+      bets.push(<div key={'bipr-' + uuid()}>
+        <span>{b.subEventName}</span><br/>
+        <span>{b.marketName}: {b.name}</span>
+      </div>)
+    }
+
+
+    let roomsData = rooms.map(x =>
+      ({value: x.id, label: '' + x.details.name + '(' + x.details.type + ')'})
+    );
+
+    let selected = this.state.rooms.map(r => roomsData.filter(x => x.value == r)[0].label);
+    let selected_info = '';
+    if (selected.length > 0) {
+      selected_info = ' to ' + selected.join(', ')
+    }
+
+    return (<div className={this.props.cls}>
+      <div>
+        <div>{data.details.betType}:</div>
+        {bets}
+      </div>
+      <div>
+        <CheckBoxList ref='rooms' defaultData={roomsData} onChange={this.roomsSelected.bind(this)}/>
+        <button disabled={selected.length == 0} onClick={() => actions.shareBet(data.betId, this.state.rooms)}>Share
+          this
+          bet{selected_info}</button>
+      </div>
+      In development...
+      <br/>
+      <pre>{JSON.stringify(data, null, 3)}</pre>
+    </div>)
+  }
 }
 
 BetInfoPage.propTypes = {
-    actions: PropTypes.object.isRequired,
-    data: PropTypes.object.isRequired,
-    // url: PropTypes.string.isRequired,
-    // history: PropTypes.array,
-    // cls: PropTypes.string,
+  actions: PropTypes.object.isRequired,
+  data: PropTypes.array.isRequired,
+  rooms: PropTypes.array,
+  // url: PropTypes.string.isRequired,
+  // history: PropTypes.array,
+  // cls: PropTypes.string,
 };
 
 function mapStateToProps(state) {
-    return {
-        // url: state.auth.url,
-        // room: state.rooms.selectedRoom,
-        // history: state.rooms.history,
-    };
+  // console.log('mapStateToProps', state, state.infoPage);
+  let data = (state.infoPage.data || {}).options;
+  // console.log(state, data);
+  return {
+    data: data,
+    rooms: state.rooms.available,
+    // url: state.auth.url,
+    // room: state.rooms.selectedRoom,
+    // history: state.rooms.history,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(Actions, dispatch)
-    }
+  return {
+    actions: bindActionCreators(Actions, dispatch)
+  }
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(BetInfoPage)
