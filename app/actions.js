@@ -1,7 +1,7 @@
 import * as types from "./constants";
+import {SUGGESTIONS_TUNNEL} from "./constants";
 import fetch from "isomorphic-fetch";
 import {merge} from "./commons";
-import {SUGGESTIONS_TUNNEL} from "./constants/index";
 
 
 function action(type, more) {
@@ -86,8 +86,14 @@ export function fetchBetInfoPage(messageOrBetId) {
     }
     dispatch({type: types.LOADING_INFO_PAGE, page: 'bet'});
     return fetch(getState().auth.url + ':8001/betting/info-pages/bet?' + q, bbOpts(getState()))
-      .then(response => response.json())
-      .then(json => dispatch({type: types.INFO_PAGE, page: 'bet', qprop: messageOrBetId, data: {options: json}}));
+      .then(response => {
+        if (response.status == 404) {
+          return dispatch({type: types.INFO_PAGE_NOT_FOUND, page: type, qprop: qprop})
+        } else {
+          return response.json()
+            .then(json => dispatch({type: types.INFO_PAGE, page: 'bet', qprop: messageOrBetId, data: {options: json}}))
+        }
+      });
   }
 }
 
