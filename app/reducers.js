@@ -1,6 +1,6 @@
 import {combineReducers} from "redux";
-import * as types from "../constants/ActionTypes";
-import {merge} from "../commons/index";
+import * as types from "./constants";
+import {merge} from "./commons";
 import {MESSAGES_LIST_SIZE} from "../constants";
 
 export var serverUrl = "http://dev-root-betblocks-01.gp-cloud.com";

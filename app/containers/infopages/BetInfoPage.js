@@ -3,7 +3,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "../../actions";
 import CheckBoxList from "react-checkbox-list";
-import {uuid} from "../../commons/index";
+import {uuid} from "../../commons";
 
 class BetInfoPage extends Component {
 
@@ -42,9 +42,14 @@ class BetInfoPage extends Component {
       selected_info = ' to ' + selected.join(', ')
     }
 
+    let header = 'Single bet';
+    if (data.bets.length > 0) {
+      header = 'Accumulator bet'
+    }
+
     return (<div className={this.props.cls}>
       <div>
-        <div>{data.details.betType}:</div>
+        <div>{header}:</div>
         {bets}
       </div>
       <div>

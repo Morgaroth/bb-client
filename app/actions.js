@@ -1,7 +1,7 @@
-import * as types from "../constants/ActionTypes";
+import * as types from "./constants";
 import fetch from "isomorphic-fetch";
-import {merge} from "../commons/index";
-import {SUGGESTIONS_TUNNEL} from "../constants/index";
+import {merge} from "./commons";
+import {SUGGESTIONS_TUNNEL} from "./constants/index";
 
 
 function action(type, more) {

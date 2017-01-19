@@ -1,3 +1,7 @@
+// CONFIG
+export const SUGGESTIONS_TUNNEL = 'http';
+
+// ACTION TYPES
 export const CHANGE_URL = 'CHANGE_URL';
 export const LOAD_TOKEN = 'LOAD_TOKEN';
 export const SAVE_TOKEN = 'SAVE_TOKEN';
