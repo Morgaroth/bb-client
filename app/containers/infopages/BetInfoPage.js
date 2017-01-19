@@ -17,7 +17,7 @@ class BetInfoPage extends Component {
   }
 
   render() {
-    let {actions, status, data, rooms} = this.props;
+    let {actions, status, data, rooms, qprop} = this.props;
     if (data == undefined) {
       return <div><b>No data in bet info page, maybe old?</b></div>
     }
@@ -25,6 +25,7 @@ class BetInfoPage extends Component {
     if (status == 'NOT_FOUND') {
       return <div>
         Bet not found
+        <pre>{JSON.stringify(qprop, null, 3)}</pre>
       </div>
     }
     data = data[0];
@@ -73,7 +74,7 @@ class BetInfoPage extends Component {
 
 BetInfoPage.propTypes = {
   actions: PropTypes.object.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   rooms: PropTypes.array,
   status: PropTypes.string,
   // history: PropTypes.array,
@@ -88,6 +89,7 @@ function mapStateToProps(state) {
     data: data,
     rooms: state.rooms.available,
     status: state.infoPage.status,
+    qprop: state.infoPage.qprop,
     // url: state.auth.url,
     // room: state.rooms.selectedRoom,
     // history: state.rooms.history,
