@@ -88,7 +88,7 @@ export function fetchBetInfoPage(messageOrBetId) {
     return fetch(getState().auth.url + ':8001/betting/info-pages/bet?' + q, bbOpts(getState()))
       .then(response => {
         if (response.status == 404) {
-          return dispatch({type: types.INFO_PAGE_NOT_FOUND, page: type, qprop: qprop})
+          return dispatch({type: types.INFO_PAGE_NOT_FOUND, page: 'bet', qprop: qprop})
         } else {
           return response.json()
             .then(json => dispatch({type: types.INFO_PAGE, page: 'bet', qprop: messageOrBetId, data: {options: json}}))
