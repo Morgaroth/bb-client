@@ -14,5 +14,5 @@ docker push ${NAME_1}
 docker push ${NAME_2}
 cd ${PROJECTS_DIRECTORY}/ansible-repositories/betblocks
 git pull
-./ansible-dev deploy_webclient_service.yml
+./ansible-dev deploy_webclient_service.yml -e version=v${VERSION}
 cd ${PROJECTS_DIRECTORY}/bb-client/
