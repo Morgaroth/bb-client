@@ -67,7 +67,7 @@ export function loadToken() {
   }
 }
 
-export function deepLingToBetBrowser(qprop) {
+export function deepLinkToBetBrowser(qprop) {
   console.log('loading deep link', qprop);
   return (dispatch, getState) => {
     dispatch(action(types.LOADING_BET_BROWSER));
