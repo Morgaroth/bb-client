@@ -67,6 +67,16 @@ export function loadToken() {
   }
 }
 
+export function deepLingToBetBrowser(qprop) {
+  console.log('loading deep link', qprop);
+  return (dispatch, getState) => {
+    dispatch(action(types.LOADING_BET_BROWSER));
+    return BBPost(getState(), '/betting/bet-browser/deep-link', qprop)
+      .then(response => response.json())
+      .then(resp => dispatch(action(types.LOADED_BET_BROWSER, {data: resp})));
+  }
+}
+
 export function fetchInfoPage(type, qprop) {
   console.log('loading', type, 'info page', qprop);
   return (dispatch, getState) => {

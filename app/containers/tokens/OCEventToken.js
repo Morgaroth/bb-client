@@ -4,36 +4,37 @@ import {connect} from "react-redux";
 import * as Actions from "../../actions";
 
 class OCEventToken extends React.Component {
-    render() {
-        const {actions, text, prop} = this.props;
-        let title = "Event: " + prop.name + " (" + prop.ratio + ")";
-        /*onClick={() => actions.loadInfoPage('team', prop)}*/
-        return (
-            <button
-                className="label label-success"
-                title={title}
-            >{text}</button>
-        )
-    }
+  render() {
+    const {actions, text, prop} = this.props;
+    let title = "Event: " + prop.name + " (" + prop.ratio + ")";
+    /*onClick={() => actions.loadInfoPage('team', prop)}*/
+    return (
+      <button
+        className="label label-success"
+        title={title}
+        onClick={() => actions.deepLinkToBetBrowser(prop)}
+      >{text}</button>
+    )
+  }
 }
 
 
 OCEventToken.propTypes = {
-    text: PropTypes.string.isRequired,
-    prop: PropTypes.object.isRequired,
+  text: PropTypes.string.isRequired,
+  prop: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
-    return {};
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(Actions, dispatch)
-    }
+  return {
+    actions: bindActionCreators(Actions, dispatch)
+  }
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 )(OCEventToken)
