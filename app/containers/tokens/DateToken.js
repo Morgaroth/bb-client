@@ -11,7 +11,7 @@ class DateToken extends React.Component {
             <button
                 className="label label-danger"
                 title={title}
-                onClick={() => actions.loadInfoPage('date', prop)}
+                onClick={() => actions.deepLinkToCoupon(prop)}
             >{text}</button>
         )
     }

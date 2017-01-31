@@ -14,7 +14,7 @@ class DateRangeToken extends React.Component {
             <button
                 className="label label-danger"
                 title={title}
-                onClick={() => actions.loadInfoPage('date-range', prop)}
+                onClick={() => actions.deepLinkToCoupon(prop)}
             >{text}</button>
         )
     }

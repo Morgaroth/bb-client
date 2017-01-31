@@ -12,7 +12,7 @@ class OCEventToken extends React.Component {
       <button
         className="label label-success"
         title={title}
-        onClick={() => actions.deepLinkToBetBrowser(prop)}
+        onClick={() => actions.deepLinkToCoupon(prop)}
       >{text}</button>
     )
   }

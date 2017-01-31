@@ -77,6 +77,20 @@ export function deepLinkToBetBrowser(qprop) {
   }
 }
 
+export function deepLinkToCoupon(data, marketName = undefined) {
+  console.log('loading deep link to coupon', data, 'with market', marketName);
+  return (dispatch, getState) => {
+    dispatch({type: types.LOADING_INFO_PAGE, page: 'coupon'});
+    let marketQ = '';
+    if (marketName != undefined) {
+      marketQ = '?marketName=' + marketName
+    }
+    return BBPost(getState(), '/betting/info-pages/coupon/v2' + marketQ, data)
+      .then(response => response.json())
+      .then(resp => dispatch(action(types.INFO_PAGE, {page: 'coupon', data: resp})));
+  }
+}
+
 export function fetchInfoPage(type, qprop) {
   console.log('loading', type, 'info page', qprop);
   return (dispatch, getState) => {
