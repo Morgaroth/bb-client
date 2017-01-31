@@ -1,6 +1,6 @@
 {
   "name": "BB-Client",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "description": "BB-Client",
   "main": "app.js",
   "engines": {
