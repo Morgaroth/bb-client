@@ -61,14 +61,7 @@ class BetBrowser extends Component {
 
   openCouponView(e) {
     let block = JSON.parse(e.target.getAttributeNode('alt').value)[0];
-    let dates = block.info.split('/');
-    let start = this.formatter(dates[0]);
-    let end = "";
-    if (dates.length == 2) {
-      end = " - " + this.formatter(dates[1])
-    }
-    block.text = start + end;
-    this.props.actions.fetchCouponView(block)
+    this.props.actions.deepLinkToCoupon(block)
   }
 
   sendBet(e) {

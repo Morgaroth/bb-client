@@ -6,6 +6,9 @@ import dateFormat from "dateformat";
 import {uuid} from "../../commons";
 
 class CouponInfoPage extends Component {
+  formatter(date) {
+    return dateFormat(date, 'dddd, dS mmm');
+  }
 
   render() {
     const {actions, data} = this.props;
@@ -33,15 +36,33 @@ class CouponInfoPage extends Component {
           }
           rows.push(<div key={uuid()} style={{width: '100%'}}>{bets}</div>)
         }
+        let groupName = gr.name.text;
+        if (gr.name.kind == "day" && gr.name.text == gr.name.info) {
+          groupName = this.formatter(gr.name.info)
+        }
         groups.push(
-          <div key={uuid()}>{gr.name.text}:<br/>{rows}</div>
+          <div key={uuid()}>{groupName}:<br/>{rows}</div>
         )
       }
     }
-    let formatter = (date) => dateFormat(date, 'dddd, dS mmm');
+    let prev = <div>No Previous</div>;
+    if (data.meta.prev != undefined) {
+      prev = <div alt={JSON.stringify(data.meta.prev)}>{data.meta.prev.text}</div>
+    }
+    let cur = <div alt={JSON.stringify(data.meta.current)}>{data.meta.current.text}</div>;
+    let next = <div>No Next</div>;
+    if (data.meta.next != undefined) {
+      next = <div alt={JSON.stringify(data.meta.next)}>{data.meta.next.text}</div>
+    }
+
+    let header = <div>
+      <div className="well well-sm" style={{display: 'inline-block', padding: 2, margin: 5}}>{prev}</div>
+      <div className="well well-sm" style={{display: 'inline-block', padding: 2, margin: 5}}>{cur}</div>
+      <div className="well well-sm" style={{display: 'inline-block', padding: 2, margin: 5}}>{next}</div>
+    </div>;
 
     return (<div className={this.props.cls}>
-      <h3>Coupon for {formatter(data.dateStart)} - {formatter(data.dateEnd)}:</h3>
+      {header}
       {groups}
       <br/>
     </div>)
