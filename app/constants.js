@@ -1,5 +1,6 @@
 // CONFIG
 export const SUGGESTIONS_TUNNEL = 'http';
+export const MESSAGES_LIST_SIZE = 15;
 
 // ACTION TYPES
 export const CHANGE_URL = 'CHANGE_URL';
