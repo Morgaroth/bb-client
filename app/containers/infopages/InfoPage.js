@@ -6,6 +6,7 @@ import TeamInfoPage from "./TeamInfoPage";
 import DateInfoPage from "./DateInfoPage";
 import CouponInfoPage from "./CouponInfoPage";
 import BetInfoPage from "./BetInfoPage";
+import Shortcuts from "../additional/Shortcuts";
 import DataBaseMethods from "../additional/DataBaseMethods";
 import BetBrowser from "../additional/BetBrowser";
 import LivePromptPage from "../additional/LivePromptPage";
@@ -32,6 +33,8 @@ class InfoPage extends Component {
         return <BetBrowser/>;
       case "server-health":
         return <ServerHealth/>;
+      case "shortcuts":
+        return <Shortcuts/>;
       case "database-actions":
         return <DataBaseMethods/>;
       case null:

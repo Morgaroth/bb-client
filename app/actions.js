@@ -29,6 +29,7 @@ function BBPost(state, url, data) {
 
 export function disconnected() {
   console.log("SOCKETIO disconnected")
+  console.log("SOCKETIO disconnected")
 }
 
 export function connected() {
@@ -280,6 +281,19 @@ export function fetchRoomsFromServer() {
         .then(() => dispatch(loadSelectedRoom()));
     } else {
       console.log("not fetching, login is disabled")
+    }
+  }
+}
+
+export function fetchShortcuts() {
+  return (dispatch, getState) => {
+    dispatch(action(types.LOADING_SHORTCUTS));
+    if (!getState().auth.needsLogin) {
+      return fetch(getState().auth.url + ':8001/betting/shortcuts', bbOpts(getState()))
+        .then(response => response.json())
+        .then(json => dispatch(action(types.LOADED_SHORTCUTS, {data: json})))
+    } else {
+      console.log("fetchShortcuts: not fetching, user isn't logged")
     }
   }
 }

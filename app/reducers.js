@@ -136,6 +136,10 @@ function infoPage(state = {type: null, data: null, qprop: null}, action) {
       return merge(state, {type: 'database-actions', data: '', status: 'waiting'});
     case types.LOADED_INFO_DATA_ACTION:
       return merge(state, {type: 'database-actions', data: action.data, status: 'OK'});
+    case types.LOADING_SHORTCUTS:
+      return merge(state, {type: 'shortcuts', data: {}, status: 'waiting'});
+    case types.LOADED_SHORTCUTS:
+      return merge(state, {type: 'shortcuts', data: action.data, status: 'OK'});
     default:
       return state
   }
