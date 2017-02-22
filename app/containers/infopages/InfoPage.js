@@ -8,6 +8,7 @@ import CouponInfoPage from "./CouponInfoPage";
 import BetInfoPage from "./BetInfoPage";
 import Shortcuts from "../additional/Shortcuts";
 import DataBaseMethods from "../additional/DataBaseMethods";
+import HealthMatrix from "../additional/HealthMatrix";
 import BetBrowser from "../additional/BetBrowser";
 import LivePromptPage from "../additional/LivePromptPage";
 import ServerHealth from "../additional/ServerHealth";
@@ -35,6 +36,8 @@ class InfoPage extends Component {
         return <ServerHealth/>;
       case "shortcuts":
         return <Shortcuts/>;
+      case "health-matrix":
+        return <HealthMatrix/>;
       case "database-actions":
         return <DataBaseMethods/>;
       case null:
@@ -49,12 +52,11 @@ class InfoPage extends Component {
 
   render() {
     const {type, data, status} = this.props;
-    if (status != 'OK' && type != null && type !== 'live-prompt' && type !== 'database-actions' && type !== 'bet-browser') {
-      return <div className={this.props.cls}>Loading info about {type}, {status}...</div>;
+    let selfManagingPages = ['live-prompt', 'database-actions', 'bet-browser'];
+    if ((type != null && selfManagingPages.indexOf(type) > 0) || status == 'OK') {
+      return <div className={this.props.cls}>{InfoPage.getInfoPage(type, data)}</div>;
     } else {
-      return (<div className={this.props.cls}>
-        {InfoPage.getInfoPage(type, data)}
-      </div>)
+      return <div className={this.props.cls}>Loading info about {type}, {status}...</div>;
     }
   }
 }

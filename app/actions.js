@@ -29,7 +29,6 @@ function BBPost(state, url, data) {
 
 export function disconnected() {
   console.log("SOCKETIO disconnected")
-  console.log("SOCKETIO disconnected")
 }
 
 export function connected() {
@@ -88,7 +87,13 @@ export function deepLinkToCoupon(data, marketName = undefined) {
     }
     return BBPost(getState(), '/betting/info-pages/coupon/v2' + marketQ, data)
       .then(response => response.json())
-      .then(resp => dispatch(action(types.INFO_PAGE, {page: 'coupon', data: resp})));
+      .then(resp => dispatch(action(types.INFO_PAGE, {
+        page: 'coupon',
+        data: resp,
+        additional: {
+          market: marketName,
+        },
+      })));
   }
 }
 

@@ -62,7 +62,7 @@ class LivePromptPage extends Component {
   render() {
     const {status, suggText, data} = this.props;
 
-    var elements = <div>no suggestions, wait... ({status}) for text {suggText}</div>;
+    let elements = <div>no suggestions, wait... ({status}) for text {suggText}</div>;
     let possible = this.getSuggestions();
     if (possible.length > 0) {
       elements = possible;

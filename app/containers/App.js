@@ -4,12 +4,12 @@ import {connect} from "react-redux";
 import BetBlocksClient from "../containers/BetBlocksClient";
 import ServiceUrl from "./ServiceUrl";
 import * as Actions from "../actions";
-import Switch from 'react-toggle-switch'
+import Switch from "react-toggle-switch";
 class App extends Component {
 
     render() {
         const {serviceUrl, actions, state, appStateEnabled} = this.props;
-        var stateTag = undefined;
+        let stateTag = undefined;
         if (appStateEnabled) {
             stateTag = (<div className="col-md-12">
                 <hr/>
