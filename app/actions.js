@@ -83,7 +83,7 @@ export function deepLinkToCoupon(data, marketName = undefined) {
     dispatch({type: types.LOADING_INFO_PAGE, page: 'coupon'});
     let marketQ = '';
     if (marketName != undefined) {
-      marketQ = '?marketName=' + marketName
+      marketQ = '?market-name=' + marketName
     }
     return BBPost(getState(), '/betting/info-pages/coupon/v2' + marketQ, data)
       .then(response => response.json())
