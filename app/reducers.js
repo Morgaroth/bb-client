@@ -140,6 +140,14 @@ function infoPage(state = {type: null, data: null, qprop: null}, action) {
       return merge(state, {type: 'shortcuts', data: {}, status: 'waiting'});
     case types.LOADED_SHORTCUTS:
       return merge(state, {type: 'shortcuts', data: action.data, status: 'OK'});
+    case types.MATRIX:
+      if (action.data == undefined) {
+        return merge(state, {type: 'matrix', data: {health: []}, status: 'OK'});
+      } else {
+        let a = JSON.parse(JSON.stringify(state.data.health));
+        a.push(action.data);
+        return merge(state, {type: 'matrix', data: {health: a}, status: 'OK'});
+      }
     default:
       return state
   }

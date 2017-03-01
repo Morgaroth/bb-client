@@ -339,9 +339,34 @@ export function loadingServerHealth() {
   return action(types.LOADING_SERVER_HEALTH)
 }
 
+function get(name, url, onReady) {
+  return fetch('http://' + url + ':8001/_health/').then(response => {
+    if (response.status == 200) {
+      response.json().then(x => {
+        onReady({name: name, data: x});
+        return [{name: name, data: x}]
+      })
+    } else {
+      return []
+    }
+  })
+}
+
+export function loadVersionsMatrix() {
+  return (dispatch) => {
+    dispatch(action(types.MATRIX));
+    let p1 = get('DEV', 'dev-root-betblocks-01.gp-cloud.com', (x) => dispatch(action(types.MATRIX, {data: x})));
+    let p2 = get('STG', 'stg-root-betblocks-01.gp-cloud.com', (x) => dispatch(action(types.MATRIX, {data: x})));
+    let p3 = get('LOCAL', 'localhost', (x) => dispatch(action(types.MATRIX, {data: x})));
+    let p4 = get('VAG', '192.168.33.6', (x) => dispatch(action(types.MATRIX, {data: x})));
+    return Promise.all([p1, p2, p3, p4])
+  }
+}
+
 export function handleServerHealth(data) {
   return {type: types.LOADED_SERVER_HEALTH, data: {health: data}}
 }
+
 
 export function loadServerHealth() {
   return (dispatch, getState) => {
