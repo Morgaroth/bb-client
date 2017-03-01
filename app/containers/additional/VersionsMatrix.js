@@ -9,7 +9,7 @@ class VersionsMatrix extends Component {
   render() {
     const {services} = this.props;
 
-    let formatter = (x) => dateFormat(x, 'dddd, dS mmm, yyyy, H:MM:ss');
+    let formatter = (x) => dateFormat(x, 'ddd dS mm, H:MM:ss');
     let servers = Array.from(new Set(services.map(x => x.name)));
     servers.sort();
     let allApps = [];
@@ -39,12 +39,16 @@ class VersionsMatrix extends Component {
       for (let s of servers) {
         console.log(s, appName, data[s][appName]);
         if (data[s][appName] != undefined) {
-          cells.push(<th key={uuid() }>
-            <div style={{marginRight: 10, marginBottom: 7}}><b>{data[s][appName].buildInfo.version}</b></div>
+          cells.push(<th key={uuid()}>
+            <div style={{marginRight: 10, marginBottom: 7}}>
+              <div style={{width: '100%', textAlign: 'center'}}><b>{data[s][appName].buildInfo.version}</b></div>
+              <div style={{width: '100%', textAlign: 'center'}}>{formatter(data[s][appName].buildInfo.buildTime)}</div>
+              <div style={{width: '100%', textAlign: 'center'}}>{data[s][appName].buildInfo.bbCommonsVersion}</div>
+            </div>
           </th>)
         } else {
           cells.push(<div key={uuid()}>
-            <div><b>NO</b></div>
+            <div style={{width: '100%', textAlign: 'center'}}><b>NO</b></div>
           </div>)
         }
       }
