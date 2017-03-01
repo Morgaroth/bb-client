@@ -24,8 +24,8 @@ function getEnv(url) {
   switch (url) {
     case 'http://dev-root-betblocks-01.gp-cloud.com':
       return 'dev';
-    case 'http://prod-root-betblocks-01.gp-cloud.com':
-      return 'prod';
+    case 'http://stg-root-betblocks-01.gp-cloud.com':
+      return 'stg';
     case 'http://localhost':
       return 'local';
     case 'http://192.168.33.6':

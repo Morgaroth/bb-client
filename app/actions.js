@@ -236,7 +236,7 @@ export function registerUser(name, surname, pin, phone, mail) {
       phoneNumber: phone,
       pin: pin,
       preferences: [],
-      email: mail
+      email: mail,
     }).then(response => response.json())
       .then(json => dispatch(proceedLogin(phone, json.code)));
   }

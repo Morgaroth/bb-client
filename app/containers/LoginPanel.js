@@ -31,7 +31,7 @@ class LoginPanel extends Component {
     let phone = document.getElementById("register.phone").value;
     let email = document.getElementById("register.email").value;
     if (name.length > 1 && surname.length > 1 && pin.length == 4 && email.length > 4 && [9, 12].indexOf(phone.length) >= 0) {
-      this.props.onRegister(name, surname, pin, phone)
+      this.props.onRegister(name, surname, pin, phone, email)
     }
   }
 
