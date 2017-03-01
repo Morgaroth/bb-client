@@ -227,6 +227,21 @@ export function prepareLogin(phone) {
   }
 }
 
+export function registerUser(name, surname, pin, phone, mail) {
+  console.log("Preparing register with:", name, surname, pin, phone, mail);
+  return (dispatch, getState) => {
+    return BBPost(getState(), '/users', {
+      firstName: name,
+      lastName: surname,
+      phoneNumber: phone,
+      pin: pin,
+      preferences: [],
+      email: mail
+    }).then(response => response.json())
+      .then(json => dispatch(proceedLogin(phone, json.code)));
+  }
+}
+
 export function proceedLogin(phone, code) {
   console.log("Logging with phone:", phone, code);
   return (dispatch, getState) => {
