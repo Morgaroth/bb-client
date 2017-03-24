@@ -5,6 +5,7 @@ import PlayerToken from "./PlayerToken";
 import MarketToken from "./MarketToken";
 import DateToken from "./DateToken";
 import OCEventToken from "./OCEventToken";
+import LeaguesToken from "./LeaguesToken";
 import ConnectorToken from "./ConnectorToken";
 import DateRangeToken from "./DateRangeToken";
 import OCBetToken from "./OCBetToken";
@@ -40,6 +41,9 @@ export function msgToToken(token, message) {
                 return <OddsToken text={token.text} prop={qp} key={uuid()} message={message}/>;
             case "date":
                 return <DateToken text={token.text} prop={qp} key={uuid()}/>;
+            case "all-leagues":
+            case "main-leagues":
+                return <LeaguesToken text={token.text} prop={qp} key={uuid()}/>;
             case "date-range":
                 return <DateRangeToken text={token.text} prop={qp} key={uuid()}/>;
             case "and":
