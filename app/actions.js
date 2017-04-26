@@ -179,8 +179,16 @@ export function loadTextLivePrompt() {
   return {type: types.LOAD_LIVE_PROMPT_WINDOW}
 }
 
+export function loadBetSearchWindow() {
+  return {type: types.BET_SEARCH_WINDOW}
+}
+
 export function updateSuggestions(data) {
   return {type: types.LOADED_PROP_SUGGESTIONS, data: data}
+}
+
+export function updateBetsSearch(data, ctr) {
+  return {type: types.LOADED_BETS_SEARCH, data: data, ctr: ctr}
 }
 
 export function sendMsgForProgress(text) {
@@ -195,6 +203,15 @@ export function sendMsgForProgress(text) {
     } else {
       console.log('unknown suggestions tunnel', SUGGESTIONS_TUNNEL)
     }
+  }
+}
+
+export function findBets(text, ctr) {
+  return (dispatch, getState) => {
+    dispatch({type: types.LOADING_BETS_SEARCH});
+    return BBPost(getState(), '/nlp/search-bets', {text: text})
+      .then(response => response.json())
+      .then(json => dispatch(updateBetsSearch(json, ctr)));
   }
 }
 

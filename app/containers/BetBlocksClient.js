@@ -11,10 +11,15 @@ import InfoPage from "./infopages/InfoPage";
 class BetBlocksClient extends Component {
 
   render() {
-    const {actions, needsLogin, serviceUrl, roomInfo} = this.props;
+    const {actions, needsLogin, serviceUrl, roomInfo,singlePage} = this.props;
     if (needsLogin) {
       return <LoginPanel serviceUrl={serviceUrl} onChange={(phone) => actions.tryLogin(phone)}
                          onRegister={(a, b, c, d, e) => actions.registerUser(a, b, c, d, e)}/>
+    } else if (singlePage) {
+      return <div>
+        <AppActions cls="col-md-12"/>
+        <InfoPage cls="col-md-12"/>
+      </div>;
     } else if (roomInfo.selected != null) {
       return <div>
         <AppActions cls="col-md-12"/>
@@ -38,6 +43,7 @@ BetBlocksClient.propTypes = {
   needsLogin: PropTypes.bool,
   serviceUrl: PropTypes.string,
   roomInfo: PropTypes.object,
+  singlePage: PropTypes.bool,
 };
 
 
@@ -45,7 +51,8 @@ function mapStateToProps(state) {
   return {
     serviceUrl: state.auth.url,
     needsLogin: state.auth.needsLogin,
-    roomInfo: state.rooms
+    roomInfo: state.rooms,
+    singlePage: state.infoPage.type === 'bet-search',
   };
 }
 
@@ -55,7 +62,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BetBlocksClient)
+export default connect(mapStateToProps, mapDispatchToProps)(BetBlocksClient)

@@ -13,11 +13,14 @@ import BetBrowser from "../additional/BetBrowser";
 import LivePromptPage from "../additional/LivePromptPage";
 import ServerHealth from "../additional/ServerHealth";
 import DateRangeInfoPage from "./DateRangeInfoPage";
+import BetSearch from "../additional/BetSearch";
 
 class InfoPage extends Component {
 
   static getInfoPage(type, data) {
     switch (type) {
+      case "bet-search":
+        return <BetSearch data={data}/>;
       case "bet":
         return <BetInfoPage data={data}/>;
       case "team":
@@ -52,7 +55,7 @@ class InfoPage extends Component {
 
   render() {
     const {type, data, status} = this.props;
-    let selfManagingPages = ['live-prompt', 'database-actions', 'bet-browser', 'matrix'];
+    let selfManagingPages = ['live-prompt', 'database-actions', 'bet-browser', 'matrix', 'bet-search'];
     if ((type != null && selfManagingPages.indexOf(type) > 0) || status == 'OK') {
       return <div className={this.props.cls}>{InfoPage.getInfoPage(type, data)}</div>;
     } else {

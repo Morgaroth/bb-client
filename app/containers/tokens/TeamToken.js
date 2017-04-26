@@ -6,7 +6,11 @@ import * as Actions from "../../actions";
 class TeamToken extends React.Component {
   render() {
     const {actions, text, prop} = this.props;
-    let title = "Team: " + prop.name + " (" + prop.ratio + ")";
+    let ratioElem = "";
+    if (prop.ratio !== undefined) {
+      ratioElem = " (" + prop.ratio + ")";
+    }
+    let title = "Team: " + prop.name + ratioElem;
     return (
       <button
         className="label label-success"

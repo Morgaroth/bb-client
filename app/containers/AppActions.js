@@ -9,6 +9,7 @@ class AppActions extends Component {
         const {actions, cls}= this.props;
         return (<div className={cls}>
             <button onClick={()=>actions.loadTextLivePrompt()}>Load live prompt</button>
+            <button onClick={()=>actions.loadBetSearchWindow()}>Load BetSearch</button>
             <button onClick={()=>actions.loadServerHealth()}>Server Health</button>
             <button onClick={()=>actions.loadDatabaseActions()}>DB Actions</button>
             <button onClick={()=>actions.loadBetBrowser()}>Bet Browser</button>

@@ -110,8 +110,12 @@ function infoPage(state = {type: null, data: null, qprop: null}, action) {
       return {type: action.page, status: 'NOT_FOUND', qprop: action.qprop};
     case types.LOAD_LIVE_PROMPT_WINDOW:
       return {type: 'live-prompt', data: null, qprop: null};
+    case types.BET_SEARCH_WINDOW:
+      return {type: 'bet-search', data: null};
     case types.LOADING_PROP_SUGGESTIONS:
       return merge(state, {type: 'live-prompt', status: 'loading'});
+    case types.LOADING_BETS_SEARCH:
+      return merge(state, {type: 'bet-search', status: 'loading'});
     case types.LOADED_PROP_SUGGESTIONS:
       return merge(state, {
         type: 'live-prompt',
@@ -120,6 +124,17 @@ function infoPage(state = {type: null, data: null, qprop: null}, action) {
         data: action.data,
         status: 'OK'
       });
+    case types.LOADED_BETS_SEARCH:
+      if (action.ctr > (state.ctr || -1)) {
+        return merge(state, {
+          type: 'bet-search',
+          bets: action.data.bets,
+          text: action.data.bets,
+          data: action.data,
+          ctr: action.ctr,
+          status: 'OK'
+        });
+      } else return state;
     case types.LOADING_SERVER_HEALTH:
       return merge(state, {type: 'server-health', data: {health: []}, status: 'fetching'});
     case types.LOAD_BET_BROWSER_WINDOW:
