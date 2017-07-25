@@ -14,7 +14,7 @@ class ServiceUrl extends Component {
         let a = document.getElementById("serviceurl.input");
         let value = a.value;
         if (value.length > 0 && value !== this.props.serviceUrl) {
-            if (!value.startsWith("http://")) {
+            if (!value.startsWith("http://") || !value.startsWith("https://")) {
                 value = "http://" + value
             }
             if (value.endsWith("/")) {
@@ -38,7 +38,7 @@ class ServiceUrl extends Component {
                 <button onClick={() => onChange("http://192.168.33.6")}>Set to vagrant</button>
                 <button onClick={() => onChange("http://dev-root-betblocks-01.gp-cloud.com")}>Set to DEV</button>
                 <button onClick={() => onChange("http://stg-root-betblocks-01.gp-cloud.com")}>Set to STG</button>
-                <button onClick={() => onChange("http://35.177.243.42")}>Set to Jonny's</button>
+                <button onClick={() => onChange("https://prod-server.getbetblocks.com")}>Set to Jonny's</button>
                 <button onClick={this.setUrl.bind(this)}>Set to:</button>
                 <input id="serviceurl.input" type="url" defaultValue={serviceUrl}
                        onKeyUp={this.handleEnter.bind(this)}/>
