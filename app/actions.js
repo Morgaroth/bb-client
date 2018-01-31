@@ -372,7 +372,7 @@ function get(name, url, onReady) {
 export function loadVersionsMatrix() {
   return (dispatch) => {
     dispatch(action(types.MATRIX));
-    let p1 = get('DEV', 'dev-root-betblocks-01.gp-cloud.com', (x) => dispatch(action(types.MATRIX, {data: x})));
+    let p1 = get('DEV', 'dev-server.getbetblocks.com', (x) => dispatch(action(types.MATRIX, {data: x})));
     let p2 = get('STG', 'stg-root-betblocks-01.gp-cloud.com', (x) => dispatch(action(types.MATRIX, {data: x})));
     let p3 = get('LOCAL', 'localhost', (x) => dispatch(action(types.MATRIX, {data: x})));
     let p4 = get('VAG', '192.168.33.6', (x) => dispatch(action(types.MATRIX, {data: x})));

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
+DOCKER_REGISTRY=docker-registry.getbetblocks.com:9001
+
 VERSION=$(jq -r ".version" package.json)
 docker build \
-        -t dev-root-betblocks-01.gp-cloud.com:9001/bb-client:latest \
-        -t dev-root-betblocks-01.gp-cloud.com:9001/bb-client:v${VERSION} .
+        -t $DOCKER_REGISTRY/bb-client:latest \
+        -t $DOCKER_REGISTRY/bb-client:${VERSION} .
