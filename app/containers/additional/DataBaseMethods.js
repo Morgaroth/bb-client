@@ -8,23 +8,14 @@ class DataBaseMethods extends Component {
     const {actions, data, status} = this.props;
 
     return (<div>
-      <h3>Database functions</h3>
+      <h3>Data functions</h3>
       <div>
-        <h4>Managing</h4>
-        <button onClick={() => actions.DataApi_update('events')}>Update Events</button>
+        <h4>Data Feed methods</h4>
+        <button onClick={() => actions.DataFeedApi_update()}>Restart feed</button>
         <br/>
-        <button onClick={() => actions.DataApi_update('events-and-sub-events')}>First Step</button>
+        <button onClick={() => actions.DataFeedApi_updateForce('mongo')}>Restart using Mongo</button>
         <br/>
-      </div>
-      <div>
-        <h4>Data api</h4>
-        <button onClick={() => actions.DataApi_update('events')}>Update Events</button>
-        <br/>
-        <button onClick={() => actions.DataApi_update('sub-events')}>Update SubEvents</button>
-        <br/>
-        <button onClick={() => actions.DataApi_update('markets')}>Update Markets</button>
-        <br/>
-        <button onClick={() => actions.DataApi_update('bets')}>Update Bets</button>
+        <button onClick={() => actions.DataFeedApi_updateForce('betbrain')}>Restart using BetBrain</button>
         <br/>
       </div>
       <div>
