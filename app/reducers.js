@@ -137,6 +137,8 @@ function infoPage(state = {type: null, data: null, qprop: null}, action) {
       } else return state;
     case types.LOADING_SERVER_HEALTH:
       return merge(state, {type: 'server-health', data: {health: []}, status: 'fetching'});
+    case types.LOAD_ROOMS_MANAGEMENT_WINDOW:
+      return merge(state, {type: 'rooms-management', data: {}, status: 'OK'});
     case types.LOAD_BET_BROWSER_WINDOW:
       return merge(state, {type: 'bet-browser', data: {}, status: 'Ready'});
     case types.LOADING_BET_BROWSER:

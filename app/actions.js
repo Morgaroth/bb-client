@@ -21,10 +21,14 @@ function bbOpts(state, oth) {
 
 function BBPost(state, url, data) {
     let moreOpts = {method: 'POST'};
-    if (data != undefined && data != null) {
+    if (data !== undefined && data != null) {
         moreOpts.body = JSON.stringify(data);
     }
     return fetch(state.auth.url + ':8001' + url, bbOpts(state, moreOpts))
+}
+
+function BBGet(state, url) {
+    return fetch(state.auth.url + ':8001' + url, bbOpts(state)).then(response => response.json())
 }
 
 export function disconnected() {
@@ -394,14 +398,28 @@ export function handleServerHealth(data) {
 export function loadServerHealth() {
     return (dispatch, getState) => {
         dispatch(loadingServerHealth());
-        return fetch(getState().auth.url + ':8001/_health/', bbOpts(getState()))
-            .then(response => response.json())
+        return BBGet(getState(), '/_health/')
             .then(json => dispatch(handleServerHealth(json)));
     }
 }
 
 export function loadDatabaseActions() {
     return action(types.SHOW_INFO_DATA_PANEL)
+}
+
+export function loadRoomsManagement() {
+    console.log('loading rooms management panel');
+    return (dispatch, getState) => {
+        dispatch({type: types.LOADING_INFO_PAGE, page: 'rooms-management'});
+        return BBPost(getState(), '/users/friends', {friends: []})
+            .then(response => response.json())
+            .then(resp => Promise.all(resp.map(uId => BBGet(getState(), '/users/' + uId))))
+            .then(data => dispatch(action(types.INFO_PAGE, {
+                    page: 'rooms-management',
+                    data: {users: data},
+                }))
+            );
+    }
 }
 
 export function DataFeedApi_update() {
@@ -435,5 +453,12 @@ export function shareBet(betId, roomIds) {
     console.log('Sending BetShare request:', betId, roomIds);
     return (dispatch, getState) => {
         return BBPost(getState(), '/betting/bets/share', {betId: betId, rooms: roomIds})
+    }
+}
+
+export function createRoom(name, type, userIds) {
+    return (dispatch, getState) => {
+        return BBPost(getState(), '/rooms', {name: name, type: type, users: userIds})
+            .then(resp => dispatch(fetchRoomsFromServer()))
     }
 }

@@ -15,6 +15,7 @@ class AppActions extends Component {
             <button onClick={()=>actions.loadBetBrowser()}>Bet Browser</button>
             <button onClick={()=>actions.fetchShortcuts()}>Shortcuts!</button>
             <button onClick={()=>actions.loadVersionsMatrix()}>Matrix</button>
+            <button onClick={()=>actions.loadRoomsManagement()}>Rooms Management</button>
         </div>)
     }
 }

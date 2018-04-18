@@ -1,6 +1,6 @@
 {
   "name": "BB-Client",
-  "version": "1.5.16",
+  "version": "1.6.0",
   "description": "BB-Client",
   "main": "app.js",
   "engines": {
@@ -23,11 +23,13 @@
     "jquery": "3.1.1",
     "pm2": "^1.1.1",
     "react": "^0.14.7",
+    "react-checkbox-group": "^4.0.1",
     "react-checkbox-list": "0.0.2",
     "react-dnd": "^2.1.4",
     "react-dnd-html5-backend": "^2.1.2",
     "react-dom": "^0.14.7",
     "react-list-select": "^0.3.0",
+    "react-radio-group": "^3.0.3",
     "react-redux": "^4.2.1",
     "react-toggle-switch": "^2.1.2",
     "react-typeahead": "^2.0.0-alpha.5",

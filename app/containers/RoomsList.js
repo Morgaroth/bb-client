@@ -8,25 +8,25 @@ class RoomsList extends Component {
 
     render() {
         const {actions, selectedRoom, selected, available} = this.props;
-        var header = <h3>Selected Room: {selectedRoom.details.name}</h3>;
-        let publicRooms = available.filter(x => x.details.type == 'public');
-        var publicList = (<List items={publicRooms.map(x => x.details.name)}
+        let header = <h3>Selected Room: {selectedRoom.details.name}</h3>;
+        let publicRooms = available.filter(x => x.details.type === 'public');
+        let publicList = (<List items={publicRooms.map(x => x.details.name)}
                                 selected={publicRooms.map(x => x.id).indexOf(selected)}
                                 multiple={false}
                                 onChange={(selected) => actions.selectRoom(publicRooms[selected].id)}/>);
-        let privateRooms = available.filter(x => x.details.type == 'private');
-        var privateList = (<List items={privateRooms.map(x => x.details.name)}
+        let privateRooms = available.filter(x => x.details.type === 'private');
+        let privateList = (<List items={privateRooms.map(x => x.details.name)}
                                  selected={privateRooms.map(x => x.id).indexOf(selected)}
                                  multiple={false}
                                  onChange={(selected) => actions.selectRoom(privateRooms[selected].id)}/>);
-        let directRooms = available.filter(x => x.details.type == 'direct');
-        var directList = (<List items={directRooms.map(x => x.details.name)}
+        let directRooms = available.filter(x => x.details.type === 'direct');
+        let directList = (<List items={directRooms.map(x => x.details.name)}
                                 selected={directRooms.map(x => x.id).indexOf(selected)}
                                 multiple={false}
                                 onChange={(selected) => actions.selectRoom(directRooms[selected].id)}/>);
-        var myStream = available.filter(x => x.details.type == 'my_stream')[0];
+        let myStream = available.filter(x => x.details.type === 'my_stream')[0];
 
-        var btn = undefined;
+        let btn = undefined;
         // if (!(selected == undefined || selected == null)) {
         //     btn = <button onClick={() => actions.deleteSelectedCPU()}>Delete selected CPU</button>
         // }
