@@ -9,7 +9,7 @@ class TeamInfoPage extends Component {
 
     static mapElements(title, data, creator) {
         let elements = <div>{title}</div>;
-        if (data != undefined && data.length > 0) {
+        if (data !== undefined && data.length > 0) {
             elements = [];
             for (let msg of data) {
                 elements.push(
@@ -22,7 +22,7 @@ class TeamInfoPage extends Component {
 
     renderValid() {
         const {name, data} = this.props;
-        if (data.results == undefined) data.results = {results: []};
+        if (data.results === undefined) data.results = {results: []};
         let results = TeamInfoPage.mapElements("No last results...", data.results.results, r =>
             <div key={'result-' + uuid()}><TeamToken prop={{name: r.team1}} text={r.team1}/> {r.result1} -- {r.result2}
                 <TeamToken prop={{name: r.team2}} text={r.team2}/></div>);
@@ -51,7 +51,7 @@ class TeamInfoPage extends Component {
 
     render() {
         const {data} = this.props;
-        if (data.results == undefined && data.nextEvent == undefined && (data.upcomingEvents == undefined || data.upcomingEvents.length == 0)) {
+        if (data.results === undefined && data.nextEvent === undefined && (data.upcomingEvents === undefined || data.upcomingEvents.length === 0)) {
             return this.renderInvalid()
         }
         return this.renderValid()

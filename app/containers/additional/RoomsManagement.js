@@ -41,12 +41,17 @@ class RoomsManagement extends Component {
         this.setState(merge(this.state, {selectedUsers: value}));
     }
 
-    static renderUsersList(users) {
+    static renderUsersList(props) {
+        let {actions, rooms, users} = props;
+        console.log(rooms);
+        // let existingDirectRooms = rooms.filter(x => x.details.type === 'direct').map(x => x.id);
         let result = [];
         if (users !== undefined && users.length > 0) {
             for (let u of users) {
-                let tag = <div key={"u-" + u.id}><label><Checkbox
-                    value={u.id}/>{u.firstName} {u.lastName} ({u.phoneNumber})</label></div>;
+                // let <button onClick={() => actions.openDirectConversation(u.id)}>Direct!</button>
+                let tag = <div key={"u-" + u.id}>
+                    <label><Checkbox value={u.id}/>{u.firstName} {u.lastName} ({u.phoneNumber})</label>
+                </div>;
                 result.push(tag);
             }
         }
@@ -56,7 +61,7 @@ class RoomsManagement extends Component {
     render() {
         const {actions, rooms, users} = this.props;
 
-        let usersList = RoomsManagement.renderUsersList(users);
+        let usersList = RoomsManagement.renderUsersList(this.props);
 
         return (<div>
             <h3>Rooms Management</h3>

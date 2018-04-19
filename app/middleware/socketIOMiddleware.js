@@ -24,7 +24,10 @@ const socketMiddleware = (function () {
 
                 if (action.token != null && action.token !== undefined && action.token.length > 0) {
                     console.log("connecting to", action.url, "after action", action);
-                    socket = io.connect(action.url + '/chats', {query: {'X-User-Auth': action.token}});
+                    socket = io.connect(
+                        action.url + '/chats', // uri
+                        {query: {'X-User-Auth': action.token}, transports: ['websocket']} // opts
+                    );
 
                     socket.on('connect', function () {
                         console.log('SocketIO connected')
