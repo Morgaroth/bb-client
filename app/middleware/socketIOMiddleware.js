@@ -60,7 +60,7 @@ const socketMiddleware = (function () {
 
             case types.SEND_MESSAGE:
                 let msg = {roomId: action.roomId, messageType: 'chat-message', rawText: action.msg};
-                if (action.blocks != undefined) {
+                if (action.blocks !== undefined) {
                     let b = action.blocks.reverse().map(x => x.reverse());
                     msg.rawText = b.flatMap(x => x).map(x => x.text).join(' ');
                     msg.betBrowserBlocks = b

@@ -15,7 +15,10 @@ class LoginPanel extends Component {
     let a = document.getElementById("login.input");
     let value = a.value;
     // TODO add more validation
-    if (value.length === 12) {
+    if (
+        (value.length === 12 && value.substring(0,2) === "+48") ||
+        (value.length === 14 && value.substring(0,2) === "+44")
+    ) {
       this.props.onChange(value)
     }
     if (value.length === 9) {
