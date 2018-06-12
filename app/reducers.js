@@ -4,15 +4,13 @@ import {MESSAGES_LIST_SIZE} from "./constants";
 import {merge} from "./commons";
 
 export let serverUrl = "http://dev-server.getbetblocks.com";
-if (window.location.href.startsWith("http://192.168.33.6")) {
-  serverUrl = "http://192.168.33.6";
-} else if (window.location.href.startsWith("http://prod-root-betblocks")) {
-  serverUrl = "http://prod-root-betblocks-01.gp-cloud.com";
-} else if (window.location.href.startsWith("http://dev-root-betblocks")) {
-  serverUrl = "http://dev-server.getbetblocks.com";
+if (window.location.href.startsWith("https://dev-server.getbetblocks.com")) {
+  serverUrl = "https://dev-server.getbetblocks.com";
+} else if (window.location.href.startsWith("http://localhost")) {
+  serverUrl = "http://localhost";
 } else {
   serverUrl = window.location.href;
-  if (serverUrl.endsWith('/') || serverUrl.endsWith('/') || serverUrl.endsWith('/')) {
+  if (serverUrl.endsWith('/')) {
     serverUrl = serverUrl.slice(0, -1)
   }
   if (serverUrl.endsWith(':8008') || serverUrl.endsWith(':8080') || serverUrl.endsWith(':5000')) {
@@ -22,20 +20,21 @@ if (window.location.href.startsWith("http://192.168.33.6")) {
 
 function getEnv(url) {
   switch (url) {
-    case 'http://dev-server.getbetblocks.com':
+    case 'https://dev-server.getbetblocks.com':
       return 'dev';
-    case 'http://stg-root-betblocks-01.gp-cloud.com':
-      return 'stg';
+    // case 'http://stg-root-betblocks-01.gp-cloud.com':
+    //   return 'stg';
     case 'http://localhost':
       return 'local';
-    case 'http://192.168.33.6':
-      return 'vagrant';
     default:
       let result = url;
       if (result.startsWith('http://')) {
         result = result.slice(8)
       }
-      if (result.endsWith('/') || result.endsWith('/') || result.endsWith('/')) {
+      if (result.startsWith('https://')) {
+        result = result.slice(9)
+      }
+      if (result.endsWith('/')) {
         result = result.slice(0, -1)
       }
       if (result.endsWith(':8008') || result.endsWith(':8080') || result.endsWith(':5000')) {

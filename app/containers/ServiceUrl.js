@@ -36,7 +36,7 @@ class ServiceUrl extends Component {
                 <a>Current url to service is {serviceUrl}</a><br/>
                 <button onClick={() => onChange("http://localhost")}>Set to localhost</button>
                 <button onClick={() => onChange("http://192.168.33.6")}>Set to vagrant</button>
-                <button onClick={() => onChange("http://dev-server.getbetblocks.com")}>Set to DEV</button>
+                <button onClick={() => onChange("https://dev-server.getbetblocks.com")}>Set to DEV</button>
                 <button onClick={() => onChange("http://stg-root-betblocks-01.gp-cloud.com")}>Set to STG</button>
                 <button onClick={() => onChange("https://prod-server.getbetblocks.com")}>Set to Jonny's</button>
                 <button onClick={this.setUrl.bind(this)}>Set to:</button>
