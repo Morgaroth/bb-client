@@ -8,6 +8,8 @@ if (window.location.href.startsWith("https://dev-server.getbetblocks.com")) {
   serverUrl = "https://dev-server.getbetblocks.com";
 } else if (window.location.href.startsWith("http://localhost")) {
   serverUrl = "http://localhost";
+} else if (window.location.href.startsWith("https://client.getbetblocks.com")) {
+  serverUrl = "https://dev-server.getbetblocks.com";
 } else {
   serverUrl = window.location.href;
   if (serverUrl.endsWith('/')) {

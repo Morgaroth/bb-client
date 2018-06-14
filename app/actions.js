@@ -50,7 +50,7 @@ export function toggleShowingState() {
 export function connect(url, token) {
     return {
         type: types.SOCKET_CONNECT,
-        url: url + ":8000",
+        url: url + ":8097",
         token: token
     }
 }
