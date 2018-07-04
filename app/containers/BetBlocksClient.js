@@ -11,10 +11,9 @@ import InfoPage from "./infopages/InfoPage";
 class BetBlocksClient extends Component {
 
   render() {
-    const {actions, needsLogin, serviceUrl, roomInfo,singlePage} = this.props;
+    const {needsLogin, roomInfo, singlePage} = this.props;
     if (needsLogin) {
-      return <LoginPanel serviceUrl={serviceUrl} onChange={(phone) => actions.tryLogin(phone)}
-                         onRegister={(a, b, c, d, e) => actions.registerUser(a, b, c, d, e)}/>
+      return <LoginPanel/>
     } else if (singlePage) {
       return <div>
         <AppActions cls="col-md-12"/>
