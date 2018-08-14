@@ -16,6 +16,8 @@ class ServerHealth extends Component {
         <div>Version: <b>{service.buildInfo.version}</b></div>
         <div>Build: <b>{formatter(service.buildInfo.buildTime)}</b></div>
         <div>BB-Commons: <b>{service.buildInfo.bbCommonsVersion}</b></div>
+        <div>Commit Hash: <b>{service.buildInfo.lastCommitHash}</b></div>
+        <div>Commit Date: <b>{formatter(service.buildInfo.lastCommitDate)}</b></div>
         <br/>
       </div>
     );
